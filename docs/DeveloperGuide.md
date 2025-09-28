@@ -1,10 +1,10 @@
 ---
   layout: default.md
-    title: "Developer Guide"
-    pageNav: 3
+  title: "Developer Guide"
+  pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# Neighbourly Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -13,8 +13,7 @@
 
 ## **Acknowledgements**
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the
-original source as well }_
+This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -398,7 +397,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | forgetful user     | set reminders for follow-ups or scheduled visits     | no senior is unintentionally overlooked in our care efforts |                    |                                                      |                                                         |
 | `* `     | busy user          | view volunteer availability & match with seniors     | optimize resources and reduce scheduling conflicts          |                    |                                                      |                                                             |
 
-
 *{More to be added}*
 
 ### Use cases
@@ -418,6 +416,7 @@ otherwise)
    Use case ends.
 
 **Extensions**
+
 * 2a. Invalid command
 
     * 2a1. AddressBook shows an error message. - "Command format invalid"
@@ -436,17 +435,18 @@ help
 3. User can optionally key in notes and caregiver id for "add-snr" command
 4. New senior record is added
 
-    Use case ends. 
+   Use case ends.
 
 **Extensions**
+
 * 2a. Invalid risk tag
 
-    * 2a1. AddressBook shows an error message. - "Invalid risk tag. Risk tag must either be 
+    * 2a1. AddressBook shows an error message. - "Invalid risk tag. Risk tag must either be
     * `High Risk` or `HR`, `Medium Risk` or `MR`, or `Low Risk` or `LR`."
 
       Use case resumes at step 2.
 
-* 2b. Invalid phone 
+* 2b. Invalid phone
 
     * 2b1. AddressBook shows an error message. - “Phone number must be 8 digits.”
 
@@ -488,17 +488,13 @@ help
 
       Use case resumes at step 1.
 
-
 Command Format
-
 
 add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [n/NOTES] [c/CAREGIVER_ID]
 
 Example Commands
 
-
 add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201
-
 
 **Use case 3: Add caregiver contact: add-cgr**
 
@@ -509,7 +505,7 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 3. User can optionally key in notes and address for "add-cgr" command
 4. New caregiver record is added
 
-    Use case ends. 
+   Use case ends.
 
 * 2a. Invalid phone
 
@@ -535,21 +531,21 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
       Use case resumes at step 1.
 
-
 **Use case 4: Delete senior / caregiver contact: delete**
 
 **MSS**
 
-1.  User requests to delete a specific person in the list
-2.  AddressBook deletes the person
+1. User requests to delete a specific person in the list
+2. AddressBook deletes the person
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
 * 2a. Invalid index
 
-    * 2a1. AddressBook shows an error message. - “No such index exists. Please ensure the index matches a person from the database.”
+    * 2a1. AddressBook shows an error message. - “No such index exists. Please ensure the index matches a person from
+      the database.”
 
       Use case resumes at step 2.
 
@@ -560,9 +556,9 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
       Use case resumes at step 2.
 
 Command Format
+
 1. delete s/SENIOR_INDEX
 2. delete c/CAREGIVER_INDEX
-
 
 Example Commands
 
@@ -572,22 +568,24 @@ delete s/3
 
 **MSS**
 
-1.  User assigns caregiver to a senior using the command "assign"
-2.  AddressBook reflects senior's allocation to caregiver 
+1. User assigns caregiver to a senior using the command "assign"
+2. AddressBook reflects senior's allocation to caregiver
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
 * 1a. Invalid senior index
 
-    * 2a1. AddressBook shows an error message. - “No such senior index exists. Please ensure the index matches a senior from the database.”
+    * 2a1. AddressBook shows an error message. - “No such senior index exists. Please ensure the index matches a senior
+      from the database.”
 
       Use case resumes at step 1.
 
 * 1b. Invalid caregiver index
 
-    * 1b1. AddressBook shows an error message. - “No such caregiver index exists. Please ensure the index matches a caregiver from the database.”
+    * 1b1. AddressBook shows an error message. - “No such caregiver index exists. Please ensure the index matches a
+      caregiver from the database.”
 
       Use case resumes at step 2.
 
@@ -607,27 +605,26 @@ Command Format
 
 assign s/SENIOR_INDEX c/CAREGIVER_INDEX
 
-
 Example Commands
 
 assign s/1 c/3
 
-
-
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4.  The product should be for a single user i.e., (not a multi-user product).
-5.  The data should be stored locally and should be in a human editable text file.
-6.  DBMS should not be used to store data.
-7.  The software should work without requiring an installer.
-8.  The software should not depend on your own remote server.
-9.  The GUI should work well for, standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%. In addition, the GUI should be usable (i.e., all functions can be used even if the user experience is not optimal) for, resolutions 1280x720 and higher, and for screen scales 150%.
-10.  Everything should be packaged into a JAR file.
-11.  The final product should not exceed 100MB and documents should not exceed 15MB/file.
-
+1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+2. Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+3. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be
+   able to accomplish most of the tasks faster using commands than using the mouse.
+4. The product should be for a single user i.e., (not a multi-user product).
+5. The data should be stored locally and should be in a human editable text file.
+6. DBMS should not be used to store data.
+7. The software should work without requiring an installer.
+8. The software should not depend on your own remote server.
+9. The GUI should work well for, standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%.
+   In addition, the GUI should be usable (i.e., all functions can be used even if the user experience is not optimal)
+   for, resolutions 1280x720 and higher, and for screen scales 150%.
+10. Everything should be packaged into a JAR file.
+11. The final product should not exceed 100MB and documents should not exceed 15MB/file.
 
 ### Glossary
 
@@ -635,16 +632,23 @@ assign s/1 c/3
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Caregiver**: A family member, helper, or close contact who provides day-to-day care for a senior.
 * **Case Note**: A record of an interaction with a senior or caregiver (e.g., call, home visit, follow-up).
-* **Emergency Contact**: A designated person to notify during emergencies, stored with name, relationship, and phone number.
-* **Risk Tag**: A special tag indicating concerns such as `fall-risk`, `social-isolation`, or `memory-issues` to guide follow-ups.
+* **Emergency Contact**: A designated person to notify during emergencies, stored with name, relationship, and phone
+  number.
+* **Risk Tag**: A special tag indicating concerns such as `fall-risk`, `social-isolation`, or `memory-issues` to guide
+  follow-ups.
 * **Senior**: An elderly resident supported or engaged through AAC outreach activities.
 * **Status**: The current state of a contact or case, such as `active`, `inactive`, `referred`, or `closed`.
-* **Tag**: A keyword label assigned to a contact (e.g., `volunteer`, `caregiver`, `zone-west`) to enable filtering and grouping.
+* **Tag**: A keyword label assigned to a contact (e.g., `volunteer`, `caregiver`, `zone-west`) to enable filtering and
+  grouping.
 * **Volunteer**: A person assigned to support or accompany seniors for check-ins, activities, or emergencies.
 * **Visit**: An in-person check-in with a senior, typically conducted at the senior’s home and recorded as a case note.
-* **Human-Editable File**: The plain-text JSON file format used for storing data, viewable and editable without special tools.
-* **Private contact detail**: Sensitive information (e.g., phone, address) that should not be shared with unauthorized users.
-* **PDPA (Personal Data Protection Act)**: Singapore’s law governing the collection, use, and protection of personal data.
+* **Human-Editable File**: The plain-text JSON file format used for storing data, viewable and editable without special
+  tools.
+* **Private contact detail**: Sensitive information (e.g., phone, address) that should not be shared with unauthorized
+  users.
+* **PDPA (Personal Data Protection Act)**: Singapore’s law governing the collection, use, and protection of personal
+  data.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
