@@ -13,7 +13,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Jo Shin
 
-<img src="images/github_j-os-h-in.png" width="200px">
+<img src="images/j-os-h-in.png" width="200px">
 
 [[homepage](https://joshin.tech/)]
 [[github](https://github.com/j-os-h-in)]
