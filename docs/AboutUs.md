@@ -31,14 +31,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Co-Lead, Documentation, Deliverables and Deadlines / Scheduling
 * Responsibilities: Responsible for overall project coordination, the quality of various project documents, ensure project deliverables are done on time and in the right format, and in charge of defining, assigning, and tracking project tasks.
 
-### Johnny Doe
+### Tan Wei Han
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/weihan-01.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/weihan-01)] 
+[[portfolio](team/johndoe.md)]
 
 * Role: Developer
-* Responsibilities: Data
+* Responsibilities: Code Quality and Integration
 
 ### Mei Ting
 
