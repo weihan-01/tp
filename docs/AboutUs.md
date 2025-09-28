@@ -50,12 +50,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Testing and Code Quality
 
-### James Doe
+### Chen Yilin
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/whchenyicn.png" width="200px">
 
-[[github](http://github.com/johndoe)]
+[[github](http://github.com/whchenyicn)]
 [[portfolio](team/johndoe.md)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: Testing and Documentation
