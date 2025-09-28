@@ -339,7 +339,18 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Private contact detail**: A contact detail that is not meant to be shared with others
-
+* **Caregiver**: A family member, helper, or close contact who provides day-to-day care for a senior.
+* **Case Note**: A record of an interaction with a senior or caregiver (e.g., call, home visit, follow-up).
+* **Emergency Contact**: A designated person to notify during emergencies, stored with name, relationship, and phone number.
+* **Risk Tag**: A special tag indicating concerns such as `fall-risk`, `social-isolation`, or `memory-issues` to guide follow-ups.
+* **Senior**: An elderly resident supported or engaged through AAC outreach activities.
+* **Status**: The current state of a contact or case, such as `active`, `inactive`, `referred`, or `closed`.
+* **Tag**: A keyword label assigned to a contact (e.g., `volunteer`, `caregiver`, `zone-west`) to enable filtering and grouping.
+* **Volunteer**: A person assigned to support or accompany seniors for check-ins, activities, or emergencies.
+* **Visit**: An in-person check-in with a senior, typically conducted at the senior’s home and recorded as a case note.
+* **Human-Editable File**: The plain-text JSON file format used for storing data, viewable and editable without special tools.
+* **Private contact detail**: Sensitive information (e.g., phone, address) that should not be shared with unauthorized users.
+* **PDPA (Personal Data Protection Act)**: Singapore’s law governing the collection, use, and protection of personal data.
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
