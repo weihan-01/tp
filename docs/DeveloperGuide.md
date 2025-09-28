@@ -287,14 +287,14 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
+| Priority | As a …​           | I want to …​                                   | So that I can…​                                         |
+|----------|-------------------|------------------------------------------------|---------------------------------------------------------|
+| `* * *`  | new user          | view the user guide easily                     | learn more about the product as and when I need         |
+| `* * *`  | time-pressed user | flag urgent seniors                            | immediately identify high-priority cases during my work |
+| `* * *`  | long-time user    | see elderly who are not assigned any caregiver | immediately identify high-priority cases during my work |
+| `* * *`  | user              | delete a senior                                | remove seniors                                          |
+| `* *`    | busy user         | search for a senior by name                    | instantly retrieve their details during field visits    |
+| `* *`    | messy user        | tag seniors with flexible labels               | find them later even if my notes are scattered          |
 
 *{More to be added}*
 
@@ -302,30 +302,213 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case 1: View User Guide Easily**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User opens the app
+2. User types the command "help"
+3. System displays a link to user guide
+4. User browses or searches for relevant topic
+
+    Use case ends.
+
+**Extensions**
+* 2a. Invalid command
+
+    * 2a1. AddressBook shows an error message. - "Command format invalid"
+
+      Use case resumes at step 2.
+
+Command Format
+help
+
+**Use case 2: Add senior contact: add-snr**
+
+**MSS**
+
+1. User creates a new senior record in system with the command "add-snr"
+2. User need to minimally key in name, risk tag, phone, and address for "add-snr" command
+3. User can optionally key in notes and caregiver id for "add-snr" command
+4. New senior record is added
+
+    Use case ends. 
+
+**Extensions**
+* 2a. Invalid risk tag
+
+    * 2a1. AddressBook shows an error message. - "Invalid risk tag. Risk tag must either be 
+    * `High Risk` or `HR`, `Medium Risk` or `MR`, or `Low Risk` or `LR`."
+
+      Use case resumes at step 2.
+
+* 2b. Invalid phone 
+
+    * 2b1. AddressBook shows an error message. - “Phone number must be 8 digits.”
+
+      Use case resumes at step 1.
+
+* 2c. Missing name
+
+    * 2c1. AddressBook shows an error message. - “Senior name cannot be empty.”
+
+      Use case resumes at step 1.
+
+* 2d. Missing risk tag
+
+    * 2d1. AddressBook shows an error message. - "Senior must be assigned a risk tag."
+
+      Use case resumes at step 1.
+
+* 2e. Missing phone number
+
+    * 2e1. AddressBook shows an error message. - "Senior phone number cannot be empty."
+
+      Use case resumes at step 1.
+
+* 2e. Missing address
+
+    * 2e1. AddressBook shows an error message. - "Senior address cannot be empty."
+
+      Use case resumes at step 1.
+
+* 3a. Invalid caregiver ID
+
+    * 3a1. AddressBook shows an error message. - "No such caregiver exists."
+
+      Use case resumes at step 1.
+
+* 4a. Duplicate detected
+
+    * 4a1. AddressBook shows an error message. - “Senior already exists. Please amend your entry.”
+
+      Use case resumes at step 1.
+
+
+Command Format
+
+
+add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [n/NOTES] [c/CAREGIVER_ID]
+
+Example Commands
+
+
+add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201
+
+
+**Use case 3: Add caregiver contact: add-cgr**
+
+**MSS**
+
+1. User creates a new caregiver record in system with the command "add-cgr"
+2. User need to minimally key in name and phone for "add-cgr" command
+3. User can optionally key in notes and address for "add-cgr" command
+4. New caregiver record is added
+
+    Use case ends. 
+
+* 2a. Invalid phone
+
+    * 2a1. AddressBook shows an error message. - “Phone number must be 8 digits.”
+
+      Use case resumes at step 1.
+
+* 2b. Missing name
+
+    * 2b1. AddressBook shows an error message. - “Caregiver name cannot be empty.”
+
+      Use case resumes at step 1.
+
+* 2c. Missing phone number
+
+    * 2c1. AddressBook shows an error message. - "Caregiver phone number cannot be empty."
+
+      Use case resumes at step 1.
+
+* 4a. Duplicate detected
+
+    * 4a1. AddressBook shows an error message. - “Caregiver already exists. Please amend your entry.”
+
+      Use case resumes at step 1.
+
+
+**Use case 4: Delete senior / caregiver contact: delete**
+
+**MSS**
+
+1.  User requests to delete a specific person in the list
+2.  AddressBook deletes the person
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. Invalid index
 
-  Use case ends.
-
-* 3a. The given index is invalid.
-
-    * 3a1. AddressBook shows an error message.
+    * 2a1. AddressBook shows an error message. - “No such index exists. Please ensure the index matches a person from the database.”
 
       Use case resumes at step 2.
 
-*{More to be added}*
+* 2b. Missing index
+
+    * 2a1. AddressBook shows an error message. - “Index cannot be empty.”
+
+      Use case resumes at step 2.
+
+Command Format
+1. delete s/SENIOR_INDEX
+2. delete c/CAREGIVER_INDEX
+
+
+Example Commands
+
+delete s/3
+
+**Use case 5: Assigning caregiver to senior: assign**
+
+**MSS**
+
+1.  User assigns caregiver to a senior using the command "assign"
+2.  AddressBook reflects senior's allocation to caregiver 
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. Invalid senior index
+
+    * 2a1. AddressBook shows an error message. - “No such senior index exists. Please ensure the index matches a senior from the database.”
+
+      Use case resumes at step 1.
+
+* 1b. Invalid caregiver index
+
+    * 1b1. AddressBook shows an error message. - “No such caregiver index exists. Please ensure the index matches a caregiver from the database.”
+
+      Use case resumes at step 2.
+
+* 1c. Missing senior index
+
+    * 1c1. AddressBook shows an error message. - “Senior index cannot be empty.”
+
+      Use case resumes at step 2.
+
+* 1d. Missing caregiver index
+
+    * 1d1. AddressBook shows an error message. - “Caregiver index cannot be empty.”
+
+      Use case resumes at step 2.
+
+Command Format
+
+assign s/SENIOR_INDEX c/CAREGIVER_INDEX
+
+
+Example Commands
+
+assign s/1 c/3
+
+
 
 ### Non-Functional Requirements
 
