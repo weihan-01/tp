@@ -1,0 +1,120 @@
+package seedu.address.logic.parser;
+
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CID;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddSeniorCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Note;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Senior;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Parses input arguments and creates a new AddCommand object
+ */
+public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the AddCommand
+     * and returns an AddCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public AddSeniorCommand parse(String args) throws ParseException {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
+                args, PREFIX_NAME, PREFIX_TAG, PREFIX_PHONE, PREFIX_EMAIL,
+                        PREFIX_ADDRESS, PREFIX_NOTE, PREFIX_CID);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_TAG, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
+                || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, AddSeniorCommand.MESSAGE_USAGE));
+        }
+
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME,PREFIX_TAG, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_NOTE, PREFIX_CID);
+
+        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
+        Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+        Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        // Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        // @TODO: This may be wrong, to review
+        Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
+
+        // Risk tag: accept High Risk/Medium Risk/Low Risk or HR/MR/LR (case-insensitive)
+        String riskCode = formatTag(argMultimap.getValue(PREFIX_TAG).get());
+
+        // Caregiver ID: optional
+        Integer caregiverId = null;
+        if (argMultimap.getValue(PREFIX_CID).isPresent()) {
+            caregiverId = parseCaregiverId(argMultimap.getValue(PREFIX_CID).get());
+        }
+
+        // Build a one-element Set<Tag> for the Senior constructor
+        Set<String> riskRaw = new HashSet<>();
+        riskRaw.add(riskCode);
+        Set<Tag> riskTag = ParserUtil.parseTags(riskRaw); // will validate via Tag.MESSAGE_CONSTRAINTS
+
+        // Construct Senior.
+        Senior senior = new Senior(name, phone, email, address, riskTag, note);
+
+        return new AddSeniorCommand(senior);
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    /** Map user input to alphanumeric Tag code to satisfy AB-3 Tag constraints. */
+    private static String formatTag(String raw) throws ParseException {
+        String s = raw.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", " ");
+        switch (s) {
+        case "high risk":
+        case "hr":
+            return "HR";
+        case "medium risk":
+        case "mr":
+            return "MR";
+        case "low risk":
+        case "lr":
+            return "LR";
+        default:
+            throw new ParseException(AddSeniorCommand.MESSAGE_INVALID_TAG);
+        }
+    }
+
+    /** Parses caregiver id; must be digits only. */
+    private static Integer parseCaregiverId(String raw) throws ParseException {
+        String s = raw.trim();
+        if (!s.matches("\\d+")) {
+            throw new ParseException("Caregiver ID must be numeric.");
+        }
+        try {
+            return Integer.valueOf(s);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Caregiver ID is out of range.");
+        }
+    }
+
+}

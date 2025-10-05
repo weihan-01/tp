@@ -58,6 +58,10 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
+     * Returns true if
+     */
+
+    /**
      * Deletes the given person.
      * The person must exist in the address book.
      */
