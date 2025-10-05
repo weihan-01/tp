@@ -31,7 +31,7 @@ public class AddSeniorCommand extends Command {
             + PREFIX_PHONE + "PHONE "
             + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
-            + "[" + PREFIX_NOTE + "NOTES]\n"
+            + "[" + PREFIX_NOTE + "NOTES] "
             + "[" + PREFIX_CID + "CAREGIVER_ID]\n"
             + "Valid risk tags: High Risk, Medium Risk, Low Risk\n"
             + "Example: " + COMMAND_WORD + " "

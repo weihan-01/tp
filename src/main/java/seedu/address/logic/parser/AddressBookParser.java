@@ -61,8 +61,8 @@ public class AddressBookParser {
         case AddSeniorCommand.COMMAND_WORD:
             return new AddSeniorCommandParser().parse(arguments);
 
-        //case AddCaregiverCommand.COMMAND_WORD:
-        //    return new AddSeniorCommandParser().parse(arguments);
+        case AddCaregiverCommand.COMMAND_WORD:
+            return new AddCaregiverCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
