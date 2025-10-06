@@ -70,35 +70,4 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    /** Map user input to alphanumeric Tag code to satisfy AB-3 Tag constraints. */
-    private static String formatTag(String raw) throws ParseException {
-        String s = raw.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", " ");
-        switch (s) {
-        case "high risk":
-        case "hr":
-            return "HR";
-        case "medium risk":
-        case "mr":
-            return "MR";
-        case "low risk":
-        case "lr":
-            return "LR";
-        default:
-            throw new ParseException(AddSeniorCommand.MESSAGE_INVALID_TAG);
-        }
-    }
-
-    /** Parses caregiver id; must be digits only. */
-    private static Integer parseCaregiverId(String raw) throws ParseException {
-        String s = raw.trim();
-        if (!s.matches("\\d+")) {
-            throw new ParseException("Caregiver ID must be numeric.");
-        }
-        try {
-            return Integer.valueOf(s);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Caregiver ID is out of range.");
-        }
-    }
-
 }
