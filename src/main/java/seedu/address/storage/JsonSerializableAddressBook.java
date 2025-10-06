@@ -1,6 +1,7 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +25,21 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons.
+     * Monotonic sequence used to allocate caregiver IDs of the form {@code cN}.
+     * This stores the last allocated number (e.g., if the highest ID is c9, caregiverSeq == 9).
+     */
+    private final Integer caregiverSeq;
+
+    /**
+     * Constructs a {@code JsonSerializableAddressBook} with the given persons and sequence.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons) {
-        this.persons.addAll(persons);
+    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+                                       @JsonProperty("caregiverSeq") Integer caregiverSeq) {
+        if (persons != null) {
+            this.persons.addAll(persons);
+        }
+        this.caregiverSeq = caregiverSeq; // may be null for legacy files
     }
 
     /**
@@ -37,7 +48,16 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+        this.persons.addAll(source.getPersonList().stream()
+                .map(JsonAdaptedPerson::new)
+                .collect(Collectors.toList()));
+
+        // If we have a concrete AddressBook, read the stored sequence; otherwise, fall back to 0.
+        if (source instanceof AddressBook) {
+            this.caregiverSeq = ((AddressBook) source).getCaregiverSeq();
+        } else {
+            this.caregiverSeq = 0;
+        }
     }
 
     /**
@@ -47,6 +67,7 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
+
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
             if (addressBook.hasPerson(person)) {
@@ -54,7 +75,17 @@ class JsonSerializableAddressBook {
             }
             addressBook.addPerson(person);
         }
+
+        // Restore (or initialize) the caregiver ID sequence.
+        if (caregiverSeq == null) {
+            // Legacy file with no sequence stored: recompute once from existing caregivers.
+            addressBook.recomputeCaregiverSeqFromData();
+        } else {
+            // Trust the stored sequence, but ensure it's at least the current max in data.
+            addressBook.setCaregiverSeq(caregiverSeq);
+            addressBook.recomputeCaregiverSeqFromData(); // raises seq if data has higher IDs
+        }
+
         return addressBook;
     }
-
 }

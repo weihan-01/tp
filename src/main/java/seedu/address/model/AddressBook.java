@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 
@@ -16,7 +17,38 @@ import seedu.address.model.person.UniquePersonList;
 public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
+    private int caregiverSeq = 0; // last assigned number (not the next)
+                                  // c1..c9 means caregiverSeq == 9
 
+    public int getCaregiverSeq() {
+        return caregiverSeq;
+    }
+
+    public void setCaregiverSeq(int seq) {
+        if (seq < 0) seq = 0;
+        this.caregiverSeq = seq;
+    }
+
+    /** Returns next caregiver id like "c10" and increments the sequence. */
+    public String nextCaregiverId() {
+        caregiverSeq += 1;
+        return "c" + caregiverSeq;
+    }
+
+    /** One-time recompute from existing data (for legacy files with no seq). */
+    public void recomputeCaregiverSeqFromData() {
+        int max = 0;
+        for (Person p : persons) { // persons is the UniquePersonList backing AddressBook
+            if (p instanceof Caregiver) {
+                String id = ((Caregiver) p).getCaregiverId(); // non-null in your design
+                if (id != null && id.matches("c\\d+")) {
+                    int n = Integer.parseInt(id.substring(1));
+                    if (n > max) max = n;
+                }
+            }
+        }
+        caregiverSeq = Math.max(caregiverSeq, max);
+    }
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
      * between constructors. See https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html

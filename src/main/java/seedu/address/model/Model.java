@@ -88,4 +88,17 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Allocates and returns the next caregiver identifier.
+     * The identifier is unique within the address book and has the form {@code cN},
+     * where {@code N} is a monotonically increasing positive integer.
+     * <p>
+     * This method does not add a caregiver; it only reserves an ID for immediate use.
+     * Implementations should persist the underlying sequence so IDs remain monotonic
+     * across application restarts.
+     *
+     * @return the next unused caregiver ID (e.g. {@code "c10"}).
+     */
+    String allocateCaregiverId();
 }

@@ -4,13 +4,13 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
@@ -82,21 +82,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code email} is invalid.
-     */
-    public static Email parseEmail(String email) throws ParseException {
-        requireNonNull(email);
-        String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
-        }
-        return new Email(trimmedEmail);
-    }
-
-    /**
      * Parses a {@code String tag} into a {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -133,8 +118,61 @@ public class ParserUtil {
         requireNonNull(note);
         String trimmedNote = note.trim();
         if (!Note.isValidNote(trimmedNote)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
+            throw new ParseException(Note.MESSAGE_CONSTRAINTS); // fixed: was Address.MESSAGE_CONSTRAINTS
         }
         return new Note(trimmedNote);
+    }
+
+    // ----------------------------
+    // Senior/Caregiver helpers
+    // ----------------------------
+
+    /**
+     * Normalizes a risk tag into the canonical alphanumeric code used as a Tag value: HR | MR | LR.
+     * Accepts case-insensitive inputs: "High Risk"/"HR", "Medium Risk"/"MR", "Low Risk"/"LR".
+     */
+    public static String parseRiskTagToCode(String raw) throws ParseException {
+        requireNonNull(raw);
+        String s = raw.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", " ");
+        switch (s) {
+        case "high risk":
+        case "hr":
+            return "HR";
+        case "medium risk":
+        case "mr":
+            return "MR";
+        case "low risk":
+        case "lr":
+            return "LR";
+        default:
+            throw new ParseException(
+                    "Invalid risk tag. Risk tag must either be `High Risk` or `HR`, `Medium Risk` or `MR`, or `Low Risk` or `LR`.");
+        }
+    }
+
+    /**
+     * Builds a single-element Set<Tag> from a risk input (stored as HR/MR/LR Tag).
+     */
+    public static Set<Tag> parseRiskTagAsTagSet(String raw) throws ParseException {
+        String code = parseRiskTagToCode(raw); // HR | MR | LR
+        Set<String> one = new HashSet<>();
+        one.add(code);
+        return parseTags(one);
+    }
+
+    /**
+     * Parses Caregiver ID: must be digits only; returns Integer.
+     */
+    public static Integer parseCaregiverId(String raw) throws ParseException {
+        requireNonNull(raw);
+        String s = raw.trim();
+        if (!s.matches("\\d+")) {
+            throw new ParseException("Caregiver ID must be numeric.");
+        }
+        try {
+            return Integer.valueOf(s);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Caregiver ID is out of range.");
+        }
     }
 }

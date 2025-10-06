@@ -3,7 +3,6 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CID;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -29,7 +28,6 @@ public class AddSeniorCommand extends Command {
             + PREFIX_NAME + "NAME "
             + PREFIX_TAG + "RISK_TAG "
             + PREFIX_PHONE + "PHONE "
-            + PREFIX_EMAIL + "EMAIL "
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_NOTE + "NOTES] "
             + "[" + PREFIX_CID + "CAREGIVER_ID]\n"
@@ -38,7 +36,6 @@ public class AddSeniorCommand extends Command {
             + PREFIX_NAME + "Lim Ah Kow "
             + PREFIX_TAG + "High Risk "
             + PREFIX_PHONE + "91234567  "
-            + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "Blk 123 Bedok North Rd #02-45 "
             + PREFIX_NOTE + "Has dementia "
             + PREFIX_CID + "201";
@@ -67,7 +64,7 @@ public class AddSeniorCommand extends Command {
         }
 
         model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAdd)));
     }
 
     @Override

@@ -145,4 +145,8 @@ public class ModelManager implements Model {
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
 
+    @Override
+    public String allocateCaregiverId() {
+        return addressBook.nextCaregiverId();
+    }
 }
