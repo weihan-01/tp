@@ -1,7 +1,6 @@
 package seedu.address.testutil;
 
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -20,7 +19,6 @@ public class PersonBuilder {
 
     private Name name;
     private Phone phone;
-    private Email email;
     private Address address;
     // private Set<Tag> tags;
     private Note note;
@@ -31,7 +29,6 @@ public class PersonBuilder {
     public PersonBuilder() {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
-        email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         // tags = new HashSet<>();
         note = new Note(DEFAULT_NOTE);
@@ -43,7 +40,6 @@ public class PersonBuilder {
     public PersonBuilder(Person personToCopy) {
         name = personToCopy.getName();
         phone = personToCopy.getPhone();
-        email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         // tags = new HashSet<>(personToCopy.getTags());
         note = personToCopy.getNote();
@@ -85,7 +81,6 @@ public class PersonBuilder {
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
     public PersonBuilder withEmail(String email) {
-        this.email = new Email(email);
         return this;
     }
 
@@ -98,7 +93,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, note);
+        return new Person(name, phone, address, note);
     }
 
 }
