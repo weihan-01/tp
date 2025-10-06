@@ -18,14 +18,25 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
     private int caregiverSeq = 0; // last assigned number (not the next)
-                                  // c1..c9 means caregiverSeq == 9
+
+    public AddressBook() {}
+
+    /**
+     * Creates an AddressBook using the Persons in the {@code toBeCopied}
+     */
+    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+        this();
+        resetData(toBeCopied);
+    }
 
     public int getCaregiverSeq() {
         return caregiverSeq;
     }
 
     public void setCaregiverSeq(int seq) {
-        if (seq < 0) seq = 0;
+        if (seq < 0) {
+            seq = 0;
+        }
         this.caregiverSeq = seq;
     }
 
@@ -43,7 +54,9 @@ public class AddressBook implements ReadOnlyAddressBook {
                 String id = ((Caregiver) p).getCaregiverId(); // non-null in your design
                 if (id != null && id.matches("c\\d+")) {
                     int n = Integer.parseInt(id.substring(1));
-                    if (n > max) max = n;
+                    if (n > max) {
+                        max = n;
+                    }
                 }
             }
         }
@@ -59,18 +72,6 @@ public class AddressBook implements ReadOnlyAddressBook {
     {
         persons = new UniquePersonList();
     }
-
-    public AddressBook() {}
-
-    /**
-     * Creates an AddressBook using the Persons in the {@code toBeCopied}
-     */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
-        this();
-        resetData(toBeCopied);
-    }
-
-    //// list overwrite operations
 
     /**
      * Replaces the contents of the person list with {@code persons}.

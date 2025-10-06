@@ -1,8 +1,9 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.commons.util.ToStringBuilder;
 
-import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a Caregiver in the address book.
@@ -10,13 +11,13 @@ import static java.util.Objects.requireNonNull;
  */
 public class Caregiver extends Person {
 
-    /** Always non-null, format: c<number> (e.g., c1, c2, c10). */
+    /** Always non-null, format: c<&lt;number&gt;> (e.g., c1, c2, c10). */
     private final String caregiverId;
 
     /**
      * Every field must be present and not null.
      */
-    public Caregiver(Name name, Phone phone, Address address, Note note,  String caregiverId) {
+    public Caregiver(Name name, Phone phone, Address address, Note note, String caregiverId) {
         super(name, phone, address, note);
         requireNonNull(caregiverId);
         if (!caregiverId.matches("c\\d+")) {

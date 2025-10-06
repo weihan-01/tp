@@ -14,7 +14,6 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 
 /**
@@ -48,6 +47,9 @@ public class AddCaregiverCommand extends Command {
     private final Address address;
     private final Note note;
 
+    /**
+     * Creates an AddCaregiverCommand to add the specified {@code Caregiver}
+     */
     public AddCaregiverCommand(Name name, Phone phone, Address address, Note note) {
         requireNonNull(name);
         requireNonNull(phone);

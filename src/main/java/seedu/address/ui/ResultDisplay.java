@@ -13,7 +13,7 @@ public class ResultDisplay extends UiPart<Region> {
 
     private static final String FXML = "ResultDisplay.fxml";
 
-    @FXML   
+    @FXML
     private TextArea resultDisplay;
 
     public ResultDisplay() {

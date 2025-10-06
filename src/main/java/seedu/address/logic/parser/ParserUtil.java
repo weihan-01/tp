@@ -146,12 +146,15 @@ public class ParserUtil {
             return "LR";
         default:
             throw new ParseException(
-                    "Invalid risk tag. Risk tag must either be `High Risk` or `HR`, `Medium Risk` or `MR`, or `Low Risk` or `LR`.");
+                    "Invalid risk tag. "
+                    + "Risk tag must either be `High Risk` or `HR`, "
+                    + "`Medium Risk` or `MR`, or `Low Risk` or `LR`.");
         }
     }
 
+
     /**
-     * Builds a single-element Set<Tag> from a risk input (stored as HR/MR/LR Tag).
+     * Builds a single-element {@code Set<Tag>} from a risk input (stored as HR/MR/LR Tag).
      */
     public static Set<Tag> parseRiskTagAsTagSet(String raw) throws ParseException {
         String code = parseRiskTagToCode(raw); // HR | MR | LR

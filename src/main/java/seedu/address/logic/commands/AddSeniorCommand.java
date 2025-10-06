@@ -42,8 +42,6 @@ public class AddSeniorCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
     public static final String MESSAGE_DUPLICATE_SENIOR = "Senior already exists. Please amend your entry.";
-    public static final String MESSAGE_INVALID_TAG = "Invalid risk tag. Risk tag must either be `High Risk`, `Medium Risk`, or `Low Risk`.";
-
 
     private final Senior toAdd;
 
