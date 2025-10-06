@@ -147,6 +147,8 @@ public class ModelManager implements Model {
 
     @Override
     public String allocateCaregiverId() {
-        return addressBook.nextCaregiverId();
+        // Make sure the sequence reflects what's already in memory (sample or loaded)
+        addressBook.recomputeCaregiverSeqFromData();
+        return addressBook.nextCaregiverId();  // returns "c" + (++seq)
     }
 }
