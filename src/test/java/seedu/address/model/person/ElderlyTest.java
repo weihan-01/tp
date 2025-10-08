@@ -1,11 +1,13 @@
 package seedu.address.model.person;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+
 import seedu.address.model.tag.Tag;
 
 public class ElderlyTest {
