@@ -20,11 +20,22 @@ public class Elderly extends Person {
 
     /**
      * Every field must be present and not null.
+     * Caregiver can be null if no caregiver is assigned.
      */
-    public Elderly(Name name, Phone phone, Email email, Address address, Set<Tag> riskTags, Note note) {
+    public Elderly(Name name, Phone phone, Email email, Address address,
+                   Set<Tag> riskTags, Note note, Caregiver caregiver) {
         super(name, phone, email, address, note);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);
+        this.caregiver = caregiver; // Can be null
+    }
+
+    /**
+     * Convenience constructor for Elderly without a caregiver.
+     */
+    public Elderly(Name name, Phone phone, Email email, Address address,
+                   Set<Tag> riskTags, Note note) {
+        this(name, phone, email, address, riskTags, note, null);
     }
 
     /**
