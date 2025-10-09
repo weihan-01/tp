@@ -1,77 +1,94 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
 /**
- * Jackson-friendly version of {@link Person}.
+ * Jackson-friendly version of {@link Person} and its subclasses.
  */
 class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
+    /** Discriminator: "SENIOR", "CAREGIVER", or "PERSON". */
+    private final String role;
+
     private final String name;
     private final String phone;
-    private final String email;
     private final String address;
-    private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String note;
 
     /**
-     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     * Only used when role == "SENIOR": we store the single risk tag
+     * (e.g., HR/MR/LR) as a one-element array for consistency.
      */
+    private final List<JsonAdaptedTag> risk = new ArrayList<>();
+
+    /** Only used when role == "CAREGIVER": persisted identifier like "c10". */
+    private final String caregiverId;
+
+    /** Constructs from JSON. */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            // @JsonProperty("tags") List<JsonAdaptedTag> tags
-            @JsonProperty("note") String note) {
+    public JsonAdaptedPerson(@JsonProperty("role") String role,
+                             @JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("address") String address,
+                             @JsonProperty("note") String note,
+                             @JsonProperty("risk") List<JsonAdaptedTag> risk,
+                             @JsonProperty("caregiverId") String caregiverId) {
+        this.role = role;
         this.name = name;
         this.phone = phone;
-        this.email = email;
         this.address = address;
-        // if (tags != null) {
-        //    this.tags.addAll(tags);
-        // }
         this.note = note;
-    }
-
-    /**
-     * Converts a given {@code Person} into this class for Jackson use.
-     */
-    public JsonAdaptedPerson(Person source) {
-        name = source.getName().fullName;
-        phone = source.getPhone().value;
-        email = source.getEmail().value;
-        address = source.getAddress().value;
-        note = source.getNote().value;
-        // tags.addAll(source.getTags().stream()
-        //        .map(JsonAdaptedTag::new)
-        //        .collect(Collectors.toList()));
-    }
-
-    /**
-     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
-     *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
-     */
-    public Person toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
+        if (risk != null) {
+            this.risk.addAll(risk);
         }
+        this.caregiverId = caregiverId;
+    }
 
+    /** Constructs from model. */
+    public JsonAdaptedPerson(Person source) {
+        this.name = source.getName().fullName;
+        this.phone = source.getPhone().value;
+        this.address = source.getAddress().value;
+        this.note = source.getNote().value;
+
+        if (source instanceof Senior) {
+            this.role = "SENIOR";
+            Senior s = (Senior) source;
+            this.risk.addAll(s.getRiskTags().stream()
+                    .map(JsonAdaptedTag::new)
+                    .collect(Collectors.toList()));
+            this.caregiverId = null;
+        } else if (source instanceof Caregiver) {
+            this.role = "CAREGIVER";
+            this.caregiverId = ((Caregiver) source).getCaregiverId();
+        } else {
+            this.role = "PERSON";
+            this.caregiverId = null;
+        }
+    }
+
+    /** Converts this JSON-friendly object back into the model's {@code Person} subtype. */
+    public Person toModelType() throws IllegalValueException {
+        // Validate common fields
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
@@ -88,14 +105,6 @@ class JsonAdaptedPerson {
         }
         final Phone modelPhone = new Phone(phone);
 
-        if (email == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
-        }
-        if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
-        }
-        final Email modelEmail = new Email(email);
-
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
@@ -104,16 +113,32 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        // final Set<Tag> modelTags = new HashSet<>(personTags);
+        final Note modelNote = (note == null) ? new Note("") : new Note(note);
 
-        final Note modelNote;
-        if (note == null) {
-            modelNote = new Note("");
-        } else {
-            modelNote = new Note(note);
+        // Decide subtype (legacy-friendly: if role missing but risk present → SENIOR)
+        final String kind = role == null ? "" : role.trim().toUpperCase();
+        final boolean looksLikeSenior = !risk.isEmpty();
+
+        if ("SENIOR".equals(kind) || (kind.isEmpty() && looksLikeSenior)) {
+            final Set<Tag> riskSet = new HashSet<>();
+            for (JsonAdaptedTag t : risk) {
+                riskSet.add(t.toModelType());
+            }
+            return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote);
         }
 
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelNote);
-    }
+        if ("CAREGIVER".equals(kind)) {
+            if (caregiverId == null) {
+                // If you keep old data around, either delete data/addressbook.json or backfill IDs before loading.
+                throw new IllegalValueException("Caregiver is missing caregiverId.");
+            }
+            if (!caregiverId.matches("c\\d+")) {
+                throw new IllegalValueException("Invalid caregiverId: " + caregiverId);
+            }
+            return new Caregiver(modelName, modelPhone, modelAddress, modelNote, caregiverId);
+        }
 
+        // Default/fallback: plain Person
+        return new Person(modelName, modelPhone, modelAddress, modelNote);
+    }
 }

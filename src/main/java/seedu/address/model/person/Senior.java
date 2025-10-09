@@ -13,15 +13,15 @@ import seedu.address.model.tag.Tag;
  * Represents an Elderly in the address book.
  *
  */
-public class Elderly extends Person {
+public class Senior extends Person {
     // Identity fields
     private final Set<Tag> riskTags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Elderly(Name name, Phone phone, Email email, Address address, Set<Tag> riskTags, Note note) {
-        super(name, phone, email, address, note);
+    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note) {
+        super(name, phone, address, note);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);
     }
