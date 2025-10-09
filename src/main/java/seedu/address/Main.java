@@ -7,7 +7,7 @@ import seedu.address.commons.core.LogsCenter;
 
 /**
  * The main entry point to the application.
- *
+ * hi
  * This is a workaround for the following error when MainApp is made the
  * entry point of the application:
  *
