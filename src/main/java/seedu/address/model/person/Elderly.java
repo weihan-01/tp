@@ -16,6 +16,7 @@ import seedu.address.model.tag.Tag;
 public class Elderly extends Person {
     // Identity fields
     private final Set<Tag> riskTags = new HashSet<>();
+    private Caregiver caregiver;
 
     /**
      * Every field must be present and not null.
@@ -32,6 +33,14 @@ public class Elderly extends Person {
      */
     public Set<Tag> getRiskTags() {
         return Collections.unmodifiableSet(riskTags);
+    }
+
+    /**
+     * Returns the caregiver assigned to this elderly person.
+     * Returns null if no caregiver is assigned.
+     */
+    public Caregiver getCaregiver() {
+        return caregiver;
     }
 
     @Override
