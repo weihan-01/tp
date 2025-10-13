@@ -13,4 +13,6 @@ public class CliSyntax {
     public static final Prefix PREFIX_TAG = new Prefix("t/"); // reuse t/ for risk
     public static final Prefix PREFIX_NOTE = new Prefix("nt/");
     public static final Prefix PREFIX_CID = new Prefix("c/");
+    public static final Prefix PREFIX_SENIOR = new Prefix("s/");
+    public static final Prefix PREFIX_CAREGIVER = new Prefix("c/");
 }
