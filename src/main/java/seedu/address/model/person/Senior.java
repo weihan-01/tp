@@ -14,16 +14,25 @@ import seedu.address.model.tag.Tag;
  *
  */
 public class Senior extends Person {
-    // Identity fields
     private final Set<Tag> riskTags = new HashSet<>();
+    private final Caregiver caregiver;
 
     /**
      * Every field must be present and not null.
+     * Caregiver can be null if no caregiver is assigned.
      */
-    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note) {
+    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note, Caregiver caregiver) {
         super(name, phone, address, note);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);
+        this.caregiver = caregiver; // Can be null
+    }
+
+    /**
+     * Convenience constructor for Senior without a caregiver.
+     */
+    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note) {
+        this(name, phone, address, riskTags, note, null);
     }
 
     /**
@@ -34,10 +43,26 @@ public class Senior extends Person {
         return Collections.unmodifiableSet(riskTags);
     }
 
+    /**
+     * Returns the caregiver assigned to this senior.
+     * Returns null if no caregiver is assigned.
+     */
+    public Caregiver getCaregiver() {
+        return caregiver;
+    }
+
+    /**
+     * Returns true if this senior has a caregiver assigned.
+     */
+    public boolean hasCaregiver() {
+        return caregiver != null;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(super.toString())
                 .add("riskTags", riskTags)
+                .add("caregiver", caregiver != null ? caregiver.getName() : "No caregiver")
                 .toString();
     }
 }
