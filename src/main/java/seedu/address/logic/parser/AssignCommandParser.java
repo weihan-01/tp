@@ -28,10 +28,8 @@ public class AssignCommandParser implements Parser<AssignCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_SENIOR, PREFIX_CAREGIVER);
 
         // Check if both prefixes are present
-        if (!arePrefixesPresent(argMultimap, PREFIX_SENIOR, PREFIX_CAREGIVER)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, 
-                    AssignCommand.MESSAGE_USAGE));
+        if (!arePrefixesPresent(argMultimap, PREFIX_SENIOR, PREFIX_CAREGIVER) || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE));
         }
 
         // Check if senior index is empty

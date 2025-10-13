@@ -21,8 +21,7 @@ public class Senior extends Person {
      * Every field must be present and not null.
      * Caregiver can be null if no caregiver is assigned.
      */
-    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, 
-                  Note note, Caregiver caregiver) {
+    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note, Caregiver caregiver) {
         super(name, phone, address, note);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);

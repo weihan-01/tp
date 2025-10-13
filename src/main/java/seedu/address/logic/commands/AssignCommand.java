@@ -10,7 +10,6 @@ import java.util.List;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Caregiver;
@@ -35,14 +34,11 @@ public class AssignCommand extends Command {
             + PREFIX_CAREGIVER + "3";
 
     public static final String MESSAGE_ASSIGN_SUCCESS = "Senior %1$s has been assigned to Caregiver %2$s";
-    public static final String MESSAGE_INVALID_SENIOR_INDEX = 
-            "No such senior index exists. Please ensure the index matches a senior from the database.";
-    public static final String MESSAGE_INVALID_CAREGIVER_INDEX = 
-            "No such caregiver index exists. Please ensure the index matches a caregiver from the database.";
+    public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
+    public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
     public static final String MESSAGE_NOT_SENIOR = "Person at index %1$d is not a senior";
     public static final String MESSAGE_NOT_CAREGIVER = "Person at index %1$d is not a caregiver";
-    public static final String MESSAGE_ALREADY_ASSIGNED = 
-            "This caregiver is already assigned to this senior";
+    public static final String MESSAGE_ALREADY_ASSIGNED = "This caregiver is already assigned to this senior";
 
     private final Index seniorIndex;
     private final Index caregiverIndex;
@@ -79,13 +75,11 @@ public class AssignCommand extends Command {
 
         // Check if the persons are of correct types
         if (!(seniorPerson instanceof Senior)) {
-            throw new CommandException(String.format(MESSAGE_NOT_SENIOR, 
-                    seniorIndex.getOneBased()));
+            throw new CommandException(String.format(MESSAGE_NOT_SENIOR, seniorIndex.getOneBased()));
         }
 
         if (!(caregiverPerson instanceof Caregiver)) {
-            throw new CommandException(String.format(MESSAGE_NOT_CAREGIVER, 
-                    caregiverIndex.getOneBased()));
+            throw new CommandException(String.format(MESSAGE_NOT_CAREGIVER, caregiverIndex.getOneBased()));
         }
 
         Senior senior = (Senior) seniorPerson;
