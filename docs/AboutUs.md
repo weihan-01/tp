@@ -1,6 +1,6 @@
 ---
   layout: default.md
-    title: "About Us"
+  title: "About Us"
 ---
 
 # About Us
@@ -15,16 +15,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 <img src="images/j-os-h-in.png" width="200px">
 
-[[homepage](https://joshin.tech/)]
 [[github](https://github.com/j-os-h-in)]
 [[portfolio](team/joshin.md)]
 
 * Role:
-    * Team Lead
+    * Co-Lead
     * Deliverables & Deadlines / Scheduling
     * Integration
 * Responsibilities:
-    * Responsible for overall project coordination
+    * Responsible for overall project coordination.
     * Ensure project deliverables are done on time and in the right format.
     * In charge of versioning of the code, maintaining the code repository, integrating various parts of the software to
       create a whole.
@@ -36,8 +35,16 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/gracesong146)]
 [[portfolio](team/gracesong146.md)]
 
-* Role: Co-Lead, Documentation, Deliverables and Deadlines / Scheduling
-* Responsibilities: Responsible for overall project coordination, the quality of various project documents, ensure project deliverables are done on time and in the right format, and in charge of defining, assigning, and tracking project tasks.
+* Role: 
+  * Co-Lead
+  * Documentation
+  * Deliverables and Deadlines
+  * Scheduling and Tracking
+* Responsibilities: 
+  * Responsible for overall project coordination.
+  * Responsible for the quality of various project documents. 
+  * Ensure project deliverables are done on time and in the right format.
+  * In charge of defining, assigning, and tracking project tasks.
 
 ### Tan Wei Han
 
@@ -46,8 +53,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/weihan-01)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Code Quality and Integration
+* Role:  
+  * Code Quality 
+  * Integration
+* Responsibilities: 
+  * Looks after code quality, ensures adherence to coding standards, etc.
+  * In charge of versioning of the code, maintaining the code repository, integrating various parts of the software to create a whole.
 
 ### Mei Ting
 
@@ -56,8 +67,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/yymeiting)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Testing and Code Quality
+* Role: 
+  * Testing
+  * Code Quality
+* Responsibilities: 
+  * Ensures the testing of the project is done properly and on time.
+  * Looks after code quality, ensures adherence to coding standards, etc.
 
 ### Chen Yilin
 
@@ -66,5 +81,9 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/whchenyicn)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Testing and Documentation
+* Role: 
+  * Testing
+  * Documentation
+* Responsibilities:
+  * Ensures the testing of the project is done properly and on time.
+  * Responsible for the quality of various project documents.
