@@ -1,0 +1,175 @@
+package seedu.address.logic.commands;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.junit.jupiter.api.Test;
+import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
+import seedu.address.model.*;
+import seedu.address.model.person.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.*;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+
+import seedu.address.model.tag.Tag;
+
+public class AssignCommandTest {
+
+    Name snr_name = new Name(VALID_NAME_AMY);
+    Phone snr_phone = new Phone(VALID_PHONE_AMY);
+    Address snr_address = new Address(VALID_ADDRESS_AMY);
+    Tag snr_tag = new Tag("HR");
+    Note snr_note = new Note(VALID_NOTE_AMY);
+
+    Senior senior = new Senior(snr_name, snr_phone, snr_address, Set.of(snr_tag), snr_note);
+
+    Name cgr_name = new Name(VALID_NAME_AMY);
+    Phone cgr_phone = new Phone(VALID_PHONE_AMY);
+    Address cgr_address = new Address(VALID_ADDRESS_AMY);
+    Note cgr_note = new Note(VALID_NOTE_AMY);
+
+    Caregiver caregiver = new Caregiver(cgr_name, cgr_phone,cgr_address, cgr_note, "c10");
+    @Test
+    public void execute_validIndices_successfulAssignment() throws Exception {
+        ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
+        AssignCommand command = new AssignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
+
+        CommandResult result = command.execute(model);
+
+        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, senior.getName(), caregiver.getName()), result.getFeedbackToUser());
+        assertTrue(((Senior) model.getFilteredPersonList().get(0)).hasCaregiver());
+    }
+
+
+    /**
+     * A default model stub that have all of the methods failing.
+     */
+    private class ModelStub implements Model {
+        @Override
+        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyUserPrefs getUserPrefs() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public GuiSettings getGuiSettings() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setGuiSettings(GuiSettings guiSettings) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Path getAddressBookFilePath() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAddressBookFilePath(Path addressBookFilePath) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addPerson(Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setAddressBook(ReadOnlyAddressBook newData) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasPerson(Person person) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deletePerson(Person target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setPerson(Person target, Person editedPerson) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Person> getFilteredPersonList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredPersonList(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public String allocateCaregiverId() {
+            return "";
+        }
+
+        @Override
+        public String getAssignedCaregiverName(Senior senior) {
+            return "";
+        }
+
+        @Override
+        public List<String> getAssignedSeniorNames(Caregiver caregiver) {
+            return List.of();
+        }
+
+    }
+
+    /**
+     * A Model stub with people.
+     */
+    public class ModelStubWithPersons extends ModelStub {
+        final ArrayList<Person> personList = new ArrayList<>();
+
+        public ModelStubWithPersons(Person... persons) {
+            for (Person p : persons) {
+                personList.add(p);
+            }
+        }
+
+        @Override
+        public ObservableList<Person> getFilteredPersonList() {
+            // Return an ObservableList backed by the personList so the test can read and update it.
+            return FXCollections.observableList(personList);
+        }
+
+        @Override
+        public void setPerson(Person target, Person editedPerson) {
+            int index = personList.indexOf(target);
+            if (index == -1) {
+                throw new AssertionError("Target person not found in list.");
+            }
+            personList.set(index, editedPerson);
+        }
+
+        @Override
+        public void updateFilteredPersonList(java.util.function.Predicate<Person> predicate) {
+        }
+    }
+
+
+}
