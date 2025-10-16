@@ -1,16 +1,21 @@
 package seedu.address.logic.commands;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.junit.jupiter.api.Test;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.index.Index;
-import seedu.address.model.*;
-import seedu.address.model.person.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.*;
+
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,24 +23,35 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
+import seedu.address.model.Model;
+import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Note;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
 public class AssignCommandTest {
+    Name snrName = new Name(VALID_NAME_AMY);
+    Phone snrPhone = new Phone(VALID_PHONE_AMY);
+    Address snrAddress = new Address(VALID_ADDRESS_AMY);
+    Tag snrTag = new Tag("HR");
+    Note snrNote = new Note(VALID_NOTE_AMY);
 
-    Name snr_name = new Name(VALID_NAME_AMY);
-    Phone snr_phone = new Phone(VALID_PHONE_AMY);
-    Address snr_address = new Address(VALID_ADDRESS_AMY);
-    Tag snr_tag = new Tag("HR");
-    Note snr_note = new Note(VALID_NOTE_AMY);
+    Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote);
 
-    Senior senior = new Senior(snr_name, snr_phone, snr_address, Set.of(snr_tag), snr_note);
+    Name cgrName = new Name(VALID_NAME_BOB);
+    Phone cgrPhone = new Phone(VALID_PHONE_BOB);
+    Address cgrAddress = new Address(VALID_ADDRESS_BOB);
+    Note cgrNote = new Note(VALID_NOTE_BOB);
 
-    Name cgr_name = new Name(VALID_NAME_AMY);
-    Phone cgr_phone = new Phone(VALID_PHONE_AMY);
-    Address cgr_address = new Address(VALID_ADDRESS_AMY);
-    Note cgr_note = new Note(VALID_NOTE_AMY);
-
-    Caregiver caregiver = new Caregiver(cgr_name, cgr_phone,cgr_address, cgr_note, "c10");
+    Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
     @Test
     public void execute_validIndices_successfulAssignment() throws Exception {
         ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
