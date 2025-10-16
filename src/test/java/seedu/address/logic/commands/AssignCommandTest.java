@@ -11,13 +11,13 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 
-import org.junit.jupiter.api.Test;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
@@ -50,7 +50,7 @@ public class AssignCommandTest {
     private final Address cgrAddress = new Address(VALID_ADDRESS_BOB);
     private final Note cgrNote = new Note(VALID_NOTE_BOB);
 
-    Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
+    private final Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
     @Test
     public void execute_validIndices_successfulAssignment() throws Exception {
         ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
