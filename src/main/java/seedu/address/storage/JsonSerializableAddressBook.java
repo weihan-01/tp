@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -67,12 +69,41 @@ class JsonSerializableAddressBook {
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
 
+        java.util.List<java.util.AbstractMap.SimpleEntry<Senior, String>> links = new java.util.ArrayList<>();
+
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
             if (addressBook.hasPerson(person)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
             }
             addressBook.addPerson(person);
+
+            if (person instanceof Senior) {
+                String key = compositeKey(
+                        jsonAdaptedPerson.getAssignedCaregiverName(),
+                        jsonAdaptedPerson.getAssignedCaregiverPhone());
+                links.add(new java.util.AbstractMap.SimpleEntry<>((Senior) person, key));
+            }
+        }
+
+        // index caregivers by (name|phone)
+        java.util.Map<String, Caregiver> byKey = addressBook.getPersonList().stream()
+                .filter(x -> x instanceof Caregiver)
+                .map(x -> (Caregiver) x)
+                .collect(java.util.stream.Collectors.toMap(
+                        cg -> compositeKey(cg.getName().fullName, cg.getPhone().value),
+                        cg -> cg, (a, b) -> a));
+
+        // resolve Senior → Caregiver
+        for (var e : links) {
+            String key = e.getValue();
+            if (key == null) {
+                continue;
+            }
+            Caregiver cg = byKey.get(key);
+            if (cg != null) {
+                e.getKey().setCaregiver(cg);
+            }
         }
 
         // Restore (or initialize) the caregiver ID sequence.
@@ -87,4 +118,14 @@ class JsonSerializableAddressBook {
 
         return addressBook;
     }
+
+    private static String compositeKey(String name, String phone) {
+        if (name == null || phone == null || name.isBlank() || phone.isBlank()) {
+            return null;
+        }
+        // use a delimiter that cannot appear in phone; name can contain spaces/apostrophes—fine.
+        return name + "|" + phone;
+    }
 }
+
+

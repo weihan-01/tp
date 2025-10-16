@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -11,7 +12,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -150,5 +153,34 @@ public class ModelManager implements Model {
         // Make sure the sequence reflects what's already in memory (sample or loaded)
         addressBook.recomputeCaregiverSeqFromData();
         return addressBook.nextCaregiverId(); // returns "c" + (++seq)
+    }
+
+    @Override
+    public String getAssignedCaregiverName(Senior senior) {
+        if (senior == null) {
+            return null;
+        }
+        Caregiver cg = senior.getCaregiver();
+        if (cg == null) {
+            return null;
+        }
+        return cg.getName().fullName;
+    }
+
+    @Override
+    public List<String> getAssignedSeniorNames(Caregiver caregiver) {
+        if (caregiver == null) {
+            return List.of();
+        }
+        return addressBook.getPersonList().stream()
+                .filter(p -> p instanceof Senior)
+                .map(p -> (Senior) p)
+                .filter(s -> {
+                    Caregiver c = s.getCaregiver();
+                    return c != null && c.isSamePerson(caregiver);
+                })
+                .map(s -> s.getName().fullName)
+                .sorted(String::compareToIgnoreCase)
+                .toList();
     }
 }
