@@ -18,30 +18,27 @@ public class ElderlyTest {
         riskTags.add(new Tag("diabetic"));
         riskTags.add(new Tag("fallRisk"));
 
-        Elderly elderly = new Elderly(
+        Senior senior = new Senior(
                 new Name("Mr Tan Kah Li Boon"),
                 new Phone("98887666"),
-                new Email("tan@example.com"),
                 new Address("456 Kent Ridge Street"),
                 riskTags,
                 new Note("Needs wheelchair access")
         );
 
-        assertEquals("Mr Tan Kah Li Boon", elderly.getName().fullName);
-        assertEquals("98887666", elderly.getPhone().value);
-        assertEquals("tan@example.com", elderly.getEmail().value);
-        assertEquals("456 Kent Ridge Street", elderly.getAddress().value);
-        assertEquals("Needs wheelchair access", elderly.getNote().value);
-        assertEquals(Set.of(new Tag("diabetic"), new Tag("fallRisk")), elderly.getRiskTags());
+        assertEquals("Mr Tan Kah Li Boon", senior.getName().fullName);
+        assertEquals("98887666", senior.getPhone().value);
+        assertEquals("456 Kent Ridge Street", senior.getAddress().value);
+        assertEquals("Needs wheelchair access", senior.getNote().value);
+        assertEquals(Set.of(new Tag("diabetic"), new Tag("fallRisk")), senior.getRiskTags());
     }
 
     @Test
     public void getRiskTags_immutableSet_throwsExceptionOnModification() {
         Set<Tag> riskTags = Set.of(new Tag("hypertension"));
-        Elderly elderly = new Elderly(
+        Senior elderly = new Senior(
                 new Name("Madam Lee"),
                 new Phone("81234567"),
-                new Email("lee@example.com"),
                 new Address("789 Serangoon"),
                 riskTags,
                 new Note("Requires daily medication")
@@ -53,10 +50,9 @@ public class ElderlyTest {
 
     @Test
     public void constructor_nullRiskTags_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Elderly(
+        assertThrows(NullPointerException.class, () -> new Senior(
                 new Name("John Doe"),
                 new Phone("80000000"),
-                new Email("john@example.com"),
                 new Address("No Address"),
                 null,
                 new Note("No note")
