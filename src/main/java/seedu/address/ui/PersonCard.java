@@ -1,13 +1,16 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
@@ -44,19 +47,56 @@ public class PersonCard extends UiPart<Region> {
     private Label note;
     @FXML
     private FlowPane tags;
+    @FXML
+    private HBox assignedRow;
+    @FXML
+    private Label assignedTitle;
+    @FXML
+    private FlowPane assignedChips;
+
+    private final Logic logic;
+
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
-    public PersonCard(Person person, int displayedIndex) {
+    public PersonCard(Person person, int displayedIndex, Logic logic) {
         super(FXML);
+        // make FlowPane expand and wrap
+        HBox.setHgrow(assignedChips, Priority.ALWAYS);
+        assignedChips.setMaxWidth(Double.MAX_VALUE);
+
+        // wrap to remaining width of the card (title + padding ≈ 160; adjust if needed)
+        assignedChips.prefWrapLengthProperty().bind(
+                cardPane.widthProperty()
+                        .subtract(assignedTitle.widthProperty())
+                        .subtract(160));
+
+        // ensure height can grow when chips wrap to multiple lines
+        assignedChips.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        assignedChips.setMinHeight(Region.USE_PREF_SIZE);
+
+        // optional: nicer spacing
+        assignedChips.setHgap(6);
+        assignedChips.setVgap(4);
         this.person = person;
+        this.logic = logic;
 
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
 
+        renderNote();
+        renderAssignedRow();
+        renderChips();
+    }
+
+    public PersonCard(Person person, int displayedIndex) {
+        this(person, displayedIndex, null);
+    }
+
+    private void renderNote() {
         // NOTE: show if non-empty, else hide (cells are reused -> always set both managed & visible)
         String nv = person.getNote() == null ? "" : person.getNote().value;
         if (nv != null && !nv.trim().isEmpty()) {
@@ -68,8 +108,59 @@ public class PersonCard extends UiPart<Region> {
             note.setManaged(false);
             note.setVisible(false);
         }
+    }
 
-        renderChips();
+    private void renderAssignedRow() {
+        assignedRow.setManaged(false);
+        assignedRow.setVisible(false);
+
+        if (logic == null) {
+            return; // tests / safety
+        }
+
+        if (person instanceof Senior s) {
+            assignedTitle.setText("Caregiver:");
+            String cgName = logic.getAssignedCaregiverName(s);
+            showAssigned(cgName == null || cgName.isBlank()
+                    ? List.of()
+                    : List.of(cgName));
+        } else if (person instanceof Caregiver c) {
+            assignedTitle.setText("Seniors:");
+            var names = (logic == null) ? java.util.List.<String>of()
+                    : logic.getAssignedSeniorNames(c);
+
+            assignedRow.setManaged(true);
+            assignedRow.setVisible(true);
+
+            if (names == null || names.isEmpty()) {
+                assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
+            } else {
+                assignedChips.getChildren().setAll(
+                        names.stream().map(n -> makeAssignedChip(n, false)).toList()
+                );
+            }
+        }
+    }
+
+    private void showAssigned(java.util.List<String> names) {
+        assignedRow.setManaged(true);
+        assignedRow.setVisible(true);
+        assignedChips.getChildren().clear();
+
+        if (names == null || names.isEmpty()) {
+            assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
+            return;
+        }
+        names.forEach(n -> assignedChips.getChildren().add(makeAssignedChip(n, false)));
+    }
+
+    private Label makeAssignedChip(String text, boolean emptyStyle) {
+        Label l = new Label(text);
+        l.getStyleClass().addAll("tag-chip", "chip-assigned");
+        if (emptyStyle) {
+            l.getStyleClass().add("chip-assigned-empty");
+        }
+        return l;
     }
 
     /**

@@ -360,3 +360,18 @@
 #tags .tag-chip.chip-hr { -fx-background-color: #e53935; -fx-text-fill: white; }
 #tags .tag-chip.chip-mr { -fx-background-color: #fb8c00; -fx-text-fill: black; }
 #tags .tag-chip.chip-lr { -fx-background-color: #fdd835; -fx-text-fill: black; }
+
+#assignedChips { -fx-hgap: 6; -fx-vgap: 4; }
+
+.chip-assigned {
+    -fx-background-color: rgba(69, 140, 62, 0.85);
+    -fx-text-fill: #222222;
+    -fx-background-radius: 10;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 11px;
+}
+
+.chip-assigned-empty {
+    -fx-background-color: rgba(224, 224, 224, 0.22);
+    -fx-text-fill: #777777;
+}
