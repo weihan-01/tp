@@ -2,18 +2,14 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 
 import org.junit.jupiter.api.Test;
 
@@ -37,29 +33,34 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class AssignCommandTest {
-    Name snrName = new Name(VALID_NAME_AMY);
-    Phone snrPhone = new Phone(VALID_PHONE_AMY);
-    Address snrAddress = new Address(VALID_ADDRESS_AMY);
-    Tag snrTag = new Tag("HR");
-    Note snrNote = new Note(VALID_NOTE_AMY);
+    private final Name snrName = new Name(VALID_NAME_AMY);
+    private final Phone snrPhone = new Phone(VALID_PHONE_AMY);
+    private final Address snrAddress = new Address(VALID_ADDRESS_AMY);
+    private final Tag snrTag = new Tag("HR");
+    private final Note snrNote = new Note(VALID_NOTE_AMY);
 
-    Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote);
+    private final Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote);
 
-    Name cgrName = new Name(VALID_NAME_BOB);
-    Phone cgrPhone = new Phone(VALID_PHONE_BOB);
-    Address cgrAddress = new Address(VALID_ADDRESS_BOB);
-    Note cgrNote = new Note(VALID_NOTE_BOB);
+    private final Name cgrName = new Name(VALID_NAME_BOB);
+    private final Phone cgrPhone = new Phone(VALID_PHONE_BOB);
+    private final Address cgrAddress = new Address(VALID_ADDRESS_BOB);
+    private final Note cgrNote = new Note(VALID_NOTE_BOB);
 
     Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
     @Test
     public void execute_validIndices_successfulAssignment() throws Exception {
         ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
-        AssignCommand command = new AssignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
+        AssignCommand command = new AssignCommand(Index.fromOneBased(1),
+                Index.fromOneBased(2));
 
         CommandResult result = command.execute(model);
 
-        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, senior.getName(), caregiver.getName()), result.getFeedbackToUser());
+        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, senior.getName(), caregiver.getName()),
+                result.getFeedbackToUser());
         assertTrue(((Senior) model.getFilteredPersonList().get(0)).hasCaregiver());
     }
 
