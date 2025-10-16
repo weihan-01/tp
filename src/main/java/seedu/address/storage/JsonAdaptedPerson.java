@@ -33,6 +33,8 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String address;
     private final String note;
+    private final String assignedCaregiverName;
+    private final String assignedCaregiverPhone;
 
     /**
      * Only used when role == "SENIOR": we store the single risk tag
@@ -51,7 +53,9 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("note") String note,
                              @JsonProperty("risk") List<JsonAdaptedTag> risk,
-                             @JsonProperty("caregiverId") String caregiverId) {
+                             @JsonProperty("caregiverId") String caregiverId,
+                             @JsonProperty("assignedCaregiverName") String assignedCaregiverName,
+                             @JsonProperty("assignedCaregiverPhone") String assignedCaregiverPhone) {
         this.role = role;
         this.name = name;
         this.phone = phone;
@@ -61,6 +65,8 @@ class JsonAdaptedPerson {
             this.risk.addAll(risk);
         }
         this.caregiverId = caregiverId;
+        this.assignedCaregiverName = assignedCaregiverName;
+        this.assignedCaregiverPhone = assignedCaregiverPhone;
     }
 
     /** Constructs from model. */
@@ -77,12 +83,20 @@ class JsonAdaptedPerson {
                     .map(JsonAdaptedTag::new)
                     .collect(Collectors.toList()));
             this.caregiverId = null;
+            Caregiver cg = s.getCaregiver();
+            this.assignedCaregiverName = (cg == null) ? null : cg.getName().fullName;
+            this.assignedCaregiverPhone = (cg == null) ? null : cg.getPhone().value;
+
         } else if (source instanceof Caregiver) {
             this.role = "CAREGIVER";
             this.caregiverId = ((Caregiver) source).getCaregiverId();
+            this.assignedCaregiverName = null;
+            this.assignedCaregiverPhone = null;
         } else {
             this.role = "PERSON";
             this.caregiverId = null;
+            this.assignedCaregiverName = null;
+            this.assignedCaregiverPhone = null;
         }
     }
 
@@ -140,5 +154,13 @@ class JsonAdaptedPerson {
 
         // Default/fallback: plain Person
         return new Person(modelName, modelPhone, modelAddress, modelNote);
+    }
+
+    String getAssignedCaregiverName() {
+        return assignedCaregiverName;
+    }
+
+    String getAssignedCaregiverPhone() {
+        return assignedCaregiverPhone;
     }
 }

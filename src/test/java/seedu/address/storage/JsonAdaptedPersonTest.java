@@ -35,7 +35,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidName_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson("PERSON", INVALID_NAME, VALID_PHONE, VALID_ADDRESS, VALID_NOTE,
-                        /*risk*/ null, /*caregiverId*/ null);
+                        /*risk*/ null, /*caregiverId*/ null,
+                        /*assignedCaregiverName*/ null, /*assignedCaregiverPhone*/ null);
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -44,7 +45,7 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullName_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson("PERSON", null, VALID_PHONE, VALID_ADDRESS, VALID_NOTE,
-                        null, null);
+                        null, null, null, null);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -53,7 +54,7 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidPhone_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson("PERSON", VALID_NAME, INVALID_PHONE, VALID_ADDRESS, VALID_NOTE,
-                        null, null);
+                        null, null, null, null);
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -62,7 +63,7 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullPhone_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson("PERSON", VALID_NAME, null, VALID_ADDRESS, VALID_NOTE,
-                        null, null);
+                        null, null, null, null);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -71,7 +72,7 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullAddress_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson("PERSON", VALID_NAME, VALID_PHONE, null, VALID_NOTE,
-                        null, null);
+                        null, null, null, null);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -80,7 +81,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidRiskTagForSenior_throwsIllegalValueException() {
         JsonAdaptedPerson senior =
                 new JsonAdaptedPerson("SENIOR", VALID_NAME, VALID_PHONE, VALID_ADDRESS, VALID_NOTE,
-                        Arrays.asList(new JsonAdaptedTag(INVALID_TAG)), null);
+                        Arrays.asList(new JsonAdaptedTag(INVALID_TAG)),
+                        /*caregiverId*/ null, /*assignedCaregiverName*/ null, /*assignedCaregiverPhone*/ null);
         assertThrows(IllegalValueException.class, senior::toModelType);
     }
 
@@ -88,7 +90,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_validRiskTagForSenior_returnsSenior() throws Exception {
         JsonAdaptedPerson senior =
                 new JsonAdaptedPerson("SENIOR", VALID_NAME, VALID_PHONE, VALID_ADDRESS, VALID_NOTE,
-                        Arrays.asList(new JsonAdaptedTag("HR")), null);
+                        Arrays.asList(new JsonAdaptedTag("HR")),
+                        /*caregiverId*/ null, /*assignedCaregiverName*/ null, /*assignedCaregiverPhone*/ null);
         senior.toModelType(); // should not throw
     }
 }
