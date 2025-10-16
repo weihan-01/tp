@@ -19,6 +19,8 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
 import seedu.address.model.Model;
@@ -32,9 +34,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class AssignCommandTest {
     private final Name snrName = new Name(VALID_NAME_AMY);
