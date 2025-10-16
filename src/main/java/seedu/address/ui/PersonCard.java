@@ -180,7 +180,8 @@ public class PersonCard extends UiPart<Region> {
                 risk.stream()
                         .sorted(Comparator.comparing(t -> t.tagName))
                         .forEach(t -> {
-                            Label chip = new Label(t.tagName);
+                            String chipStr = riskLabel(t.tagName);
+                            Label chip = makeChip(chipStr);
                             chip.getStyleClass().add("tag-chip"); // base pill style
                             switch (t.tagName.toUpperCase()) {
                             case "HR":
@@ -215,5 +216,21 @@ public class PersonCard extends UiPart<Region> {
         Label l = new Label(text);
         l.getStyleClass().add("tag-chip");
         return l;
+    }
+
+    private static String riskLabel(String code) {
+        if (code == null) {
+            return "";
+        }
+        switch (code.trim().toUpperCase()) {
+        case "HR":
+            return "High Risk";
+        case "MR":
+            return "Medium Risk";
+        case "LR":
+            return "Low Risk";
+        default:
+            return code; // any unexpected tag shows as-is
+        }
     }
 }
