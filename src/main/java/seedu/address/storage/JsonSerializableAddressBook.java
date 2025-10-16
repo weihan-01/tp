@@ -92,13 +92,14 @@ class JsonSerializableAddressBook {
                 .map(x -> (Caregiver) x)
                 .collect(java.util.stream.Collectors.toMap(
                         cg -> compositeKey(cg.getName().fullName, cg.getPhone().value),
-                        cg -> cg,
-                        (a,b) -> a));
+                        cg -> cg, (a, b) -> a));
 
         // resolve Senior → Caregiver
         for (var e : links) {
             String key = e.getValue();
-            if (key == null) continue;
+            if (key == null) {
+                continue;
+            }
             Caregiver cg = byKey.get(key);
             if (cg != null) {
                 e.getKey().setCaregiver(cg);
@@ -119,7 +120,9 @@ class JsonSerializableAddressBook {
     }
 
     private static String compositeKey(String name, String phone) {
-        if (name == null || phone == null || name.isBlank() || phone.isBlank()) return null;
+        if (name == null || phone == null || name.isBlank() || phone.isBlank()) {
+            return null;
+        }
         // use a delimiter that cannot appear in phone; name can contain spaces/apostrophes—fine.
         return name + "|" + phone;
     }

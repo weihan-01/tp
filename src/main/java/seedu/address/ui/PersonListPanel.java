@@ -39,6 +39,7 @@ public class PersonListPanel extends UiPart<Region> {
      * Custom {@code ListCell} that displays the graphics of a {@code Person} using a {@code PersonCard}.
      */
     private static class PersonListViewCell extends ListCell<Person> {
+
         private final Logic logic;
         PersonListViewCell(Logic logic) { this.logic = logic; }
 

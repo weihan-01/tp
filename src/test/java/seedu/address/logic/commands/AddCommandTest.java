@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -91,6 +94,16 @@ public class AddCommandTest {
 
         @Override
         public String allocateCaregiverId() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public String getAssignedCaregiverName(Senior senior) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public List<String> getAssignedSeniorNames(Caregiver caregiver) {
             throw new AssertionError("This method should not be called.");
         }
 
