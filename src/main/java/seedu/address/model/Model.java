@@ -1,11 +1,14 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * The API of the Model component.
@@ -98,4 +101,15 @@ public interface Model {
      * @return the next unused caregiver ID (e.g. {@code "c10"}).
      */
     String allocateCaregiverId();
+
+    /**
+     * Returns the name of the Senior's assigned caregiver (1).
+     */
+    String getAssignedCaregiverName(Senior senior);
+
+    /**
+     * Returns the names of the Caregiver's assigned seniors.
+     */
+    List<String> getAssignedSeniorNames(Caregiver caregiver);
+
 }
