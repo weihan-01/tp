@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.function.Predicate;
 
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -24,9 +25,6 @@ public class FilterCommand extends Command {
             + "Example: " + COMMAND_WORD + " " + PREFIX_TAG + "hr";
 
     public static final String MESSAGE_NO_TAGS = "Please provide at least one tag.\n" + MESSAGE_USAGE;
-
-    public static final String MESSAGE_SUCCESS = "Filtered list: %d person(s) shown.";
-
     private final Predicate<Person> predicate;
 
     public FilterCommand(Predicate<Person> predicate) {
@@ -37,12 +35,18 @@ public class FilterCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, model.getFilteredPersonList().size()));
+        return new CommandResult(
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof FilterCommand && predicate.equals(((FilterCommand) other).predicate));
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName() + "{predicate=" + predicate + "}";
     }
 }

@@ -27,6 +27,10 @@ public class PersonHasAnyTagPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
+        if (targetTagsLower == null || targetTagsLower.isEmpty()) {
+            return false; // fail-closed
+        }
+
         // check if the person is a senior
         if (!(person instanceof Senior)) {
             return false;

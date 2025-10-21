@@ -31,7 +31,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
                 continue;
             }
             if (!ALLOWED.contains(t)) {
-                throw new ParseException("Invalid tag: \"" + t + "\".\nAllowed: lr, mr, hr, LR, MR, HR");
+                throw new ParseException("Invalid tag: \"" + t + "\".\nAllowed: lr, mr, hr, LR, MR, HR.");
             }
             tags.add(t.toLowerCase()); // normalize to lr/mr/hr
         }
