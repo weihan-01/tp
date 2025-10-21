@@ -35,9 +35,9 @@ public class FilterCommandTest {
     public void setUp() {
         AddressBook ab = new AddressBook();
 
-        aliceLr   = new SeniorBuilder().withName("Alice").withTags("lr").build();
-        bobMr     = new SeniorBuilder().withName("Bob").withTags("mr").build();
-        caraHr    = new SeniorBuilder().withName("Cara").withTags("hr").build();
+        aliceLr = new SeniorBuilder().withName("Alice").withTags("lr").build();
+        bobMr = new SeniorBuilder().withName("Bob").withTags("mr").build();
+        caraHr = new SeniorBuilder().withName("Cara").withTags("hr").build();
         danFriend = new SeniorBuilder().withName("Dan").withTags("friend").build(); // non-risk tag
 
         ab.addPerson(aliceLr);
@@ -57,11 +57,11 @@ public class FilterCommandTest {
         FilterCommand c1 = new FilterCommand(p1);
         FilterCommand c2 = new FilterCommand(p2);
 
-        assertTrue(c1.equals(c1));                       // same object
-        assertTrue(c1.equals(new FilterCommand(p1)));    // same values
-        assertFalse(c1.equals(1));                       // different type
-        assertFalse(c1.equals(null));                    // null
-        assertFalse(c1.equals(c2));                      // different predicate
+        assertTrue(c1.equals(c1)); // same object
+        assertTrue(c1.equals(new FilterCommand(p1))); // same values
+        assertFalse(c1.equals(1)); // different type
+        assertFalse(c1.equals(null)); // null
+        assertFalse(c1.equals(c2)); // different predicate
     }
 
     @Test
@@ -100,7 +100,7 @@ public class FilterCommandTest {
         // Should contain Alice(lr) and Cara(hr) in insertion order
         assertEquals(2, model.getFilteredPersonList().size());
         assertEquals("Alice", model.getFilteredPersonList().get(0).getName().fullName);
-        assertEquals("Cara",  model.getFilteredPersonList().get(1).getName().fullName);
+        assertEquals("Cara", model.getFilteredPersonList().get(1).getName().fullName);
     }
 
     @Test

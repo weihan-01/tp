@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.person.PersonHasAnyTagPredicate; // if your class is in model.person, change import accordingly
 import seedu.address.testutil.SeniorBuilder;
 
 public class PersonHasAnyTagPredicateTest {

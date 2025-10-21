@@ -7,8 +7,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
 
 /**
- * A utility class to help with building {@code Caregiver} objects for tests.
- * Mirrors PersonBuilder defaults, plus caregiverId.
+ * A utility class to help with building Caregiver objects.
  */
 public class CaregiverBuilder {
 
@@ -24,7 +23,9 @@ public class CaregiverBuilder {
     private Note note;
     private String caregiverId;
 
-    /** Creates a {@code CaregiverBuilder} with the default details. */
+    /**
+     * Creates a {@code CaregiverBuilder} with the default details.
+     */
     public CaregiverBuilder() {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
@@ -33,7 +34,9 @@ public class CaregiverBuilder {
         caregiverId = DEFAULT_CAREGIVER_ID;
     }
 
-    /** Initializes the builder with data from {@code caregiverToCopy}. */
+    /**
+     * Initializes the CaregiverBuilder with the data of {@code caregiverToCopy}.
+     */
     public CaregiverBuilder(Caregiver caregiverToCopy) {
         name = caregiverToCopy.getName();
         phone = caregiverToCopy.getPhone();
@@ -42,27 +45,41 @@ public class CaregiverBuilder {
         caregiverId = caregiverToCopy.getCaregiverId();
     }
 
+    /**
+     * Sets the {@code Name} of the {@code Caregiver} that we are building.
+     */
     public CaregiverBuilder withName(String name) {
         this.name = new Name(name);
         return this;
     }
 
+    /**
+     * Sets the {@code Phone} of the {@code Caregiver} that we are building.
+     */
     public CaregiverBuilder withPhone(String phone) {
         this.phone = new Phone(phone);
         return this;
     }
 
+    /**
+     * Sets the {@code Address} of the {@code Caregiver} that we are building.
+     */
     public CaregiverBuilder withAddress(String address) {
         this.address = new Address(address);
         return this;
     }
 
+    /**
+     * Sets the {@code Note} of the {@code Caregiver} that we are building.
+     */
     public CaregiverBuilder withNote(String note) {
         this.note = new Note(note);
         return this;
     }
 
-    /** Sets the caregiver ID, e.g. "c7". Must match c\\d+ (same as model validation). */
+    /**
+     * Sets the caregiver ID, e.g. "c7". Must match c\\d+ (same as model validation).
+     */
     public CaregiverBuilder withCaregiverId(String caregiverId) {
         this.caregiverId = caregiverId;
         return this;

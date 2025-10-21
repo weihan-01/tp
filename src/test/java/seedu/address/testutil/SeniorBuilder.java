@@ -12,8 +12,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
- * A utility class to help with building {@code Senior} objects for tests.
- * Mirrors PersonBuilder defaults, with extra support for risk tags.
+ * A utility class to help with building Senior objects.
  */
 public class SeniorBuilder {
 
@@ -28,7 +27,9 @@ public class SeniorBuilder {
     private Note note;
     private Set<Tag> tags;
 
-    /** Creates a {@code SeniorBuilder} with the default details. */
+    /**
+     * Creates a {@code SeniorBuilder} with the default details.
+     */
     public SeniorBuilder() {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
@@ -37,7 +38,9 @@ public class SeniorBuilder {
         tags = new HashSet<>(); // seniors can have risk tags
     }
 
-    /** Initializes the builder with data from {@code seniorToCopy}. */
+    /**
+     * Initializes the SeniorBuilder with the data of {@code seniorToCopy}.
+     */
     public SeniorBuilder(Senior seniorToCopy) {
         name = seniorToCopy.getName();
         phone = seniorToCopy.getPhone();
@@ -46,21 +49,33 @@ public class SeniorBuilder {
         tags = new HashSet<>(seniorToCopy.getRiskTags());
     }
 
+    /**
+     * Sets the {@code Name} of the {@code Senior} that we are building.
+     */
     public SeniorBuilder withName(String name) {
         this.name = new Name(name);
         return this;
     }
 
+    /**
+     * Parses the {@code Phone} of the {@code Senior} that we are building.
+     */
     public SeniorBuilder withPhone(String phone) {
         this.phone = new Phone(phone);
         return this;
     }
 
+    /**
+     * Parses the {@code Address} of the {@code Senior} that we are building.
+     */
     public SeniorBuilder withAddress(String address) {
         this.address = new Address(address);
         return this;
     }
 
+    /**
+     * Parses the {@code Note} of the {@code Senior} that we are building.
+     */
     public SeniorBuilder withNote(String note) {
         this.note = new Note(note);
         return this;
