@@ -140,7 +140,25 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
+
   ![result for 'find alex david'](images/findAlexDavidResult.png)
+
+### Filtering seniors by risk tag: `filter`
+
+Shows Seniors whose risk tags match any of the provided tags.
+
+Format: `filter t/TAG`
+
+* Allowed tags: `lr`, `mr`, `hr` (input is case-insensitive; stored/compared in lowercase).
+* Supplying an invalid tag (e.g., t/hello) results in an error.
+* If no seniors match, the list becomes empty and the status shows 0 persons listed!
+
+Examples:
+* `filter t/lr` — shows all seniors tagged `lr`
+* `filter t/MR` — accepted (case-insensitive); shows seniors tagged `mr`.
+* `filter t/hello` — invalid (allowed: `lr`, `mr`, `hr`).
+
+  ![result for 'filter t/hr'](images/filter-hr.png)
 
 ### Deleting a person : `delete`
 
