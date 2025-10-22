@@ -23,6 +23,7 @@ Class Senior
 Class RiskTags
 
 Class Caregiver
+Class CaregiverId
 
 Class I #FFFFFF
 }
@@ -59,6 +60,7 @@ Senior *--> "1" RiskTags
 Senior "n" -right-> "1" Caregiver
 
 Caregiver -up-|> Person
+Caregiver *--> "1" CaregiverId
 
 ModelManager --> "~* filtered" Person
 @enduml
