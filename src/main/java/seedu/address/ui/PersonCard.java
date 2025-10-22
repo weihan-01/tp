@@ -124,6 +124,10 @@ public class PersonCard extends UiPart<Region> {
             showAssigned(cgName == null || cgName.isBlank()
                     ? List.of()
                     : List.of(cgName));
+
+            assignedRow.setManaged(true);
+            assignedRow.setVisible(true);
+
         } else if (person instanceof Caregiver c) {
             assignedTitle.setText("Seniors:");
             var names = (logic == null) ? java.util.List.<String>of()
