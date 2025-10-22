@@ -47,4 +47,23 @@ public class PersonHasAnyTagPredicateTest {
         var caregiver = new CaregiverBuilder().withName("CG").withCaregiverId("c7").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(caregiver));
     }
+
+    @Test
+    void emptyTargets_failClosed_false() {
+        var senior = new SeniorBuilder().withTags("mr").build();
+        assertFalse(new PersonHasAnyTagPredicate(List.of()).test(senior));
+    }
+
+    @Test
+    void equals_selfFastPath_true() {
+        var p = new PersonHasAnyTagPredicate(List.of("lr"));
+        assertTrue(p.equals(p)); // hits `other == this`
+    }
+
+    // (optional but good): ensure non-senior guard stays covered
+    @Test
+    void nonSenior_returnsFalse() {
+        var cg = new CaregiverBuilder().withCaregiverId("c5").build();
+        assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(cg));
+    }
 }
