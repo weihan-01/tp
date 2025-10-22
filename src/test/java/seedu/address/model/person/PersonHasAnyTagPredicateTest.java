@@ -66,4 +66,25 @@ public class PersonHasAnyTagPredicateTest {
         var cg = new CaregiverBuilder().withCaregiverId("c5").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(cg));
     }
+
+    @Test
+    void equals_sameContent_true() {
+        var a = new PersonHasAnyTagPredicate(List.of("lr", "hr"));
+        var b = new PersonHasAnyTagPredicate(List.of("lr", "hr"));
+        assertTrue(a.equals(b)); // instanceof true, Objects.equals true
+    }
+
+    @Test
+    void equals_differentContent_false() {
+        var a = new PersonHasAnyTagPredicate(List.of("lr"));
+        var b = new PersonHasAnyTagPredicate(List.of("mr"));
+        assertFalse(a.equals(b)); // instanceof true, Objects.equals false
+    }
+
+    @Test
+    void equals_nullAndDifferentType_false() {
+        var a = new PersonHasAnyTagPredicate(List.of("lr"));
+        assertFalse(a.equals(null)); // null path
+        assertFalse(a.equals("notPred")); // instanceof false path
+    }
 }

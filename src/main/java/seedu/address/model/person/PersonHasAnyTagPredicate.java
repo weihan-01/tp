@@ -27,7 +27,7 @@ public class PersonHasAnyTagPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        if (targetTagsLower == null || targetTagsLower.isEmpty()) {
+        if (targetTagsLower.isEmpty()) {
             return false; // fail-closed
         }
 
