@@ -66,32 +66,60 @@ public interface Model {
     Caregiver getCaregiverWithId(Integer caregiverId);
 
     /**
-     * Deletes the given person.
-     * The person must exist in the address book.
+     * Deletes the given senior.
+     * The senior must exist in the address book.
      */
-    void deletePerson(Person target);
+    void deleteSenior(Person target);
 
     /**
-     * Adds the given person.
+     * Deletes the given caregiver.
+     * The caregiver must exist in the address book.
+     */
+    void deleteCaregiver(Person target);
+
+    /**
+     * Adds the given senior.
      * {@code person} must not already exist in the address book.
      */
-    void addPerson(Person person);
+    void addSenior(Person person);
 
     /**
-     * Replaces the given person {@code target} with {@code editedPerson}.
+     * Adds the given caregiver.
+     * {@code person} must not already exist in the address book.
+     */
+    void addCaregiver(Person person);
+
+    /**
+     * Replaces the given senior {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    void setPerson(Person target, Person editedPerson);
-
-    /** Returns an unmodifiable view of the filtered person list */
-    ObservableList<Person> getFilteredPersonList();
+    void setSenior(Person target, Person editedPerson);
 
     /**
-     * Updates the filter of the filtered person list to filter by the given {@code predicate}.
+     * Replaces the given caregiver {@code target} with {@code editedPerson}.
+     * {@code target} must exist in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     */
+    void setCaregiver(Person target, Person editedPerson);
+
+    /** Returns an unmodifiable view of the filtered senior list */
+    ObservableList<Person> getFilteredSeniorList();
+
+    /** Returns an unmodifiable view of the filtered senior list */
+    ObservableList<Person> getFilteredCaregiverList();
+
+    /**
+     * Updates the filter of the filtered senior list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Person> predicate);
+    void updateFilteredSeniorList(Predicate<Person> predicate);
+
+    /**
+     * Updates the filter of the filtered caregiver list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredCaregiverList(Predicate<Person> predicate);
 
     /**
      * Allocates and returns the next caregiver identifier.

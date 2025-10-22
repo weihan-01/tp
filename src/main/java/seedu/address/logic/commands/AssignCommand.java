@@ -58,20 +58,21 @@ public class AssignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Person> lastShownSeniorList = model.getFilteredSeniorList();
+        List<Person> lastShownCaregiverList = model.getFilteredCaregiverList();
 
         // Validate senior index
-        if (seniorIndex.getZeroBased() >= lastShownList.size()) {
+        if (seniorIndex.getZeroBased() >= lastShownSeniorList.size()) {
             throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
 
         // Validate caregiver index
-        if (caregiverIndex.getZeroBased() >= lastShownList.size()) {
+        if (caregiverIndex.getZeroBased() >= lastShownCaregiverList.size()) {
             throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
         }
 
-        Person seniorPerson = lastShownList.get(seniorIndex.getZeroBased());
-        Person caregiverPerson = lastShownList.get(caregiverIndex.getZeroBased());
+        Person seniorPerson = lastShownSeniorList.get(seniorIndex.getZeroBased());
+        Person caregiverPerson = lastShownCaregiverList.get(caregiverIndex.getZeroBased());
 
         // Check if the persons are of correct types
         if (!(seniorPerson instanceof Senior)) {
@@ -93,8 +94,9 @@ public class AssignCommand extends Command {
         // Create updated senior with assigned caregiver
         Senior updatedSenior = createSeniorWithCaregiver(senior, caregiver);
 
-        model.setPerson(senior, updatedSenior);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.setSenior(senior, updatedSenior);
+        model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS,
                 senior.getName(), caregiver.getName()));

@@ -17,7 +17,8 @@ import seedu.address.model.person.UniquePersonList;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
+    private final UniquePersonList seniors;
+    private final UniquePersonList caregivers;
     private int seniorSeq = 0; // last assigned senior id (not next)
     private int caregiverSeq = 0; // last assigned caregiver id (not next)
 
@@ -67,7 +68,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /** Returns caregiver with matching id. */
     public Caregiver getCaregiverWithId(Integer caregiverId) {
-        for (Person p: persons) {
+        for (Person p: caregivers) {
             if (p instanceof Caregiver) {
                 Caregiver caregiver = (Caregiver) p;
                 int cid = caregiver.getCaregiverId();
@@ -83,7 +84,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void recomputeSeqFromData() {
         int seniorMax = 0;
         int caregiverMax = 0;
-        for (Person p : persons) { // persons is the UniquePersonList backing AddressBook
+        for (Person p : seniors) { // persons is the UniquePersonList backing AddressBook
             if (p instanceof Senior) {
                 Integer sid = ((Senior) p).getSeniorId();
                 if (sid < 0) {
@@ -92,7 +93,11 @@ public class AddressBook implements ReadOnlyAddressBook {
                 if (sid > seniorMax) {
                     seniorMax = sid;
                 }
-            } else if (p instanceof Caregiver) {
+            }
+        }
+
+        for (Person p : caregivers) {
+            if (p instanceof Caregiver) {
                 int cid = ((Caregiver) p).getCaregiverId();
                 if (cid < 0) {
                     throw new IllegalArgumentException("Caregiver ID must be a positive integer.");
@@ -113,15 +118,24 @@ public class AddressBook implements ReadOnlyAddressBook {
      *   among constructors.
      */
     {
-        persons = new UniquePersonList();
+        seniors = new UniquePersonList();
+        caregivers = new UniquePersonList();
     }
 
     /**
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
      */
-    public void setPersons(List<Person> persons) {
-        this.persons.setPersons(persons);
+    public void setSeniors(List<Person> persons) {
+        this.seniors.setPersons(persons);
+    }
+
+    /**
+     * Replaces the contents of the person list with {@code persons}.
+     * {@code persons} must not contain duplicate persons.
+     */
+    public void setCaregivers(List<Person> persons) {
+        this.caregivers.setPersons(persons);
     }
 
     /**
@@ -130,7 +144,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
-        setPersons(newData.getPersonList());
+        setSeniors(newData.getSeniorList());
+        setCaregivers(newData.getCaregiverList());
     }
 
     //// person-level operations
@@ -140,15 +155,34 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return persons.contains(person);
+        return seniors.contains(person) || caregivers.contains(person);
     }
 
     /**
-     * Adds a person to the address book.
-     * The person must not already exist in the address book.
+     * Adds a senior to the address book.
+     * The senior must not already exist in the address book.
      */
-    public void addPerson(Person p) {
-        persons.add(p);
+    public void addSenior(Person p) {
+        seniors.add(p);
+    }
+
+    /**
+     * Adds a caregiver to the address book.
+     * The caregiver must not already exist in the address book.
+     */
+    public void addCaregiver(Person p) {
+        caregivers.add(p);
+    }
+
+    /**
+     * Replaces the given senior {@code target} in the list with {@code editedPerson}.
+     * {@code target} must exist in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     */
+    public void setSenior(Person target, Person editedPerson) {
+        requireNonNull(editedPerson);
+
+        seniors.setPerson(target, editedPerson);
     }
 
     /**
@@ -156,18 +190,26 @@ public class AddressBook implements ReadOnlyAddressBook {
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    public void setPerson(Person target, Person editedPerson) {
+    public void setCaregiver(Person target, Person editedPerson) {
         requireNonNull(editedPerson);
 
-        persons.setPerson(target, editedPerson);
+        seniors.setPerson(target, editedPerson);
     }
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removePerson(Person key) {
-        persons.remove(key);
+    public void removeSeniors(Person key) {
+        seniors.remove(key);
+    }
+
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeCaregiver(Person key) {
+        caregivers.remove(key);
     }
 
     //// util methods
@@ -175,13 +217,19 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("persons", persons)
+                .add("seniors", seniors)
+                .add("caregivers", caregivers)
                 .toString();
     }
 
     @Override
-    public ObservableList<Person> getPersonList() {
-        return persons.asUnmodifiableObservableList();
+    public ObservableList<Person> getSeniorList() {
+        return seniors.asUnmodifiableObservableList();
+    }
+
+    @Override
+    public ObservableList<Person> getCaregiverList() {
+        return caregivers.asUnmodifiableObservableList();
     }
 
     @Override
@@ -196,11 +244,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         AddressBook otherAddressBook = (AddressBook) other;
-        return persons.equals(otherAddressBook.persons);
+        return seniors.equals(otherAddressBook.seniors) && caregivers.equals(otherAddressBook.caregivers);
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode();
+        // TODO: Change hashcode
+        return seniors.hashCode();
     }
 }

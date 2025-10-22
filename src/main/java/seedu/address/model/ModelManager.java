@@ -24,7 +24,8 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Person> filteredSeniors;
+    private final FilteredList<Person> filteredCaregivers;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,7 +37,8 @@ public class ModelManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredSeniors = new FilteredList<>(this.addressBook.getSeniorList());
+        filteredCaregivers = new FilteredList<>(this.addressBook.getCaregiverList());
     }
 
     public ModelManager() {
@@ -103,21 +105,39 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public void deleteSenior(Person target) {
+        addressBook.removeSeniors(target);
     }
 
     @Override
-    public void addPerson(Person person) {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    public void deleteCaregiver(Person target) {
+        addressBook.removeCaregiver(target);
     }
 
     @Override
-    public void setPerson(Person target, Person editedPerson) {
+    public void addSenior(Person person) {
+        addressBook.addSenior(person);
+        updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    @Override
+    public void addCaregiver(Person person) {
+        addressBook.addCaregiver(person);
+        updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
+    }
+
+    @Override
+    public void setSenior(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        addressBook.setPerson(target, editedPerson);
+        addressBook.setSenior(target, editedPerson);
+    }
+
+    @Override
+    public void setCaregiver(Person target, Person editedPerson) {
+        requireAllNonNull(target, editedPerson);
+
+        addressBook.setCaregiver(target, editedPerson);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -127,14 +147,29 @@ public class ModelManager implements Model {
      * {@code versionedAddressBook}
      */
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
+    public ObservableList<Person> getFilteredSeniorList() {
+        return filteredSeniors;
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList<Person> getFilteredCaregiverList() {
+        return filteredCaregivers;
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
+    public void updateFilteredSeniorList(Predicate<Person> predicate) {
         requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
+        filteredSeniors.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredCaregiverList(Predicate<Person> predicate) {
+        requireNonNull(predicate);
+        filteredCaregivers.setPredicate(predicate);
     }
 
     @Override
@@ -151,7 +186,8 @@ public class ModelManager implements Model {
         ModelManager otherModelManager = (ModelManager) other;
         return addressBook.equals(otherModelManager.addressBook)
                 && userPrefs.equals(otherModelManager.userPrefs)
-                && filteredPersons.equals(otherModelManager.filteredPersons);
+                && filteredSeniors.equals(otherModelManager.filteredSeniors)
+                && filteredCaregivers.equals(otherModelManager.filteredCaregivers);
     }
 
     @Override
@@ -185,8 +221,7 @@ public class ModelManager implements Model {
         if (caregiver == null) {
             return List.of();
         }
-        return addressBook.getPersonList().stream()
-                .filter(p -> p instanceof Senior)
+        return addressBook.getSeniorList().stream()
                 .map(p -> (Senior) p)
                 .filter(s -> {
                     Caregiver c = s.getCaregiver();

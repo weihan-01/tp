@@ -57,7 +57,11 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        this.persons.addAll(source.getPersonList().stream()
+        this.persons.addAll(source.getSeniorList().stream()
+                .map(JsonAdaptedPerson::new)
+                .collect(Collectors.toList()));
+
+        this.persons.addAll(source.getCaregiverList().stream()
                 .map(JsonAdaptedPerson::new)
                 .collect(Collectors.toList()));
 
@@ -86,7 +90,7 @@ class JsonSerializableAddressBook {
             if (addressBook.hasPerson(person)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
             }
-            addressBook.addPerson(person);
+            addressBook.addSenior(person);
 
             if (person instanceof Senior) {
                 String key = compositeKey(
@@ -97,11 +101,10 @@ class JsonSerializableAddressBook {
         }
 
         // index caregivers by (name|phone)
-        java.util.Map<String, Caregiver> byKey = addressBook.getPersonList().stream()
-                .filter(x -> x instanceof Caregiver)
+        java.util.Map<String, Caregiver> byKey = addressBook.getCaregiverList().stream()
                 .map(x -> (Caregiver) x)
                 .collect(java.util.stream.Collectors.toMap(
-                        cg -> compositeKey(cg.getName().fullName, cg.getPhone().value),
+                         cg -> compositeKey(cg.getName().fullName, cg.getPhone().value),
                         cg -> cg, (a, b) -> a));
 
         // resolve Senior → Caregiver

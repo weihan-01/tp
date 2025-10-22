@@ -67,7 +67,7 @@ public class AddSeniorCommand extends Command {
         final int seniorId = model.allocateSeniorId();
         final Caregiver caregiver = model.getCaregiverWithId(caregiverId);
 
-        model.addPerson(toAdd.withId(seniorId).withCaregiver(caregiver));
+        model.addSenior(toAdd.withId(seniorId).withCaregiver(caregiver));
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAdd)));
     }

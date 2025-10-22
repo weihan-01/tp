@@ -15,32 +15,32 @@ import seedu.address.model.person.Person;
 /**
  * Panel containing the list of persons.
  */
-public class PersonListPanel extends UiPart<Region> {
-    private static final String FXML = "PersonListPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+public class SeniorListPanel extends UiPart<Region> {
+    private static final String FXML = "SeniorListPanel.fxml";
+    private final Logger logger = LogsCenter.getLogger(SeniorListPanel.class);
     private final Logic logic;
 
     @FXML
-    private ListView<Person> personListView;
+    private ListView<Person> seniorListView;
 
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public PersonListPanel(ObservableList<Person> personList, Logic logic) {
+    public SeniorListPanel(ObservableList<Person> seniorList, Logic logic) {
         super(FXML);
         this.logic = logic;
-        personListView.setItems(personList);
+        seniorListView.setItems(seniorList);
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
-        personList.addListener((ListChangeListener<Person>) change -> personListView.refresh());
-        personListView.setCellFactory(listView -> new PersonListViewCell(logic));
+        seniorList.addListener((ListChangeListener<Person>) change -> seniorListView.refresh());
+        seniorListView.setCellFactory(listView -> new SeniorListViewCell(logic));
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code Person} using a {@code PersonCard}.
+     * Custom {@code ListCell} that displays the graphics of a {@code Senior} using a {@code SeniorCard}.
      */
-    private static class PersonListViewCell extends ListCell<Person> {
+    private static class SeniorListViewCell extends ListCell<Person> {
         private final Logic logic;
-        PersonListViewCell(Logic logic) {
+        SeniorListViewCell(Logic logic) {
             this.logic = logic;
         }
 

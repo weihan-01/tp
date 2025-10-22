@@ -59,7 +59,7 @@ public class AddCaregiverCommand extends Command {
 
         // Always allocate a fresh caregiver id
         final int caregiverId = model.allocateCaregiverId();
-        model.addPerson(toAdd.withId(caregiverId));
+        model.addCaregiver(toAdd.withId(caregiverId));
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(toAdd)));
     }

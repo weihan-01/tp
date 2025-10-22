@@ -58,10 +58,10 @@ public class SampleDataUtil {
 
         // add caregivers, then seniors (order doesn’t matter; ensure unique (name, phone))
         for (Caregiver cg : getSampleCaregivers()) {
-            ab.addPerson(cg);
+            ab.addCaregiver(cg);
         }
         for (Senior s : getSampleSeniors()) {
-            ab.addPerson(s);
+            ab.addSenior(s);
         }
 
         // IMPORTANT: set the next caregiver id AFTER the highest c<number> present
