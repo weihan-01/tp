@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
@@ -63,7 +65,8 @@ public class UnassignCommandTest {
         UnassignCommand command = new UnassignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
         CommandResult result = command.execute(model);
 
-        assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS, seniorWithCgr.getName(), caregiver.getName()),
+        assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS,
+                        seniorWithCgr.getName(), caregiver.getName()),
                 result.getFeedbackToUser());
         assertFalse(((Senior) model.getFilteredPersonList().get(0)).hasCaregiver());
     }
