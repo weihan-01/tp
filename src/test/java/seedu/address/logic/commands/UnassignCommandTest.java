@@ -87,7 +87,8 @@ public class UnassignCommandTest {
         // Out of bounds Senior index
         Senior sr = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, caregiver);
         ModelStubWithPersons model = new ModelStubWithPersons(sr, caregiver);
-        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(3), Index.fromOneBased(2)); // senior idx 3 OOB
+        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(3),
+                Index.fromOneBased(2)); // senior idx 3 OOB
         CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
         assertEquals(UnassignCommand.MESSAGE_INVALID_SENIOR_INDEX, ex.getMessage());
     }
@@ -97,7 +98,8 @@ public class UnassignCommandTest {
         // Out of bounds Caregiver index
         Senior sr = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, caregiver);
         ModelStubWithPersons model = new ModelStubWithPersons(sr, caregiver);
-        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(1), Index.fromOneBased(3)); // caregiver idx 3 OOB
+        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(1),
+                Index.fromOneBased(3)); // caregiver idx 3 OOB
         CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
         assertEquals(UnassignCommand.MESSAGE_INVALID_CAREGIVER_INDEX, ex.getMessage());
     }
