@@ -85,7 +85,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         int caregiverMax = 0;
         for (Person p : persons) { // persons is the UniquePersonList backing AddressBook
             if (p instanceof Senior) {
-                int sid = ((Senior) p).getSeniorId();
+                Integer sid = ((Senior) p).getSeniorId();
                 if (sid < 0) {
                     throw new IllegalArgumentException("Senior ID must be a positive integer.");
                 }

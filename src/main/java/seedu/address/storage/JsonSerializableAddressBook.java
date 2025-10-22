@@ -26,8 +26,14 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
 
     /**
-     * Monotonic sequence used to allocate caregiver IDs of the form {@code cN}.
-     * This stores the last allocated number (e.g., if the highest ID is c9, caregiverSeq == 9).
+     * Monotonic sequence used to allocate senior IDs of the form {@code N}.
+     * This stores the last allocated number (e.g., if the highest ID is 9, seniorSeq == 9).
+     */
+    private final Integer seniorSeq;
+
+    /**
+     * Monotonic sequence used to allocate caregiver IDs of the form {@code N}.
+     * This stores the last allocated number (e.g., if the highest ID is 9, caregiverSeq == 9).
      */
     private final Integer caregiverSeq;
 
@@ -36,10 +42,12 @@ class JsonSerializableAddressBook {
      */
     @JsonCreator
     public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+                                       @JsonProperty("seniorSeq") Integer seniorSeq,
                                        @JsonProperty("caregiverSeq") Integer caregiverSeq) {
         if (persons != null) {
             this.persons.addAll(persons);
         }
+        this.seniorSeq = seniorSeq; // may be null for legacy files
         this.caregiverSeq = caregiverSeq; // may be null for legacy files
     }
 
@@ -55,8 +63,10 @@ class JsonSerializableAddressBook {
 
         // If we have a concrete AddressBook, read the stored sequence; otherwise, fall back to 0.
         if (source instanceof AddressBook) {
+            this.seniorSeq = ((AddressBook) source).getSeniorSeq();
             this.caregiverSeq = ((AddressBook) source).getCaregiverSeq();
         } else {
+            this.seniorSeq = 0;
             this.caregiverSeq = 0;
         }
     }
@@ -107,11 +117,12 @@ class JsonSerializableAddressBook {
         }
 
         // Restore (or initialize) the caregiver ID sequence.
-        if (caregiverSeq == null) {
+        if (seniorSeq == null || caregiverSeq == null) {
             // Legacy file with no sequence stored: recompute once from existing caregivers.
             addressBook.recomputeSeqFromData();
         } else {
             // Trust the stored sequence, but ensure it's at least the current max in data.
+            addressBook.setSeniorSeq(seniorSeq);
             addressBook.setCaregiverSeq(caregiverSeq);
             addressBook.recomputeSeqFromData(); // raises seq if data has higher IDs
         }

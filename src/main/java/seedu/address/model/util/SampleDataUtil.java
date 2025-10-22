@@ -26,16 +26,16 @@ public class SampleDataUtil {
         return new Senior[]{
             new Senior(new Name("Lim Ah Kow"), new Phone("91234567"),
                     new Address("Blk 123 Bedok North Rd #02-45"),
-                    getTagSet("HR"), new Note("Has dementia"), null, null),
+                    getTagSet("HR"), new Note("Has dementia"), null, 1),
             new Senior(new Name("Mdm Tan"), new Phone("98887766"),
                     new Address("Blk 88 Hougang Ave 7 #05-12"),
-                    getTagSet("MR"), new Note("Lives alone"), null, null),
+                    getTagSet("MR"), new Note("Lives alone"), null, 2),
             new Senior(new Name("Ong Siew Ling"), new Phone("97776655"),
                     new Address("Blk 321 Clementi Ave 5 #03-09"),
-                    getTagSet("LR"), new Note(""), null, null),
+                    getTagSet("LR"), new Note(""), null, 3),
             new Senior(new Name("Siti Nurhaliza"), new Phone("93330011"),
                     new Address("Blk 20 Toa Payoh Lor 7 #09-10"),
-                    getTagSet("HR"), new Note("Fall risk"), null, null)
+                    getTagSet("HR"), new Note("Fall risk"), null, 4)
         };
     }
 
