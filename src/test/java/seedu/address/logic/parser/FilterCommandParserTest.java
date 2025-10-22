@@ -64,4 +64,18 @@ public class FilterCommandParserTest {
         ParseException ex = assertThrows(ParseException.class, () -> new FilterCommandParser().parse(" t/    "));
         assertEquals(FilterCommand.MESSAGE_NO_TAGS, ex.getMessage());
     }
+
+    @Test
+    void parse_blankTagValueThenValidTag() throws Exception {
+        // first t/ is only spaces -> triggers t.isEmpty() -> continue;
+        FilterCommand cmd = new FilterCommandParser().parse(" t/   t/mr ");
+        FilterCommand expected = new FilterCommand(new PersonHasAnyTagPredicate(List.of("mr")));
+        assertEquals(expected, cmd);
+    }
+
+    @Test
+    void parse_onlyBlankTagValueTreatedAsNoTags() {
+        ParseException ex = assertThrows(ParseException.class, () -> new FilterCommandParser().parse(" t/    "));
+        assertEquals(FilterCommand.MESSAGE_NO_TAGS, ex.getMessage());
+    }
 }
