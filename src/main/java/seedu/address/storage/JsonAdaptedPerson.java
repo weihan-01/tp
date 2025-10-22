@@ -42,8 +42,8 @@ class JsonAdaptedPerson {
      */
     private final List<JsonAdaptedTag> risk = new ArrayList<>();
 
-    /** Only used when role == "CAREGIVER": persisted identifier like "c10". */
-    private final String caregiverId;
+    /** Only used when role is Caregiver */
+    private final Integer caregiverId;
 
     /** Constructs from JSON. */
     @JsonCreator
@@ -53,7 +53,7 @@ class JsonAdaptedPerson {
                              @JsonProperty("address") String address,
                              @JsonProperty("note") String note,
                              @JsonProperty("risk") List<JsonAdaptedTag> risk,
-                             @JsonProperty("caregiverId") String caregiverId,
+                             @JsonProperty("caregiverId") Integer caregiverId,
                              @JsonProperty("assignedCaregiverName") String assignedCaregiverName,
                              @JsonProperty("assignedCaregiverPhone") String assignedCaregiverPhone) {
         this.role = role;
@@ -138,7 +138,7 @@ class JsonAdaptedPerson {
             for (JsonAdaptedTag t : risk) {
                 riskSet.add(t.toModelType());
             }
-            return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote);
+            return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, null);
         }
 
         if ("CAREGIVER".equals(kind)) {
@@ -146,14 +146,11 @@ class JsonAdaptedPerson {
                 // If you keep old data around, either delete data/addressbook.json or backfill IDs before loading.
                 throw new IllegalValueException("Caregiver is missing caregiverId.");
             }
-            if (!caregiverId.matches("c\\d+")) {
-                throw new IllegalValueException("Invalid caregiverId: " + caregiverId);
-            }
             return new Caregiver(modelName, modelPhone, modelAddress, modelNote, caregiverId);
         }
 
         // Default/fallback: plain Person
-        return new Person(modelName, modelPhone, modelAddress, modelNote);
+        return new Caregiver(modelName, modelPhone, modelAddress, modelNote, null);
     }
 
     String getAssignedCaregiverName() {

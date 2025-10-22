@@ -111,7 +111,8 @@ public class AssignCommand extends Command {
             senior.getAddress(),
             senior.getRiskTags(),
             senior.getNote(),
-            caregiver
+            caregiver,
+            senior.getSeniorId()
         );
     }
 

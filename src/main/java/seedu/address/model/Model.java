@@ -60,6 +60,10 @@ public interface Model {
      */
     boolean hasPerson(Person person);
 
+    /**
+     * Returns the caregiver with the same id as {@code caregiverId} in the address book.
+     */
+    Caregiver getCaregiverWithId(Integer caregiverId);
 
     /**
      * Deletes the given person.
@@ -91,16 +95,29 @@ public interface Model {
 
     /**
      * Allocates and returns the next caregiver identifier.
-     * The identifier is unique within the address book and has the form {@code cN},
+     * The identifier is unique within the address book and has the form {@code N},
      * where {@code N} is a monotonically increasing positive integer.
      * <p>
      * This method does not add a caregiver; it only reserves an ID for immediate use.
      * Implementations should persist the underlying sequence so IDs remain monotonic
      * across application restarts.
      *
-     * @return the next unused caregiver ID (e.g. {@code "c10"}).
+     * @return the next unused caregiver ID (e.g. {@code "10"}).
      */
-    String allocateCaregiverId();
+    int allocateCaregiverId();
+
+    /**
+     * Allocates and returns the next senior identifier.
+     * The identifier is unique within the address book and has the form {@code N},
+     * where {@code N} is a monotonically increasing positive integer.
+     * <p>
+     * This method does not add a caregiver; it only reserves an ID for immediate use.
+     * Implementations should persist the underlying sequence so IDs remain monotonic
+     * across application restarts.
+     *
+     * @return the next unused caregiver ID (e.g. {@code "10"}).
+     */
+    int allocateSeniorId();
 
     /**
      * Returns the name of the Senior's assigned caregiver (1).

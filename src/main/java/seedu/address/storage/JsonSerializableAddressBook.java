@@ -109,11 +109,11 @@ class JsonSerializableAddressBook {
         // Restore (or initialize) the caregiver ID sequence.
         if (caregiverSeq == null) {
             // Legacy file with no sequence stored: recompute once from existing caregivers.
-            addressBook.recomputeCaregiverSeqFromData();
+            addressBook.recomputeSeqFromData();
         } else {
             // Trust the stored sequence, but ensure it's at least the current max in data.
             addressBook.setCaregiverSeq(caregiverSeq);
-            addressBook.recomputeCaregiverSeqFromData(); // raises seq if data has higher IDs
+            addressBook.recomputeSeqFromData(); // raises seq if data has higher IDs
         }
 
         return addressBook;

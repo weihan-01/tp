@@ -48,14 +48,15 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
-
         // Risk tag as a single Tag (HR|MR|LR) so it passes Tag constraints
         Set<Tag> riskTag = ParserUtil.parseRiskTagAsTagSet(argMultimap.getValue(PREFIX_TAG).get());
+        Integer caregiverId = ParserUtil.parseCaregiverId(argMultimap.getValue(PREFIX_CID).orElse(null));
 
-        // Construct Senior.
-        Senior senior = new Senior(name, phone, address, riskTag, note);
+        Senior senior = new Senior(name, phone, address, riskTag,
+                note, null, null);
 
-        return new AddSeniorCommand(senior);
+        // Return command with fields; Senior (with ID) is created in execute()
+        return new AddSeniorCommand(senior, caregiverId);
     }
 
     /**

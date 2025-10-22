@@ -12,6 +12,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Senior;
 
 /**
@@ -44,13 +45,15 @@ public class AddSeniorCommand extends Command {
     public static final String MESSAGE_DUPLICATE_SENIOR = "Senior already exists. Please amend your entry.";
 
     private final Senior toAdd;
+    private final Integer caregiverId;
 
     /**
      * Creates an AddSeniorCommand to add the specified {@code Senior}.
      */
-    public AddSeniorCommand(Senior senior) {
+    public AddSeniorCommand(Senior senior, Integer caregiverId) {
         requireNonNull(senior);
-        toAdd = senior;
+        this.toAdd = senior;
+        this.caregiverId = caregiverId;
     }
 
     @Override
@@ -61,7 +64,11 @@ public class AddSeniorCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
         }
 
-        model.addPerson(toAdd);
+        final int seniorId = model.allocateSeniorId();
+        final Caregiver caregiver = model.getCaregiverWithId(caregiverId);
+
+        model.addPerson(toAdd.withId(seniorId).withCaregiver(caregiver));
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAdd)));
     }
 

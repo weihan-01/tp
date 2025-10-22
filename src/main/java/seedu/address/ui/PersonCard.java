@@ -201,14 +201,12 @@ public class PersonCard extends UiPart<Region> {
             }
         } else if (person instanceof Caregiver) {
             Caregiver c = (Caregiver) person;
-            String cgId = c.getCaregiverId();
-            if (cgId != null && !cgId.isBlank()) {
-                tags.setManaged(true);
-                tags.setVisible(true);
-                Label chip = makeChip(cgId);
-                chip.getStyleClass().add("chip-caregiver");
-                tags.getChildren().add(chip);
-            }
+            int cgId = c.getCaregiverId();
+            tags.setManaged(true);
+            tags.setVisible(true);
+            Label chip = makeChip(String.format("C%06d", cgId));
+            chip.getStyleClass().add("chip-caregiver");
+            tags.getChildren().add(chip);
         }
     }
 

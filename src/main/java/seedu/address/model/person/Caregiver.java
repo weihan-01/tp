@@ -1,44 +1,46 @@
 package seedu.address.model.person;
 
-import static java.util.Objects.requireNonNull;
-
 import seedu.address.commons.util.ToStringBuilder;
 
 
 /**
  * Represents a Caregiver in the address book.
- *
  */
 public class Caregiver extends Person {
 
-    /** Always non-null, format: c<&lt;number&gt;> (e.g., c1, c2, c10). */
-    private final String caregiverId;
+    // Caregiver data fields
+    private final Integer caregiverId;
 
     /**
-     * Every field must be present and not null.
+     * Instantiates a caregiver with all required and optional caregiver attributes
+     *
+     * @param name Name of the caregiver
+     * @param phone Phone number of the caregiver
+     * @param address Address of the caregiver's home
+     * @param note Additional caregiving notes for the senior
+     * @param caregiverId ID of the caregiver assigned by AddressBook
      */
-    public Caregiver(Name name, Phone phone, Address address, Note note, String caregiverId) {
+    public Caregiver(Name name, Phone phone, Address address, Note note, Integer caregiverId) {
         super(name, phone, address, note);
-        requireNonNull(caregiverId);
-        if (!caregiverId.matches("c\\d+")) {
-            throw new IllegalArgumentException("Caregiver ID must be of the form c<number> (e.g., c1).");
-        }
         this.caregiverId = caregiverId;
     }
 
-    /** Returns this caregiver's ID, e.g. "c10". */
-    public String getCaregiverId() {
+    /**
+     * Immutable factory: return a new Caregiver with the given id.
+     */
+    public Caregiver withId(int id) {
+        return new Caregiver(getName(), getPhone(), getAddress(), getNote(), Integer.valueOf(id));
+    }
+
+    /** Returns this caregiver's ID */
+    public Integer getCaregiverId() {
         return caregiverId;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("name", getName())
-                .add("phone", getPhone())
-                .add("address", getAddress())
+        return new ToStringBuilder(super.toString())
                 .add("caregiverId", caregiverId)
-                .add("note", getNote())
                 .toString();
     }
 }

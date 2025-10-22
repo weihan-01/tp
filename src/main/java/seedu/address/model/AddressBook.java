@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 import seedu.address.model.person.UniquePersonList;
 
 /**
@@ -17,7 +18,8 @@ import seedu.address.model.person.UniquePersonList;
 public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
-    private int caregiverSeq = 0; // last assigned number (not the next)
+    private int seniorSeq = 0; // last assigned senior id (not next)
+    private int caregiverSeq = 0; // last assigned caregiver id (not next)
 
     public AddressBook() {}
 
@@ -29,8 +31,19 @@ public class AddressBook implements ReadOnlyAddressBook {
         resetData(toBeCopied);
     }
 
+    public int getSeniorSeq() {
+        return seniorSeq;
+    }
+
     public int getCaregiverSeq() {
         return caregiverSeq;
+    }
+
+    public void setSeniorSeq(int seq) {
+        if (seq < 0) {
+            seq = 0;
+        }
+        this.seniorSeq = seq;
     }
 
     public void setCaregiverSeq(int seq) {
@@ -40,27 +53,57 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.caregiverSeq = seq;
     }
 
-    /** Returns next caregiver id like "c10" and increments the sequence. */
-    public String nextCaregiverId() {
-        caregiverSeq += 1;
-        return "c" + caregiverSeq;
+    /** Returns next senior id by incrementing the sequence. */
+    public int nextSeniorId() {
+        seniorSeq += 1;
+        return seniorSeq;
     }
 
-    /** One-time recompute from existing data (for legacy files with no seq). */
-    public void recomputeCaregiverSeqFromData() {
-        int max = 0;
-        for (Person p : persons) { // persons is the UniquePersonList backing AddressBook
+    /** Returns next caregiver id by incrementing the sequence. */
+    public int nextCaregiverId() {
+        caregiverSeq += 1;
+        return caregiverSeq;
+    }
+
+    /** Returns caregiver with matching id. */
+    public Caregiver getCaregiverWithId(Integer caregiverId) {
+        for (Person p: persons) {
             if (p instanceof Caregiver) {
-                String id = ((Caregiver) p).getCaregiverId(); // non-null in your design
-                if (id != null && id.matches("c\\d+")) {
-                    int n = Integer.parseInt(id.substring(1));
-                    if (n > max) {
-                        max = n;
-                    }
+                Caregiver caregiver = (Caregiver) p;
+                int cid = caregiver.getCaregiverId();
+                if (cid == caregiverId) {
+                    return caregiver;
                 }
             }
         }
-        caregiverSeq = Math.max(caregiverSeq, max);
+        return null;
+    }
+
+    /** One-time recompute from existing data (for legacy files with no seq). */
+    public void recomputeSeqFromData() {
+        int seniorMax = 0;
+        int caregiverMax = 0;
+        for (Person p : persons) { // persons is the UniquePersonList backing AddressBook
+            if (p instanceof Senior) {
+                int sid = ((Senior) p).getSeniorId();
+                if (sid < 0) {
+                    throw new IllegalArgumentException("Senior ID must be a positive integer.");
+                }
+                if (sid > seniorMax) {
+                    seniorMax = sid;
+                }
+            } else if (p instanceof Caregiver) {
+                int cid = ((Caregiver) p).getCaregiverId();
+                if (cid < 0) {
+                    throw new IllegalArgumentException("Caregiver ID must be a positive integer.");
+                }
+                if (cid > caregiverMax) {
+                    caregiverMax = cid;
+                }
+            }
+        }
+        seniorSeq = Math.max(seniorSeq, seniorMax);
+        caregiverSeq = Math.max(caregiverSeq, caregiverMax);
     }
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication

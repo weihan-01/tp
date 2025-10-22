@@ -26,16 +26,16 @@ public class SampleDataUtil {
         return new Senior[]{
             new Senior(new Name("Lim Ah Kow"), new Phone("91234567"),
                     new Address("Blk 123 Bedok North Rd #02-45"),
-                    getTagSet("HR"), new Note("Has dementia")),
+                    getTagSet("HR"), new Note("Has dementia"), null, null),
             new Senior(new Name("Mdm Tan"), new Phone("98887766"),
                     new Address("Blk 88 Hougang Ave 7 #05-12"),
-                    getTagSet("MR"), new Note("Lives alone")),
+                    getTagSet("MR"), new Note("Lives alone"), null, null),
             new Senior(new Name("Ong Siew Ling"), new Phone("97776655"),
                     new Address("Blk 321 Clementi Ave 5 #03-09"),
-                    getTagSet("LR"), new Note("")),
+                    getTagSet("LR"), new Note(""), null, null),
             new Senior(new Name("Siti Nurhaliza"), new Phone("93330011"),
                     new Address("Blk 20 Toa Payoh Lor 7 #09-10"),
-                    getTagSet("HR"), new Note("Fall risk"))
+                    getTagSet("HR"), new Note("Fall risk"), null, null)
         };
     }
 
@@ -46,10 +46,10 @@ public class SampleDataUtil {
         return new Caregiver[]{
             new Caregiver(new Name("John Tan"), new Phone("90000001"),
                     new Address("Blk 10 Jurong West St 65 #07-21"),
-                    new Note("Experienced with dementia care"), "c1"),
+                    new Note("Experienced with dementia care"), 1),
             new Caregiver(new Name("Mei Hui"), new Phone("90000002"),
                     new Address("Blk 620 Punggol Field Walk #08-23"),
-                    new Note("Bilingual (EN/MS)"), "c2")
+                    new Note("Bilingual (EN/MS)"), 2)
         };
     }
 
@@ -65,7 +65,7 @@ public class SampleDataUtil {
         }
 
         // IMPORTANT: set the next caregiver id AFTER the highest c<number> present
-        ab.recomputeCaregiverSeqFromData();
+        ab.recomputeSeqFromData();
 
         return ab;
     }

@@ -97,6 +97,12 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Caregiver getCaregiverWithId(Integer caregiverId) {
+        requireNonNull(caregiverId);
+        return addressBook.getCaregiverWithId(caregiverId);
+    }
+
+    @Override
     public void deletePerson(Person target) {
         addressBook.removePerson(target);
     }
@@ -149,10 +155,17 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public String allocateCaregiverId() {
+    public int allocateSeniorId() {
         // Make sure the sequence reflects what's already in memory (sample or loaded)
-        addressBook.recomputeCaregiverSeqFromData();
-        return addressBook.nextCaregiverId(); // returns "c" + (++seq)
+        addressBook.recomputeSeqFromData();
+        return addressBook.nextSeniorId();
+    }
+
+    @Override
+    public int allocateCaregiverId() {
+        // Make sure the sequence reflects what's already in memory (sample or loaded)
+        addressBook.recomputeSeqFromData();
+        return addressBook.nextCaregiverId();
     }
 
     @Override
