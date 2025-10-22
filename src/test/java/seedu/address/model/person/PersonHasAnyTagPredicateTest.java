@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.testutil.CaregiverBuilder;
 import seedu.address.testutil.SeniorBuilder;
 
 public class PersonHasAnyTagPredicateTest {
@@ -39,5 +40,11 @@ public class PersonHasAnyTagPredicateTest {
     public void test_emptyTargets_false() {
         var p = new SeniorBuilder().withTags("mr").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of()).test(p));
+    }
+
+    @Test
+    void test_nonSenior_returnsFalse() {
+        var caregiver = new CaregiverBuilder().withName("CG").withCaregiverId("c7").build();
+        assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(caregiver));
     }
 }
