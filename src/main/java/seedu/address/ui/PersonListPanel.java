@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.logic.commands.PinCommand.isPinned;
+
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -13,8 +15,6 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Person;
-
-import static seedu.address.logic.commands.PinCommand.isPinned;
 
 /**
  * Panel containing the list of persons.
@@ -52,7 +52,9 @@ public class PersonListPanel extends UiPart<Region> {
     private static SortedList<Person> getPeople(ObservableList<Person> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
             boolean ap = isPinned(a), bp = isPinned(b);
-            if (ap != bp) return ap ? -1 : 1;               // pinned first
+            if (ap != bp) {
+                return ap ? -1 : 1;               // pinned first
+            }
             // tie-breaker: alphabetical by name
             String an = a == null ? "" : a.getName().fullName;
             String bn = b == null ? "" : b.getName().fullName;

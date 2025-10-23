@@ -1,8 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.commands.PinCommand.isPinned;
 import static seedu.address.logic.commands.PinCommand.cloneWithNote;
+import static seedu.address.logic.commands.PinCommand.isPinned;
 import static seedu.address.logic.commands.PinCommand.stripPinned;
 
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.List;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
-
 
 /**
  * Unpins whoever is currently pinned. Takes no arguments.
