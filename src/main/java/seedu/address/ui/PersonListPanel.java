@@ -21,13 +21,13 @@ import seedu.address.model.person.Person;
  */
 public class PersonListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
+    private static final String PINNED_STYLE_CLASS = "pinned-card";
+
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
     private final Logic logic;
 
-    private static final String PINNED_STYLE_CLASS = "pinned-card";
     @FXML
     private ListView<Person> personListView;
-
 
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
@@ -51,7 +51,9 @@ public class PersonListPanel extends UiPart<Region> {
 
     private static SortedList<Person> getPeople(ObservableList<Person> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
-            boolean ap = isPinned(a), bp = isPinned(b);
+            boolean ap = isPinned(a);
+            boolean bp = isPinned(b);
+            
             if (ap != bp) {
                 return ap ? -1 : 1;               // pinned first
             }

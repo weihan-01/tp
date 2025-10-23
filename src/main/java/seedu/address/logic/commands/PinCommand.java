@@ -15,6 +15,10 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
+/**
+ * Parses input arguments and creates a new {@link PinCommand}.
+ * Expected format: {@code pin n/NAME}
+ */
 public class PinCommand extends Command {
 
     public static final String COMMAND_WORD = "pin";
@@ -31,11 +35,19 @@ public class PinCommand extends Command {
 
     private final Name targetName;
 
+    /**
+     * Creates a {@code PinCommand} targeting a specific person by name.
+     * <p>
+     * The command will pin exactly the person whose name matches {@code targetName}
+     * (comparison is performed case-insensitively during execution).
+     *
+     * @param targetName the exact name of the person to pin; must not be {@code null}
+     * @throws NullPointerException if {@code targetName} is {@code null}
+     */
     public PinCommand(Name targetName) {
         requireNonNull(targetName);
         this.targetName = targetName;
     }
-
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
