@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import seedu.address.logic.commands.AddCaregiverCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
@@ -43,8 +44,10 @@ public class AddCaregiverCommandParser implements Parser<AddCaregiverCommand> {
                 : new Address("N/A"); // keep Address non-empty for validation
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
 
+        Caregiver caregiver = new Caregiver(name, phone, address, note, null);
+
         // Return command with fields; Caregiver (with ID) is created in execute()
-        return new AddCaregiverCommand(name, phone, address, note);
+        return new AddCaregiverCommand(caregiver);
     }
 
     /** Returns true if all the given prefixes are present (value non-empty). */

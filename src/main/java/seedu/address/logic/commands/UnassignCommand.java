@@ -1,19 +1,16 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
@@ -36,12 +33,10 @@ public class UnassignCommand extends Command {
     public static final String MESSAGE_UNASSIGN_SUCCESS = "Senior %1$s has been unassigned from Caregiver %2$s";
     public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
     public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
-    public static final String MESSAGE_NOT_SENIOR = "Person at index %1$d is not a senior";
-    public static final String MESSAGE_NOT_CAREGIVER = "Person at index %1$d is not a caregiver";
     public static final String MESSAGE_NOT_ASSIGNED = "This caregiver is not currently assigned to this senior";
 
-    private final Index seniorIndex;
-    private final Index caregiverIndex;
+    private final Integer seniorIndex;
+    private final Integer caregiverIndex;
 
     /**
      * Creates an UnassignCommand to unassign the specified {@code Caregiver} from the specified {@code Senior}
@@ -49,8 +44,7 @@ public class UnassignCommand extends Command {
      * @param seniorIndex Index of the senior in the filtered person list
      * @param caregiverIndex Index of the caregiver in the filtered person list
      */
-    public UnassignCommand(Index seniorIndex, Index caregiverIndex) {
-        requireAllNonNull(seniorIndex, caregiverIndex);
+    public UnassignCommand(Integer seniorIndex, Integer caregiverIndex) {
         this.seniorIndex = seniorIndex;
         this.caregiverIndex = caregiverIndex;
     }
@@ -58,32 +52,42 @@ public class UnassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Senior> fullSeniorList = model.getAllSeniorList();
+        List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
         // Validate senior index
-        if (seniorIndex.getZeroBased() >= lastShownList.size()) {
+        if (seniorIndex < 0) {
             throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
 
         // Validate caregiver index
-        if (caregiverIndex.getZeroBased() >= lastShownList.size()) {
+        if (caregiverIndex < 0) {
             throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
         }
 
-        Person seniorPerson = lastShownList.get(seniorIndex.getZeroBased());
-        Person caregiverPerson = lastShownList.get(caregiverIndex.getZeroBased());
-
-        // Check if the persons are of correct types
-        if (!(seniorPerson instanceof Senior)) {
-            throw new CommandException(String.format(MESSAGE_NOT_SENIOR, seniorIndex.getOneBased()));
+        // Find senior by seniorId
+        Senior senior = fullSeniorList.stream()
+                .filter(s -> {
+                    Integer seniorId = s.getSeniorId();
+                    return seniorId != null && (seniorId.equals(seniorIndex));
+                })
+                .findFirst()
+                .orElse(null);
+        if (senior == null) {
+            throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
 
-        if (!(caregiverPerson instanceof Caregiver)) {
-            throw new CommandException(String.format(MESSAGE_NOT_CAREGIVER, caregiverIndex.getOneBased()));
+        // Find caregiver by caregiverId
+        Caregiver caregiver = fullCaregiverList.stream()
+                .filter(c -> {
+                    Integer caregiverId = c.getCaregiverId();
+                    return caregiverId != null && (caregiverId.equals(caregiverIndex));
+                })
+                .findFirst()
+                .orElse(null);
+        if (caregiver == null) {
+            throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
         }
-
-        Senior senior = (Senior) seniorPerson;
-        Caregiver caregiver = (Caregiver) caregiverPerson;
 
         // Check if assigned correctly
         if (!(senior.hasCaregiver() && senior.getCaregiver().isSamePerson(caregiver))) {
@@ -93,8 +97,9 @@ public class UnassignCommand extends Command {
         // Build updated senior with caregiver removed
         Senior updatedSenior = createSeniorWithoutCaregiver(senior);
 
-        model.setPerson(senior, updatedSenior);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.setSenior(senior, updatedSenior);
+        model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS,
                 senior.getName(), caregiver.getName()));
@@ -111,7 +116,8 @@ public class UnassignCommand extends Command {
                 senior.getAddress(),
                 senior.getRiskTags(),
                 senior.getNote(),
-                null
+                null,
+                senior.getSeniorId()
         );
     }
 

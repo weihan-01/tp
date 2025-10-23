@@ -10,11 +10,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Address;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
-import seedu.address.model.person.Phone;
 
 /**
  * Adds a Caregiver to the address book.
@@ -41,43 +37,31 @@ public class AddCaregiverCommand extends Command {
     public static final String MESSAGE_DUPLICATE_CAREGIVER =
             "Caregiver already exists. Please amend your entry.";
 
-    // Store parsed fields; build the Caregiver with ID in execute()
-    private final Name name;
-    private final Phone phone;
-    private final Address address;
-    private final Note note;
+    private final Caregiver toAdd;
 
     /**
      * Creates an AddCaregiverCommand to add the specified {@code Caregiver}
      */
-    public AddCaregiverCommand(Name name, Phone phone, Address address, Note note) {
-        requireNonNull(name);
-        requireNonNull(phone);
-        requireNonNull(address);
-        requireNonNull(note);
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.note = note;
+    public AddCaregiverCommand(Caregiver caregiver) {
+        requireNonNull(caregiver);
+        this.toAdd = caregiver;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        // Always allocate a fresh caregiver id (e.g., "c10")
-        final String caregiverId = model.allocateCaregiverId();
-
-        // Build the final caregiver WITH id
-        Caregiver created = new Caregiver(name, phone, address, note, caregiverId);
-
         // Duplicate rule: same name + same phone
-        if (model.hasPerson(created)) {
+        // Person cannot be a senior and caregiver simultaneously
+        if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_CAREGIVER);
         }
 
-        model.addPerson(created);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(created)));
+        // Always allocate a fresh caregiver id
+        final int caregiverId = model.allocateCaregiverId();
+        model.addCaregiver(toAdd.withId(caregiverId));
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(toAdd)));
     }
 
     @Override
@@ -88,20 +72,14 @@ public class AddCaregiverCommand extends Command {
         if (!(other instanceof AddCaregiverCommand)) {
             return false;
         }
-        AddCaregiverCommand o = (AddCaregiverCommand) other;
-        return name.equals(o.name)
-                && phone.equals(o.phone)
-                && address.equals(o.address)
-                && note.equals(o.note);
+        AddCaregiverCommand otherAddCaregiverCommand = (AddCaregiverCommand) other;
+        return toAdd.equals(otherAddCaregiverCommand.toAdd);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("address", address)
-                .add("note", note)
+                .add("toAdd", toAdd)
                 .toString();
     }
 }

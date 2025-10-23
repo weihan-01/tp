@@ -11,17 +11,17 @@ import seedu.address.model.person.Phone;
  */
 public class CaregiverBuilder {
 
-    public static final String DEFAULT_NAME = PersonBuilder.DEFAULT_NAME;
-    public static final String DEFAULT_PHONE = PersonBuilder.DEFAULT_PHONE;
-    public static final String DEFAULT_ADDRESS = PersonBuilder.DEFAULT_ADDRESS;
-    public static final String DEFAULT_NOTE = PersonBuilder.DEFAULT_NOTE;
-    public static final String DEFAULT_CAREGIVER_ID = "c1";
+    public static final String DEFAULT_NAME = "Amy Bee";
+    public static final String DEFAULT_PHONE = "85355255";
+    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_NOTE = "";
+    public static final Integer DEFAULT_CAREGIVER_ID = 1;
 
     private Name name;
     private Phone phone;
     private Address address;
     private Note note;
-    private String caregiverId;
+    private Integer caregiverId;
 
     /**
      * Creates a {@code CaregiverBuilder} with the default details.
@@ -80,7 +80,7 @@ public class CaregiverBuilder {
     /**
      * Sets the caregiver ID, e.g. "c7". Must match c\\d+ (same as model validation).
      */
-    public CaregiverBuilder withCaregiverId(String caregiverId) {
+    public CaregiverBuilder withCaregiverId(Integer caregiverId) {
         this.caregiverId = caregiverId;
         return this;
     }

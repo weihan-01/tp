@@ -12,6 +12,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Senior;
 
 /**
@@ -42,15 +43,18 @@ public class AddSeniorCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
     public static final String MESSAGE_DUPLICATE_SENIOR = "Senior already exists. Please amend your entry.";
+    public static final String MESSAGE_NO_SUCH_CAREGIVER = "No caregiver exists with ID C%06d";
 
     private final Senior toAdd;
+    private final Integer caregiverId;
 
     /**
      * Creates an AddSeniorCommand to add the specified {@code Senior}.
      */
-    public AddSeniorCommand(Senior senior) {
+    public AddSeniorCommand(Senior senior, Integer caregiverId) {
         requireNonNull(senior);
-        toAdd = senior;
+        this.toAdd = senior;
+        this.caregiverId = caregiverId;
     }
 
     @Override
@@ -61,8 +65,23 @@ public class AddSeniorCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
         }
 
-        model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAdd)));
+        final Senior toAddFinal;
+
+        if (caregiverId == null) {
+            final int seniorId = model.allocateSeniorId();
+            toAddFinal = toAdd.withId(seniorId);
+            model.addSenior(toAddFinal);
+        } else {
+            final Caregiver caregiver = model.getCaregiverWithId(caregiverId);
+            if (caregiver == null) {
+                throw new CommandException(String.format(MESSAGE_NO_SUCH_CAREGIVER, caregiverId));
+            }
+            final int seniorId = model.allocateSeniorId();
+            toAddFinal = toAdd.withId(seniorId).withCaregiver(caregiver);
+            model.addSenior(toAddFinal);
+        }
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAddFinal)));
     }
 
     @Override

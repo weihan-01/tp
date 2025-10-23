@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.index.Index;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
@@ -42,19 +41,18 @@ public class AssignCommandTest {
     private final Tag snrTag = new Tag("HR");
     private final Note snrNote = new Note(VALID_NOTE_AMY);
 
-    private final Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote);
+    private final Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, null, null);
 
     private final Name cgrName = new Name(VALID_NAME_BOB);
     private final Phone cgrPhone = new Phone(VALID_PHONE_BOB);
     private final Address cgrAddress = new Address(VALID_ADDRESS_BOB);
     private final Note cgrNote = new Note(VALID_NOTE_BOB);
 
-    private final Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
+    private final Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, 10);
     @Test
     public void execute_validIndices_successfulAssignment() throws Exception {
         ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
-        AssignCommand command = new AssignCommand(Index.fromOneBased(1),
-                Index.fromOneBased(2));
+        AssignCommand command = new AssignCommand(1, 2);
 
         CommandResult result = command.execute(model);
 

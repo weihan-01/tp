@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 
 import java.util.stream.Stream;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -42,8 +41,8 @@ public class UnassignCommandParser implements Parser<UnassignCommand> {
             throw new ParseException(MESSAGE_MISSING_CAREGIVER_INDEX);
         }
 
-        Index seniorIndex;
-        Index caregiverIndex;
+        Integer seniorIndex;
+        Integer caregiverIndex;
 
         try {
             seniorIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
