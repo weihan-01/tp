@@ -53,7 +53,7 @@ public class PinCommandTest {
     }
 
     @Test
-    public void execute_alreadyPinned_noOpMessage_success() throws Exception {
+    public void execute_alreadyPinned_noOperationMessage_success() throws Exception {
         // Pre-pin a target in the model
         Person target = model.getFilteredPersonList().get(0);
         prePinInModel(model, target);
@@ -108,8 +108,14 @@ public class PinCommandTest {
             cur = "";
         }
         cur = cur.trim();
-        if (cur.isEmpty()) return new Note(PIN_SENTINEL);
-        if (cur.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL)) return existing;
+        if (cur.isEmpty()) {
+            return new Note(PIN_SENTINEL);
+        }
+
+        if (cur.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL)) {
+            return existing;
+        }
+
         return new Note(PIN_SENTINEL + " | " + cur);
     }
 
