@@ -11,15 +11,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
-import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
 /**
  * A UI component that displays information of a {@code Person}.
  */
-public class PersonCard extends UiPart<Region> {
+public class SeniorCard extends UiPart<Region> {
 
     private static final String FXML = "SeniorListCard.fxml";
 
@@ -31,7 +29,7 @@ public class PersonCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public final Person person;
+    public final Senior senior;
 
     @FXML
     private HBox cardPane;
@@ -60,7 +58,7 @@ public class PersonCard extends UiPart<Region> {
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
-    public PersonCard(Person person, int displayedIndex, Logic logic) {
+    public SeniorCard(Senior senior, int displayedIndex, Logic logic) {
         super(FXML);
         // make FlowPane expand and wrap
         HBox.setHgrow(assignedChips, Priority.ALWAYS);
@@ -79,26 +77,26 @@ public class PersonCard extends UiPart<Region> {
         // optional: nicer spacing
         assignedChips.setHgap(6);
         assignedChips.setVgap(4);
-        this.person = person;
+        this.senior = senior;
         this.logic = logic;
 
         id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
+        name.setText(senior.getName().fullName);
+        phone.setText(senior.getPhone().value);
+        address.setText(senior.getAddress().value);
 
         renderNote();
         renderAssignedRow();
         renderChips();
     }
 
-    public PersonCard(Person person, int displayedIndex) {
-        this(person, displayedIndex, null);
+    public SeniorCard(Senior senior, int displayedIndex) {
+        this(senior, displayedIndex, null);
     }
 
     private void renderNote() {
         // NOTE: show if non-empty, else hide (cells are reused -> always set both managed & visible)
-        String nv = person.getNote() == null ? "" : person.getNote().value;
+        String nv = senior.getNote() == null ? "" : senior.getNote().value;
         if (nv != null && !nv.trim().isEmpty()) {
             note.setText(nv);
             note.setManaged(true);
@@ -118,28 +116,11 @@ public class PersonCard extends UiPart<Region> {
             return; // tests / safety
         }
 
-        if (person instanceof Senior s) {
-            assignedTitle.setText("Caregiver:");
-            String cgName = logic.getAssignedCaregiverName(s);
-            showAssigned(cgName == null || cgName.isBlank()
-                    ? List.of()
-                    : List.of(cgName));
-        } else if (person instanceof Caregiver c) {
-            assignedTitle.setText("Seniors:");
-            var names = (logic == null) ? java.util.List.<String>of()
-                    : logic.getAssignedSeniorNames(c);
-
-            assignedRow.setManaged(true);
-            assignedRow.setVisible(true);
-
-            if (names == null || names.isEmpty()) {
-                assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
-            } else {
-                assignedChips.getChildren().setAll(
-                        names.stream().map(n -> makeAssignedChip(n, false)).toList()
-                );
-            }
-        }
+        assignedTitle.setText("Caregiver:");
+        String cgName = logic.getAssignedCaregiverName(senior);
+        showAssigned(cgName == null || cgName.isBlank()
+                ? List.of()
+                : List.of(cgName));
     }
 
     private void showAssigned(java.util.List<String> names) {
@@ -171,42 +152,36 @@ public class PersonCard extends UiPart<Region> {
         tags.setManaged(false);
         tags.setVisible(false);
 
-        if (person instanceof Senior) {
-            Senior s = (Senior) person;
-            Set<Tag> risk = s.getRiskTags();
-            if (risk != null && !risk.isEmpty()) {
-                tags.setManaged(true);
-                tags.setVisible(true);
-                risk.stream()
-                        .sorted(Comparator.comparing(t -> t.tagName))
-                        .forEach(t -> {
-                            String chipStr = riskLabel(t.tagName);
-                            Label chip = makeChip(chipStr);
-                            chip.getStyleClass().add("tag-chip"); // base pill style
-                            switch (t.tagName.toUpperCase()) {
-                            case "HR":
-                                chip.getStyleClass().add("chip-hr");
-                                break; // red
-                            case "MR":
-                                chip.getStyleClass().add("chip-mr");
-                                break; // orange
-                            case "LR":
-                                chip.getStyleClass().add("chip-lr");
-                                break; // yellow
-                            default:
-                                break;
-                            }
-                            tags.getChildren().add(chip);
-                        });
-            }
-        } else if (person instanceof Caregiver) {
-            Caregiver c = (Caregiver) person;
-            int cgId = c.getCaregiverId();
+        Set<Tag> risk = senior.getRiskTags();
+        if (risk != null && !risk.isEmpty()) {
             tags.setManaged(true);
             tags.setVisible(true);
-            Label chip = makeChip(String.format("C%06d", cgId));
-            chip.getStyleClass().add("chip-caregiver");
-            tags.getChildren().add(chip);
+
+            Label idChip = makeChip(String.format("S%06d", senior.getSeniorId()));
+            idChip.getStyleClass().add("chip-senior");
+            tags.getChildren().add(idChip);
+
+            risk.stream()
+                    .sorted(Comparator.comparing(t -> t.tagName))
+                    .forEach(t -> {
+                        String chipStr = riskLabel(t.tagName);
+                        Label chip = makeChip(chipStr);
+                        chip.getStyleClass().add("tag-chip"); // base pill style
+                        switch (t.tagName.toUpperCase()) {
+                        case "HR":
+                            chip.getStyleClass().add("chip-hr");
+                            break; // red
+                        case "MR":
+                            chip.getStyleClass().add("chip-mr");
+                            break; // orange
+                        case "LR":
+                            chip.getStyleClass().add("chip-lr");
+                            break; // yellow
+                        default:
+                            break;
+                        }
+                        tags.getChildren().add(chip);
+                });
         }
     }
 

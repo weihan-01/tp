@@ -12,7 +12,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
@@ -23,7 +22,8 @@ class JsonSerializableAddressBook {
 
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
 
-    private final List<JsonAdaptedPerson> persons = new ArrayList<>();
+    private final List<JsonAdaptedSenior> seniors = new ArrayList<>();
+    private final List<JsonAdaptedCaregiver> caregivers = new ArrayList<>();
 
     /**
      * Monotonic sequence used to allocate senior IDs of the form {@code N}.
@@ -41,11 +41,15 @@ class JsonSerializableAddressBook {
      * Constructs a {@code JsonSerializableAddressBook} with the given persons and sequence.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+    public JsonSerializableAddressBook(@JsonProperty("seniors") List<JsonAdaptedSenior> seniors,
+                                       @JsonProperty("caregivers") List<JsonAdaptedCaregiver> caregivers,
                                        @JsonProperty("seniorSeq") Integer seniorSeq,
                                        @JsonProperty("caregiverSeq") Integer caregiverSeq) {
-        if (persons != null) {
-            this.persons.addAll(persons);
+        if (seniors != null) {
+            this.seniors.addAll(seniors);
+        }
+        if (caregivers != null) {
+            this.caregivers.addAll(caregivers);
         }
         this.seniorSeq = seniorSeq; // may be null for legacy files
         this.caregiverSeq = caregiverSeq; // may be null for legacy files
@@ -57,12 +61,12 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        this.persons.addAll(source.getSeniorList().stream()
-                .map(JsonAdaptedPerson::new)
+        this.seniors.addAll(source.getSeniorList().stream()
+                .map(JsonAdaptedSenior::new)
                 .collect(Collectors.toList()));
 
-        this.persons.addAll(source.getCaregiverList().stream()
-                .map(JsonAdaptedPerson::new)
+        this.caregivers.addAll(source.getCaregiverList().stream()
+                .map(JsonAdaptedCaregiver::new)
                 .collect(Collectors.toList()));
 
         // If we have a concrete AddressBook, read the stored sequence; otherwise, fall back to 0.
@@ -85,19 +89,17 @@ class JsonSerializableAddressBook {
 
         java.util.List<java.util.AbstractMap.SimpleEntry<Senior, String>> links = new java.util.ArrayList<>();
 
-        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
+        for (JsonAdaptedSenior jsonAdaptedSenior : seniors) {
+            Senior senior = jsonAdaptedSenior.toModelType();
+            if (addressBook.hasPerson(senior)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
             }
-            addressBook.addSenior(person);
+            addressBook.addSenior(senior);
 
-            if (person instanceof Senior) {
-                String key = compositeKey(
-                        jsonAdaptedPerson.getAssignedCaregiverName(),
-                        jsonAdaptedPerson.getAssignedCaregiverPhone());
-                links.add(new java.util.AbstractMap.SimpleEntry<>((Senior) person, key));
-            }
+            String key = compositeKey(
+                    jsonAdaptedSenior.getAssignedCaregiverName(),
+                    jsonAdaptedSenior.getAssignedCaregiverPhone());
+            links.add(new java.util.AbstractMap.SimpleEntry<>(senior, key));
         }
 
         // index caregivers by (name|phone)

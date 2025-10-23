@@ -69,45 +69,45 @@ public interface Model {
      * Deletes the given senior.
      * The senior must exist in the address book.
      */
-    void deleteSenior(Person target);
+    void deleteSenior(Senior target);
 
     /**
      * Deletes the given caregiver.
      * The caregiver must exist in the address book.
      */
-    void deleteCaregiver(Person target);
+    void deleteCaregiver(Caregiver target);
 
     /**
      * Adds the given senior.
      * {@code person} must not already exist in the address book.
      */
-    void addSenior(Person person);
+    void addSenior(Senior senior);
 
     /**
      * Adds the given caregiver.
      * {@code person} must not already exist in the address book.
      */
-    void addCaregiver(Person person);
+    void addCaregiver(Caregiver caregiver);
 
     /**
      * Replaces the given senior {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    void setSenior(Person target, Person editedPerson);
+    void setSenior(Senior target, Senior editedPerson);
 
     /**
      * Replaces the given caregiver {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    void setCaregiver(Person target, Person editedPerson);
+    void setCaregiver(Caregiver target, Caregiver editedPerson);
 
     /** Returns an unmodifiable view of the filtered senior list */
-    ObservableList<Person> getFilteredSeniorList();
+    ObservableList<Senior> getFilteredSeniorList();
 
     /** Returns an unmodifiable view of the filtered senior list */
-    ObservableList<Person> getFilteredCaregiverList();
+    ObservableList<Caregiver> getFilteredCaregiverList();
 
     /**
      * Updates the filter of the filtered senior list to filter by the given {@code predicate}.

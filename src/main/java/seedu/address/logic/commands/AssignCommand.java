@@ -58,8 +58,8 @@ public class AssignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownSeniorList = model.getFilteredSeniorList();
-        List<Person> lastShownCaregiverList = model.getFilteredCaregiverList();
+        List<Senior> lastShownSeniorList = model.getFilteredSeniorList();
+        List<Caregiver> lastShownCaregiverList = model.getFilteredCaregiverList();
 
         // Validate senior index
         if (seniorIndex.getZeroBased() >= lastShownSeniorList.size()) {

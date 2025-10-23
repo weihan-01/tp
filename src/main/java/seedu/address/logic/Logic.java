@@ -10,7 +10,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
@@ -34,10 +33,10 @@ public interface Logic {
     ReadOnlyAddressBook getAddressBook();
 
     /** Returns an unmodifiable view of the filtered list of seniors */
-    ObservableList<Person> getFilteredSeniorList();
+    ObservableList<Senior> getFilteredSeniorList();
 
     /** Returns an unmodifiable view of the filtered list of seniors */
-    ObservableList<Person> getFilteredCaregiverList();
+    ObservableList<Caregiver> getFilteredCaregiverList();
 
     /**
      * Returns the user prefs' address book file path.

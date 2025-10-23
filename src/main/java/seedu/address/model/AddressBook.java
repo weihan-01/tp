@@ -17,8 +17,8 @@ import seedu.address.model.person.UniquePersonList;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList seniors;
-    private final UniquePersonList caregivers;
+    private final UniquePersonList<Senior> seniors;
+    private final UniquePersonList<Caregiver> caregivers;
     private int seniorSeq = 0; // last assigned senior id (not next)
     private int caregiverSeq = 0; // last assigned caregiver id (not next)
 
@@ -126,7 +126,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
      */
-    public void setSeniors(List<Person> persons) {
+    public void setSeniors(List<Senior> persons) {
         this.seniors.setPersons(persons);
     }
 
@@ -134,7 +134,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Replaces the contents of the person list with {@code persons}.
      * {@code persons} must not contain duplicate persons.
      */
-    public void setCaregivers(List<Person> persons) {
+    public void setCaregivers(List<Caregiver> persons) {
         this.caregivers.setPersons(persons);
     }
 
@@ -162,7 +162,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Adds a senior to the address book.
      * The senior must not already exist in the address book.
      */
-    public void addSenior(Person p) {
+    public void addSenior(Senior p) {
         seniors.add(p);
     }
 
@@ -170,7 +170,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Adds a caregiver to the address book.
      * The caregiver must not already exist in the address book.
      */
-    public void addCaregiver(Person p) {
+    public void addCaregiver(Caregiver p) {
         caregivers.add(p);
     }
 
@@ -179,7 +179,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    public void setSenior(Person target, Person editedPerson) {
+    public void setSenior(Senior target, Senior editedPerson) {
         requireNonNull(editedPerson);
 
         seniors.setPerson(target, editedPerson);
@@ -190,17 +190,17 @@ public class AddressBook implements ReadOnlyAddressBook {
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    public void setCaregiver(Person target, Person editedPerson) {
+    public void setCaregiver(Caregiver target, Caregiver editedPerson) {
         requireNonNull(editedPerson);
 
-        seniors.setPerson(target, editedPerson);
+        caregivers.setPerson(target, editedPerson);
     }
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removeSeniors(Person key) {
+    public void removeSeniors(Senior key) {
         seniors.remove(key);
     }
 
@@ -208,7 +208,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removeCaregiver(Person key) {
+    public void removeCaregiver(Caregiver key) {
         caregivers.remove(key);
     }
 
@@ -223,12 +223,12 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
-    public ObservableList<Person> getSeniorList() {
+    public ObservableList<Senior> getSeniorList() {
         return seniors.asUnmodifiableObservableList();
     }
 
     @Override
-    public ObservableList<Person> getCaregiverList() {
+    public ObservableList<Caregiver> getCaregiverList() {
         return caregivers.asUnmodifiableObservableList();
     }
 

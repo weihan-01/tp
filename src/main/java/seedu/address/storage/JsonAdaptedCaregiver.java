@@ -22,7 +22,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Jackson-friendly version of {@link Person} and its subclasses.
  */
-class JsonAdaptedPerson {
+class JsonAdaptedCaregiver {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
@@ -47,15 +47,15 @@ class JsonAdaptedPerson {
 
     /** Constructs from JSON. */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("role") String role,
-                             @JsonProperty("name") String name,
-                             @JsonProperty("phone") String phone,
-                             @JsonProperty("address") String address,
-                             @JsonProperty("note") String note,
-                             @JsonProperty("risk") List<JsonAdaptedTag> risk,
-                             @JsonProperty("caregiverId") Integer caregiverId,
-                             @JsonProperty("assignedCaregiverName") String assignedCaregiverName,
-                             @JsonProperty("assignedCaregiverPhone") String assignedCaregiverPhone) {
+    public JsonAdaptedCaregiver(@JsonProperty("role") String role,
+                                @JsonProperty("name") String name,
+                                @JsonProperty("phone") String phone,
+                                @JsonProperty("address") String address,
+                                @JsonProperty("note") String note,
+                                @JsonProperty("risk") List<JsonAdaptedTag> risk,
+                                @JsonProperty("caregiverId") Integer caregiverId,
+                                @JsonProperty("assignedCaregiverName") String assignedCaregiverName,
+                                @JsonProperty("assignedCaregiverPhone") String assignedCaregiverPhone) {
         this.role = role;
         this.name = name;
         this.phone = phone;
@@ -70,7 +70,7 @@ class JsonAdaptedPerson {
     }
 
     /** Constructs from model. */
-    public JsonAdaptedPerson(Person source) {
+    public JsonAdaptedCaregiver(Person source) {
         this.name = source.getName().fullName;
         this.phone = source.getPhone().value;
         this.address = source.getAddress().value;

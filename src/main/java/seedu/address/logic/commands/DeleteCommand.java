@@ -9,7 +9,8 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Senior;
 
 /**
  * Deletes a person identified using it's displayed index from the address book.
@@ -34,16 +35,16 @@ public class DeleteCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownSeniorList = model.getFilteredSeniorList();
-        List<Person> lastShownCaregiverList = model.getFilteredCaregiverList();
+        List<Senior> lastShownSeniorList = model.getFilteredSeniorList();
+        List<Caregiver> lastShownCaregiverList = model.getFilteredCaregiverList();
 
         if (targetIndex.getZeroBased() >= lastShownSeniorList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person personToDelete = lastShownSeniorList.get(targetIndex.getZeroBased());
-        model.deleteSenior(personToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+        Senior seniorToDelete = lastShownSeniorList.get(targetIndex.getZeroBased());
+        model.deleteSenior(seniorToDelete);
+        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(seniorToDelete)));
     }
 
     @Override

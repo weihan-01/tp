@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * Panel containing the list of persons.
@@ -21,12 +22,12 @@ public class SeniorListPanel extends UiPart<Region> {
     private final Logic logic;
 
     @FXML
-    private ListView<Person> seniorListView;
+    private ListView<Senior> seniorListView;
 
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public SeniorListPanel(ObservableList<Person> seniorList, Logic logic) {
+    public SeniorListPanel(ObservableList<Senior> seniorList, Logic logic) {
         super(FXML);
         this.logic = logic;
         seniorListView.setItems(seniorList);
@@ -38,20 +39,20 @@ public class SeniorListPanel extends UiPart<Region> {
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code Senior} using a {@code SeniorCard}.
      */
-    private static class SeniorListViewCell extends ListCell<Person> {
+    private static class SeniorListViewCell extends ListCell<Senior> {
         private final Logic logic;
         SeniorListViewCell(Logic logic) {
             this.logic = logic;
         }
 
         @Override
-        protected void updateItem(Person person, boolean empty) {
-            super.updateItem(person, empty);
-            if (empty || person == null) {
+        protected void updateItem(Senior senior, boolean empty) {
+            super.updateItem(senior, empty);
+            if (empty || senior == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(person, getIndex() + 1, logic).getRoot());
+                setGraphic(new SeniorCard(senior, getIndex() + 1, logic).getRoot());
             }
         }
     }

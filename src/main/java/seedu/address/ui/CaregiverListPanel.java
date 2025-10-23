@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
 
 /**
@@ -21,12 +22,12 @@ public class CaregiverListPanel extends UiPart<Region> {
     private final Logic logic;
 
     @FXML
-    private ListView<Person> caregiverListView;
+    private ListView<Caregiver> caregiverListView;
 
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public CaregiverListPanel(ObservableList<Person> caregiverList, Logic logic) {
+    public CaregiverListPanel(ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
         this.logic = logic;
         caregiverListView.setItems(caregiverList);
@@ -38,20 +39,20 @@ public class CaregiverListPanel extends UiPart<Region> {
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code Caregiver} using a {@code CaregiverCard}.
      */
-    private static class CaregiverListViewCell extends ListCell<Person> {
+    private static class CaregiverListViewCell extends ListCell<Caregiver> {
         private final Logic logic;
         CaregiverListViewCell(Logic logic) {
             this.logic = logic;
         }
 
         @Override
-        protected void updateItem(Person caregiver, boolean empty) {
+        protected void updateItem(Caregiver caregiver, boolean empty) {
             super.updateItem(caregiver, empty);
             if (empty || caregiver == null) {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(caregiver, getIndex() + 1, logic).getRoot());
+                setGraphic(new CaregiverCard(caregiver, getIndex() + 1, logic).getRoot());
             }
         }
     }

@@ -24,8 +24,8 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredSeniors;
-    private final FilteredList<Person> filteredCaregivers;
+    private final FilteredList<Senior> filteredSeniors;
+    private final FilteredList<Caregiver> filteredCaregivers;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -105,36 +105,36 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deleteSenior(Person target) {
+    public void deleteSenior(Senior target) {
         addressBook.removeSeniors(target);
     }
 
     @Override
-    public void deleteCaregiver(Person target) {
+    public void deleteCaregiver(Caregiver target) {
         addressBook.removeCaregiver(target);
     }
 
     @Override
-    public void addSenior(Person person) {
-        addressBook.addSenior(person);
+    public void addSenior(Senior senior) {
+        addressBook.addSenior(senior);
         updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
     @Override
-    public void addCaregiver(Person person) {
-        addressBook.addCaregiver(person);
+    public void addCaregiver(Caregiver caregiver) {
+        addressBook.addCaregiver(caregiver);
         updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
     @Override
-    public void setSenior(Person target, Person editedPerson) {
+    public void setSenior(Senior target, Senior editedPerson) {
         requireAllNonNull(target, editedPerson);
 
         addressBook.setSenior(target, editedPerson);
     }
 
     @Override
-    public void setCaregiver(Person target, Person editedPerson) {
+    public void setCaregiver(Caregiver target, Caregiver editedPerson) {
         requireAllNonNull(target, editedPerson);
 
         addressBook.setCaregiver(target, editedPerson);
@@ -147,7 +147,7 @@ public class ModelManager implements Model {
      * {@code versionedAddressBook}
      */
     @Override
-    public ObservableList<Person> getFilteredSeniorList() {
+    public ObservableList<Senior> getFilteredSeniorList() {
         return filteredSeniors;
     }
 
@@ -156,7 +156,7 @@ public class ModelManager implements Model {
      * {@code versionedAddressBook}
      */
     @Override
-    public ObservableList<Person> getFilteredCaregiverList() {
+    public ObservableList<Caregiver> getFilteredCaregiverList() {
         return filteredCaregivers;
     }
 
