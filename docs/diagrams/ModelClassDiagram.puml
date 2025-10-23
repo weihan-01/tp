@@ -23,6 +23,7 @@ Class Senior
 Class RiskTags
 
 Class Caregiver
+Class CaregiverId
 
 Class I #FFFFFF
 }
@@ -56,9 +57,12 @@ Address -[hidden]right-> Note
 
 Senior -up-|> Person
 Senior *--> "1" RiskTags
-Senior "n" -right-> "1" Caregiver
+    Senior "n" -right-> "1" Caregiver
 
 Caregiver -up-|> Person
+Caregiver *--> "1" CaregiverId
 
 ModelManager --> "~* filtered" Person
+
+note right of Senior : Only Seniors carry RiskTags {lr|mr|hr}; Caregivers have none.
 @enduml
