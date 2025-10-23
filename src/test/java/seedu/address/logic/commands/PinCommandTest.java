@@ -84,7 +84,7 @@ public class PinCommandTest {
         assertEquals(expected, command.toString());
     }
 
-    // ===== helpers to construct the expected state (mirrors PinCommand behavior) =====
+    // helpers to construct the expected state (mirrors PinCommand behavior) 
 
     /** Removes the PINNED sentinel from every person’s note in the model. */
     private static void unpinAll(Model m) {
@@ -104,7 +104,9 @@ public class PinCommandTest {
     /** Adds PINNED to the note if not already present. */
     private static Note markPinned(Note existing) {
         String cur = existing == null ? "" : existing.toString();
-        if (cur == null) cur = "";
+        if (cur == null) {
+            cur = "";
+        }
         cur = cur.trim();
         if (cur.isEmpty()) return new Note(PIN_SENTINEL);
         if (cur.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL)) return existing;
@@ -114,7 +116,9 @@ public class PinCommandTest {
     /** Strips any PINNED sentinel prefix. */
     private static Note stripPinned(Note existing) {
         String cur = existing == null ? "" : existing.toString();
-        if (cur == null) cur = "";
+        if (cur == null) {
+            cur = "";
+        }
         String norm = cur.trim();
         for (String sep : new String[]{":", "|"}) {
             String pref = PIN_SENTINEL + " " + sep;
@@ -137,7 +141,9 @@ public class PinCommandTest {
     private static boolean isPinned(Person p) {
         Note n = p.getNote();
         String s = n == null ? "" : n.toString();
-        if (s == null) s = "";
+        if (s == null) {
+            s = "";
+        }
         String norm = s.trim();
         return norm.equalsIgnoreCase(PIN_SENTINEL)
                 || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " ")
@@ -172,5 +178,4 @@ public class PinCommandTest {
         m.setPerson(target, withPinnedNote(target));
     }
 
-    // ===== end helpers =====
 }
