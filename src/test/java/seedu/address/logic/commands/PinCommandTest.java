@@ -35,7 +35,7 @@ public class PinCommandTest {
     private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void execute_validNameUnfilteredList_success() throws Exception {
+    public void execute_validNameUnfilteredList_success() {
         // pick first person in the unfiltered list
         Person personToPin = model.getFilteredPersonList().get(0);
         Name nameArg = personToPin.getName();
@@ -53,7 +53,7 @@ public class PinCommandTest {
     }
 
     @Test
-    public void execute_alreadyPinned_noOperationMessage_success() throws Exception {
+    public void execute_alreadyPinned_success() throws Exception {
         // Pre-pin a target in the model
         Person target = model.getFilteredPersonList().get(0);
         prePinInModel(model, target);
