@@ -19,23 +19,33 @@ import seedu.address.model.tag.Tag;
  */
 public class SampleDataUtil {
 
+    private static final Senior SENIOR_LIM = new Senior(new Name("Lim Ah Kow"), new Phone("91234567"),
+            new Address("Blk 123 Bedok North Rd #02-45"),
+            getTagSet("HR"), new Note("Has dementia"), null, 1);
+    private static final Senior SENIOR_TAN = new Senior(new Name("Mdm Tan"), new Phone("98887766"),
+            new Address("Blk 88 Hougang Ave 7 #05-12"),
+            getTagSet("MR"), new Note("Lives alone"), null, 2);
+    private static final Senior SENIOR_ONG = new Senior(new Name("Ong Siew Ling"), new Phone("97776655"),
+            new Address("Blk 321 Clementi Ave 5 #03-09"),
+            getTagSet("LR"), new Note(""), null, 3);
+    private static final Senior SENIOR_SITI = new Senior(new Name("Siti Nurhaliza"), new Phone("93330011"),
+            new Address("Blk 20 Toa Payoh Lor 7 #09-10"),
+            getTagSet("HR"), new Note("Fall risk"), null, 4);
+    private static final Caregiver CAREGIVER_TAN = new Caregiver(new Name("John Tan"), new Phone("90000001"),
+            new Address("Blk 10 Jurong West St 65 #07-21"),
+            new Note("Experienced with dementia care"), 1);
+    private static final Caregiver CAREGIVER_MEIHUI = new Caregiver(new Name("Mei Hui"), new Phone("90000002"),
+            new Address("Blk 620 Punggol Field Walk #08-23"),
+            new Note("Bilingual (EN/MS)"), 2);
+
     /**
      * Sample seniors with REQUIRED risk tags (HR/MR/LR).
      */
     public static Senior[] getSampleSeniors() {
+        SENIOR_ONG.setCaregiver(CAREGIVER_TAN);
+        SENIOR_LIM.setCaregiver(CAREGIVER_MEIHUI);
         return new Senior[]{
-            new Senior(new Name("Lim Ah Kow"), new Phone("91234567"),
-                    new Address("Blk 123 Bedok North Rd #02-45"),
-                    getTagSet("HR"), new Note("Has dementia"), null, 1),
-            new Senior(new Name("Mdm Tan"), new Phone("98887766"),
-                    new Address("Blk 88 Hougang Ave 7 #05-12"),
-                    getTagSet("MR"), new Note("Lives alone"), null, 2),
-            new Senior(new Name("Ong Siew Ling"), new Phone("97776655"),
-                    new Address("Blk 321 Clementi Ave 5 #03-09"),
-                    getTagSet("LR"), new Note(""), null, 3),
-            new Senior(new Name("Siti Nurhaliza"), new Phone("93330011"),
-                    new Address("Blk 20 Toa Payoh Lor 7 #09-10"),
-                    getTagSet("HR"), new Note("Fall risk"), null, 4)
+            SENIOR_LIM, SENIOR_TAN, SENIOR_ONG, SENIOR_SITI
         };
     }
 
@@ -44,12 +54,7 @@ public class SampleDataUtil {
      */
     public static Caregiver[] getSampleCaregivers() {
         return new Caregiver[]{
-            new Caregiver(new Name("John Tan"), new Phone("90000001"),
-                    new Address("Blk 10 Jurong West St 65 #07-21"),
-                    new Note("Experienced with dementia care"), 1),
-            new Caregiver(new Name("Mei Hui"), new Phone("90000002"),
-                    new Address("Blk 620 Punggol Field Walk #08-23"),
-                    new Note("Bilingual (EN/MS)"), 2)
+            CAREGIVER_TAN, CAREGIVER_MEIHUI
         };
     }
 

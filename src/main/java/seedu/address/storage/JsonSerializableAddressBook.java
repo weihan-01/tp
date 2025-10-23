@@ -2,13 +2,14 @@ package seedu.address.storage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Caregiver;
@@ -63,11 +64,11 @@ class JsonSerializableAddressBook {
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
         this.seniors.addAll(source.getSeniorList().stream()
                 .map(JsonAdaptedSenior::new)
-                .collect(Collectors.toList()));
+                .toList());
 
         this.caregivers.addAll(source.getCaregiverList().stream()
                 .map(JsonAdaptedCaregiver::new)
-                .collect(Collectors.toList()));
+                .toList());
 
         // If we have a concrete AddressBook, read the stored sequence; otherwise, fall back to 0.
         if (source instanceof AddressBook) {
@@ -87,7 +88,9 @@ class JsonSerializableAddressBook {
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
 
-        java.util.List<java.util.AbstractMap.SimpleEntry<Senior, String>> links = new java.util.ArrayList<>();
+        // Record Senior -> Caregiver assignments to be added after all
+        // seniors and caregivers added to AddressBook
+        List<Map.Entry<Senior, Integer>> links = new ArrayList<>();
 
         for (JsonAdaptedSenior jsonAdaptedSenior : seniors) {
             Senior senior = jsonAdaptedSenior.toModelType();
@@ -96,28 +99,38 @@ class JsonSerializableAddressBook {
             }
             addressBook.addSenior(senior);
 
-            String key = compositeKey(
-                    jsonAdaptedSenior.getAssignedCaregiverName(),
-                    jsonAdaptedSenior.getAssignedCaregiverPhone());
-            links.add(new java.util.AbstractMap.SimpleEntry<>(senior, key));
+            Integer caregiverId = jsonAdaptedSenior.getCaregiverId();
+            if (caregiverId != null) {
+                links.add(new java.util.AbstractMap.SimpleEntry<>(senior, caregiverId));
+            }
         }
 
-        // index caregivers by (name|phone)
-        java.util.Map<String, Caregiver> byKey = addressBook.getCaregiverList().stream()
-                .map(x -> (Caregiver) x)
-                .collect(java.util.stream.Collectors.toMap(
-                         cg -> compositeKey(cg.getName().fullName, cg.getPhone().value),
-                        cg -> cg, (a, b) -> a));
+        for (JsonAdaptedCaregiver jsonAdaptedCaregiver : caregivers) {
+            Caregiver caregiver = jsonAdaptedCaregiver.toModelType();
+            if (addressBook.hasPerson(caregiver)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+            }
+            addressBook.addCaregiver(caregiver);
+        }
 
-        // resolve Senior → Caregiver
-        for (var e : links) {
-            String key = e.getValue();
-            if (key == null) {
+        // Create map of all caregivers to reference by ID
+        java.util.Map<Integer, Caregiver> byKey = addressBook.getCaregiverList().stream()
+            .collect(java.util.stream.Collectors.toMap(
+                    cg -> cg.getCaregiverId(),
+                    cg -> cg, (a, b) -> a // if duplicate keys, keep first
+            ));
+
+        // Add assignments of seniors and caregivers
+        for (Map.Entry<Senior, Integer> entry : links) {
+            Integer caregiverId = entry.getValue();
+            if (caregiverId == null) {
                 continue;
             }
-            Caregiver cg = byKey.get(key);
-            if (cg != null) {
-                e.getKey().setCaregiver(cg);
+            Caregiver caregiver = byKey.get(caregiverId);
+            if (caregiver != null) {
+                entry.getKey().setCaregiver(caregiver);
+            } else {
+                throw new ParseException(String.format(MESSAGE_DUPLICATE_PERSON, caregiverId));
             }
         }
 
@@ -133,14 +146,6 @@ class JsonSerializableAddressBook {
         }
 
         return addressBook;
-    }
-
-    private static String compositeKey(String name, String phone) {
-        if (name == null || phone == null || name.isBlank() || phone.isBlank()) {
-            return null;
-        }
-        // use a delimiter that cannot appear in phone; name can contain spaces/apostrophes—fine.
-        return name + "|" + phone;
     }
 }
 

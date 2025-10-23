@@ -71,6 +71,17 @@ public class Senior extends Person {
     }
 
     /**
+     * Returns the caregiver's id assigned to this senior.
+     * Returns null if no caregiver is assigned.
+     */
+    public Integer getCaregiverId() {
+        if (caregiver == null) {
+            return null;
+        }
+        return caregiver.getCaregiverId();
+    }
+
+    /**
      * Returns the ID assigned to this senior.
      */
     public Integer getSeniorId() {

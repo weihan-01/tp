@@ -50,7 +50,11 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
         // Risk tag as a single Tag (HR|MR|LR) so it passes Tag constraints
         Set<Tag> riskTag = ParserUtil.parseRiskTagAsTagSet(argMultimap.getValue(PREFIX_TAG).get());
-        Integer caregiverId = ParserUtil.parseCaregiverId(argMultimap.getValue(PREFIX_CID).orElse(null));
+
+        Integer caregiverId = null;
+        if (argMultimap.getValue(PREFIX_CID).isPresent()) {
+            caregiverId = ParserUtil.parseCaregiverId(argMultimap.getValue(PREFIX_CID).orElse(null));
+        }
 
         Senior senior = new Senior(name, phone, address, riskTag,
                 note, null, null);

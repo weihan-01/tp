@@ -11,7 +11,7 @@ import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * Panel containing the list of persons.
@@ -27,12 +27,13 @@ public class CaregiverListPanel extends UiPart<Region> {
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public CaregiverListPanel(ObservableList<Caregiver> caregiverList, Logic logic) {
+    public CaregiverListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
         this.logic = logic;
         caregiverListView.setItems(caregiverList);
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
-        caregiverList.addListener((ListChangeListener<Person>) change -> caregiverListView.refresh());
+        seniorList.addListener((ListChangeListener<Senior>) change -> caregiverListView.refresh());
+        caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
     }
 

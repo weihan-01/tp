@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
@@ -33,8 +33,6 @@ class JsonAdaptedSenior {
     private final String phone;
     private final String address;
     private final String note;
-    private final String assignedCaregiverName;
-    private final String assignedCaregiverPhone;
 
     /**
      * Only used when role == "SENIOR": we store the single risk tag
@@ -67,8 +65,6 @@ class JsonAdaptedSenior {
         }
         this.seniorId = seniorId;
         this.caregiverId = caregiverId;
-        this.assignedCaregiverName = assignedCaregiverName;
-        this.assignedCaregiverPhone = assignedCaregiverPhone;
     }
 
     /** Constructs from model. */
@@ -83,10 +79,12 @@ class JsonAdaptedSenior {
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         this.seniorId = source.getSeniorId();
-        this.caregiverId = null;
-        Caregiver cg = source.getCaregiver();
-        this.assignedCaregiverName = (cg == null) ? null : cg.getName().fullName;
-        this.assignedCaregiverPhone = (cg == null) ? null : cg.getPhone().value;
+        this.caregiverId = source.getCaregiverId();
+    }
+
+    /** Returns the caregiver ID provided, */
+    public Integer getCaregiverId() {
+        return caregiverId;
     }
 
     /** Converts this JSON-friendly object back into the model's {@code Person} subtype. */
@@ -122,14 +120,21 @@ class JsonAdaptedSenior {
         for (JsonAdaptedTag t : riskTags) {
             riskSet.add(t.toModelType());
         }
-        return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, null);
+
+        return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, seniorId);
     }
 
-    String getAssignedCaregiverName() {
-        return assignedCaregiverName;
-    }
-
-    String getAssignedCaregiverPhone() {
-        return assignedCaregiverPhone;
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("role", role)
+                .add("name", name)
+                .add("phone", phone)
+                .add("address", address)
+                .add("note", note)
+                .add("riskTags", riskTags)
+                .add("seniorId", seniorId)
+                .add("caregiverId", caregiverId)
+                .toString();
     }
 }

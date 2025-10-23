@@ -36,8 +36,6 @@ public class SeniorCard extends UiPart<Region> {
     @FXML
     private Label name;
     @FXML
-    private Label id;
-    @FXML
     private Label phone;
     @FXML
     private Label address;
@@ -80,7 +78,6 @@ public class SeniorCard extends UiPart<Region> {
         this.senior = senior;
         this.logic = logic;
 
-        id.setText(displayedIndex + ". ");
         name.setText(senior.getName().fullName);
         phone.setText(senior.getPhone().value);
         address.setText(senior.getAddress().value);
@@ -162,25 +159,25 @@ public class SeniorCard extends UiPart<Region> {
             tags.getChildren().add(idChip);
 
             risk.stream()
-                    .sorted(Comparator.comparing(t -> t.tagName))
-                    .forEach(t -> {
-                        String chipStr = riskLabel(t.tagName);
-                        Label chip = makeChip(chipStr);
-                        chip.getStyleClass().add("tag-chip"); // base pill style
-                        switch (t.tagName.toUpperCase()) {
-                        case "HR":
-                            chip.getStyleClass().add("chip-hr");
-                            break; // red
-                        case "MR":
-                            chip.getStyleClass().add("chip-mr");
-                            break; // orange
-                        case "LR":
-                            chip.getStyleClass().add("chip-lr");
-                            break; // yellow
-                        default:
-                            break;
-                        }
-                        tags.getChildren().add(chip);
+                .sorted(Comparator.comparing(t -> t.tagName))
+                .forEach(t -> {
+                    String chipStr = riskLabel(t.tagName);
+                    Label chip = makeChip(chipStr);
+                    chip.getStyleClass().add("tag-chip"); // base pill style
+                    switch (t.tagName.toUpperCase()) {
+                    case "HR":
+                        chip.getStyleClass().add("chip-hr");
+                        break; // red
+                    case "MR":
+                        chip.getStyleClass().add("chip-mr");
+                        break; // orange
+                    case "LR":
+                        chip.getStyleClass().add("chip-lr");
+                        break; // yellow
+                    default:
+                        break;
+                    }
+                    tags.getChildren().add(chip);
                 });
         }
     }

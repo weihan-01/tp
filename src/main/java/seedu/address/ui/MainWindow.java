@@ -114,8 +114,8 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        seniorListPanel = new SeniorListPanel(logic.getFilteredSeniorList(), logic);
-        caregiverListPanel = new CaregiverListPanel(logic.getFilteredCaregiverList(), logic);
+        seniorListPanel = new SeniorListPanel(logic.getFilteredSeniorList(), logic.getFilteredCaregiverList(), logic);
+        caregiverListPanel = new CaregiverListPanel(logic.getFilteredSeniorList(), logic.getFilteredCaregiverList(), logic);
         seniorListPanelPlaceholder.getChildren().add(seniorListPanel.getRoot());
         caregiverListPanelPlaceholder.getChildren().add(caregiverListPanel.getRoot());
 

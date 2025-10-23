@@ -68,13 +68,10 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /** Returns caregiver with matching id. */
     public Caregiver getCaregiverWithId(Integer caregiverId) {
-        for (Person p: caregivers) {
-            if (p instanceof Caregiver) {
-                Caregiver caregiver = (Caregiver) p;
-                int cid = caregiver.getCaregiverId();
-                if (cid == caregiverId) {
-                    return caregiver;
-                }
+        for (Caregiver caregiver: caregivers) {
+            int cid = caregiver.getCaregiverId();
+            if (cid == caregiverId) {
+                return caregiver;
             }
         }
         return null;
@@ -84,27 +81,23 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void recomputeSeqFromData() {
         int seniorMax = 0;
         int caregiverMax = 0;
-        for (Person p : seniors) { // persons is the UniquePersonList backing AddressBook
-            if (p instanceof Senior) {
-                Integer sid = ((Senior) p).getSeniorId();
-                if (sid < 0) {
-                    throw new IllegalArgumentException("Senior ID must be a positive integer.");
-                }
-                if (sid > seniorMax) {
-                    seniorMax = sid;
-                }
+        for (Senior s : seniors) {
+            Integer sid = s.getSeniorId();
+            if (sid < 0) {
+                throw new IllegalArgumentException("Senior ID must be a positive integer.");
+            }
+            if (sid > seniorMax) {
+                seniorMax = sid;
             }
         }
 
-        for (Person p : caregivers) {
-            if (p instanceof Caregiver) {
-                int cid = ((Caregiver) p).getCaregiverId();
-                if (cid < 0) {
-                    throw new IllegalArgumentException("Caregiver ID must be a positive integer.");
-                }
-                if (cid > caregiverMax) {
-                    caregiverMax = cid;
-                }
+        for (Caregiver c : caregivers) {
+            int cid = c.getCaregiverId();
+            if (cid < 0) {
+                throw new IllegalArgumentException("Caregiver ID must be a positive integer.");
+            }
+            if (cid > caregiverMax) {
+                caregiverMax = cid;
             }
         }
         seniorSeq = Math.max(seniorSeq, seniorMax);
@@ -118,8 +111,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      *   among constructors.
      */
     {
-        seniors = new UniquePersonList();
-        caregivers = new UniquePersonList();
+        seniors = new UniquePersonList<Senior>();
+        caregivers = new UniquePersonList<Caregiver>();
     }
 
     /**
@@ -249,7 +242,6 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public int hashCode() {
-        // TODO: Change hashcode
-        return seniors.hashCode();
+        return seniors.hashCode() + caregivers.hashCode();
     }
 }

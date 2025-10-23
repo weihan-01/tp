@@ -43,6 +43,7 @@ public class AddSeniorCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
     public static final String MESSAGE_DUPLICATE_SENIOR = "Senior already exists. Please amend your entry.";
+    public static final String MESSAGE_NO_SUCH_CAREGIVER = "No caregiver exists with ID C%06d";
 
     private final Senior toAdd;
     private final Integer caregiverId;
@@ -64,12 +65,23 @@ public class AddSeniorCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
         }
 
-        final int seniorId = model.allocateSeniorId();
-        final Caregiver caregiver = model.getCaregiverWithId(caregiverId);
+        final Senior toAddFinal;
 
-        model.addSenior(toAdd.withId(seniorId).withCaregiver(caregiver));
+        if (caregiverId == null) {
+            final int seniorId = model.allocateSeniorId();
+            toAddFinal = toAdd.withId(seniorId);
+            model.addSenior(toAddFinal);
+        } else {
+            final Caregiver caregiver = model.getCaregiverWithId(caregiverId);
+            if (caregiver == null) {
+                throw new CommandException(String.format(MESSAGE_NO_SUCH_CAREGIVER, caregiverId));
+            }
+            final int seniorId = model.allocateSeniorId();
+            toAddFinal = toAdd.withId(seniorId).withCaregiver(caregiver);
+            model.addSenior(toAddFinal);
+        }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAdd)));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAddFinal)));
     }
 
     @Override

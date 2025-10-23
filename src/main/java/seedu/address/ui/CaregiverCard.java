@@ -38,8 +38,6 @@ public class CaregiverCard extends UiPart<Region> {
     @FXML
     private Label name;
     @FXML
-    private Label id;
-    @FXML
     private Label phone;
     @FXML
     private Label address;
@@ -82,7 +80,6 @@ public class CaregiverCard extends UiPart<Region> {
         this.person = person;
         this.logic = logic;
 
-        id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);

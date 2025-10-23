@@ -222,7 +222,6 @@ public class ModelManager implements Model {
             return List.of();
         }
         return addressBook.getSeniorList().stream()
-                .map(p -> (Senior) p)
                 .filter(s -> {
                     Caregiver c = s.getCaregiver();
                     return c != null && c.isSamePerson(caregiver);

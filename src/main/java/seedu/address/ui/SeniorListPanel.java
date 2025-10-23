@@ -10,7 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Senior;
 
 /**
@@ -27,12 +27,13 @@ public class SeniorListPanel extends UiPart<Region> {
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
-    public SeniorListPanel(ObservableList<Senior> seniorList, Logic logic) {
+    public SeniorListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
         this.logic = logic;
         seniorListView.setItems(seniorList);
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
-        seniorList.addListener((ListChangeListener<Person>) change -> seniorListView.refresh());
+        seniorList.addListener((ListChangeListener<Senior>) change -> seniorListView.refresh());
+        caregiverList.addListener((ListChangeListener<Caregiver>) change -> seniorListView.refresh());
         seniorListView.setCellFactory(listView -> new SeniorListViewCell(logic));
     }
 
