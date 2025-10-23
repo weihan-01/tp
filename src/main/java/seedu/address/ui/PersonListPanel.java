@@ -53,7 +53,7 @@ public class PersonListPanel extends UiPart<Region> {
         Comparator<Person> byPinnedThenName = (a, b) -> {
             boolean ap = isPinned(a);
             boolean bp = isPinned(b);
-            
+
             if (ap != bp) {
                 return ap ? -1 : 1;               // pinned first
             }
@@ -94,9 +94,7 @@ public class PersonListPanel extends UiPart<Region> {
                         getStyleClass().add(PINNED_STYLE_CLASS);
                     }
                 }
-
             }
         }
     }
-
 }
