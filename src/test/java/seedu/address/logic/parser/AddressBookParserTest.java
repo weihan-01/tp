@@ -22,6 +22,7 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
@@ -111,4 +112,9 @@ public class AddressBookParserTest {
     }
 
 
+    public void parseCommand_unassign_returnsUnassignCommand() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        assertEquals(UnassignCommand.class,
+                parser.parseCommand(UnassignCommand.COMMAND_WORD + " s/1 c/2").getClass());
+    }
 }
