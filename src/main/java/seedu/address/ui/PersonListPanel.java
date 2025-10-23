@@ -55,7 +55,7 @@ public class PersonListPanel extends UiPart<Region> {
             boolean bp = isPinned(b);
 
             if (ap != bp) {
-                return ap ? -1 : 1;               // pinned first
+                return ap ? -1 : 1;
             }
             // tie-breaker: alphabetical by name
             String an = a == null ? "" : a.getName().fullName;

@@ -95,6 +95,23 @@ public class PinCommand extends Command {
         return null;
     }
 
+    /**
+     * Returns whether the given {@link Person} is marked as pinned.
+     * <p>
+     * A person is considered pinned if their {@link Note} text starts with the sentinel
+     * {@code PIN_SENTINEL} (case-insensitive), optionally followed by a space and one of
+     * {@code ":"} or {@code "|"}, or by a single trailing space. Examples that return {@code true}:
+     * <ul>
+     *   <li>{@code "PINNED"}</li>
+     *   <li>{@code "PINNED : some note"}</li>
+     *   <li>{@code "PINNED | some note"}</li>
+     *   <li>{@code "PINNED some note"}</li>
+     * </ul>
+     *
+     * @param p the person to check; must not be {@code null}
+     * @return {@code true} if the person's note indicates they are pinned; {@code false} otherwise
+     * @throws NullPointerException if {@code p} is {@code null}
+     */
     public static boolean isPinned(Person p) {
         Note n = p.getNote();
         String s = n == null ? "" : n.toString();
