@@ -609,6 +609,50 @@ Example Commands
 
 assign s/1 c/3
 
+**Use case 6: Filtering seniors based on risk tags: filter**
+
+**MSS**
+
+1. User requests to show seniors by risk tag(s) using the command "filter"
+2. AddressBook updates the list to show all Seniors who have any of the provided risk tags
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. Missing tag(s)
+
+    * 1a1. AddressBook shows an error message — “Please provide at least one tag.”.
+
+      Use case resumes at step 1.
+
+* 1b. Invalid tag value
+
+    * 1b1. AddressBook shows an error message — “Invalid tag: "<value>". Allowed: lr, mr, hr, LR, MR, HR.”
+
+      Use case resumes at step 1.
+
+* 1c. Uppercase or mixed-case tags
+
+    * 1c1. AddressBook accepts LR/MR/HR (case-insensitive) and normalizes internally.
+
+      Use case resumes at step 2.
+
+* 2a. No seniors match the given tag(s)
+
+    * 2a1. AddressBook shows “0 persons listed!” and displays an empty list.
+
+      Use case ends.
+
+Command Format
+
+filter t/TAG
+
+Example Commands
+
+filter t/lr
+filter t/MR
+
 ### Non-Functional Requirements
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
