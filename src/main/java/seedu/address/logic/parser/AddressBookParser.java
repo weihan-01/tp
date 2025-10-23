@@ -90,7 +90,7 @@ public class AddressBookParser {
 
         case UnassignCommand.COMMAND_WORD:
             return new UnassignCommandParser().parse(arguments);
-            
+
         case PinCommand.COMMAND_WORD:
             return new PinCommandParser().parse(arguments);
 
