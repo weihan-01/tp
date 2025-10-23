@@ -52,9 +52,7 @@ class JsonAdaptedSenior {
                              @JsonProperty("note") String note,
                              @JsonProperty("risk") List<JsonAdaptedTag> risk,
                              @JsonProperty("seniorId") Integer seniorId,
-                             @JsonProperty("caregiverId") Integer caregiverId,
-                             @JsonProperty("assignedCaregiverName") String assignedCaregiverName,
-                             @JsonProperty("assignedCaregiverPhone") String assignedCaregiverPhone) {
+                             @JsonProperty("caregiverId") Integer caregiverId) {
         this.role = role;
         this.name = name;
         this.phone = phone;

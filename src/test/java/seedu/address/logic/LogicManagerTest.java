@@ -27,11 +27,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.SeniorBuilder;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
@@ -83,8 +83,12 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    public void getFilteredSeniorList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredSeniorList().remove(0));
+    }
+
+    public void getFilteredCaregiverList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredCaregiverList().remove(0));
     }
 
     /**
@@ -167,9 +171,9 @@ public class LogicManagerTest {
         // Triggers the saveAddressBook method by executing an add command
         String addSeniorCommand = AddSeniorCommand.COMMAND_WORD + NAME_DESC_AMY
                 + TAG_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY;
-        Person expectedPerson = new PersonBuilder(AMY).withTags().withNote("").build();
+        Senior expectedPerson = new SeniorBuilder(AMY).withTags().withNote("").build();
         ModelManager expectedModel = new ModelManager();
-        expectedModel.addPerson(expectedPerson);
+        expectedModel.addSenior(expectedPerson);
         assertCommandFailure(addSeniorCommand, CommandException.class, expectedMessage, expectedModel);
     }
 }

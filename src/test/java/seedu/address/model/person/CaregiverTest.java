@@ -14,25 +14,14 @@ public class CaregiverTest {
                 new Phone("91234567"),
                 new Address("123 Toa Payoh Lorong 3"),
                 new Note("Loves to dance"),
-                "c1"
+                1
         );
 
         assertEquals("Voon Shu Ting", caregiver.getName().fullName);
         assertEquals("91234567", caregiver.getPhone().value);
         assertEquals("123 Toa Payoh Lorong 3", caregiver.getAddress().value);
         assertEquals("Loves to dance", caregiver.getNote().value);
-        assertEquals("c1", caregiver.getCaregiverId());
-    }
-
-    @Test
-    public void constructor_invalidCaregiverId_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new Caregiver(
-                new Name("Voon Shu Ting"),
-                new Phone("91234567"),
-                new Address("123 Toa Payoh Lorong 3"),
-                new Note("Loves to dance"),
-                "caregiver1" // invalid format
-        ));
+        assertEquals(1, caregiver.getCaregiverId());
     }
 
     @Test
@@ -42,7 +31,7 @@ public class CaregiverTest {
                 new Phone("91234567"),
                 new Address("123 Toa Payoh Lorong 3"),
                 new Note("Loves to dance"),
-                "c1"
+                null
         ));
     }
 }

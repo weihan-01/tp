@@ -23,7 +23,9 @@ public class ElderlyTest {
                 new Phone("98887666"),
                 new Address("456 Kent Ridge Street"),
                 riskTags,
-                new Note("Needs wheelchair access")
+                new Note("Needs wheelchair access"),
+                null,
+                null
         );
 
         assertEquals("Mr Tan Kah Li Boon", senior.getName().fullName);
@@ -41,7 +43,9 @@ public class ElderlyTest {
                 new Phone("81234567"),
                 new Address("789 Serangoon"),
                 riskTags,
-                new Note("Requires daily medication")
+                new Note("Requires daily medication"),
+                null,
+                null
         );
 
         Set<Tag> retrievedTags = elderly.getRiskTags();
@@ -55,7 +59,9 @@ public class ElderlyTest {
                 new Phone("80000000"),
                 new Address("No Address"),
                 null,
-                new Note("No note")
+                new Note("No note"),
+                null,
+                null
         ));
     }
 }
