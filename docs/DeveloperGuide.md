@@ -609,49 +609,73 @@ Example Commands
 
 assign s/1 c/3
 
-**Use case 6: Filtering seniors based on risk tags: filter**
+**Use case 6: Pin a contact (Caregiver or Senior): pin**
 
 **MSS**
 
-1. User requests to show seniors by risk tag(s) using the command "filter"
-2. AddressBook updates the list to show all Seniors who have any of the provided risk tags
+1. User pins a contact using the command "pin n/NAME"
+2. AddressBook highlights the contact and move it to the top of the list. Any previously pinned contact is unpinned.
 
    Use case ends.
 
 **Extensions**
 
-* 1a. Missing tag(s)
+* 1a. Missing name (pin n/)
 
-    * 1a1. AddressBook shows an error message — “Please provide at least one tag.”.
-
-      Use case resumes at step 1.
-
-* 1b. Invalid tag value
-
-    * 1b1. AddressBook shows an error message — “Invalid tag: "<value>". Allowed: lr, mr, hr, LR, MR, HR.”
+    * 1a1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
 
       Use case resumes at step 1.
 
-* 1c. Uppercase or mixed-case tags
+* 1b. Wrong prefix used (e.g. pin /Yap Mei Ting)
 
-    * 1c1. AddressBook accepts LR/MR/HR (case-insensitive) and normalizes internally.
+    * 1b1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
 
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
-* 2a. No seniors match the given tag(s)
+* 1c. Name not found in AddressBook
 
-    * 2a1. AddressBook shows “0 persons listed!” and displays an empty list.
+    * 1c1. AddressBook shows an error message. - “No person found with the name: NAME”
+
+      Use case resumes at step 1.
+
+* 1d. Target already pinned
+
+    * 1d1. AddressBook shows an error message. - “NAME is already the pinned person.”
 
       Use case ends.
 
 Command Format
 
-filter t/TAG
+pin n/NAME
 
 Example Commands
 
-filter t/lr
-filter t/MR
+pin n/Yap Mei Ting
+
+**Use case 7: Unpin a contact (Caregiver or Senior): unpin**
+
+**MSS**
+
+1. User unpins the currently pinned contact using the command "unpin"
+2. AddressBook remove the pinned highlighted contact and displays the list accordingly.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No contact is currently pinned
+
+    * 1a1. AddressBook shows an error message. - "No one is pinned."
+
+      Use case resumes at step 1.
+
+Command Format
+
+unpin
+
+Example Commands
+
+unpin
 
 ### Non-Functional Requirements
 
