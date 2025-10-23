@@ -84,7 +84,7 @@ public class PinCommandTest {
         assertEquals(expected, command.toString());
     }
 
-    // helpers to construct the expected state (mirrors PinCommand behavior) 
+    // helpers to construct the expected state (mirrors PinCommand behavior)
 
     /** Removes the PINNED sentinel from every person’s note in the model. */
     private static void unpinAll(Model m) {
