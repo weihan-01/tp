@@ -188,4 +188,9 @@ public class PinCommand extends Command {
                 && targetName.equals(((PinCommand) other).targetName));
     }
 
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName() + "{targetName=" + targetName + "}";
+    }
+
 }
