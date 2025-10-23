@@ -38,6 +38,8 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
    * `assign s/3 c/1`: Assigns the senior at index 3 to the caregiver at index 1 in the current list. 
+   
+   * `unassign s/3 c/1`: Unassigns the caregiver at index 1 from the senior at index 3 in the current list.
 
    * `clear` : Deletes all contacts.
 
@@ -117,6 +119,15 @@ Format: `assign s/SENIOR_INDEX c/CAREGIVER_INDEX`
 
 Examples:
 * `assign s/3 c/1`
+
+### Unassigning a caregiver: `unassign`
+
+Unassign a caregiver from a senior in the system.
+
+Format: `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX`
+
+Examples:
+* `unassign s/3 c/1`
 
 ### Listing all persons : `list`
 
@@ -234,14 +245,15 @@ _Details coming soon ..._
 
 ## Command summary
 
-| Action               | Format, Examples                                                                                                                                                                        |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add Senior**       | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
-| **Add Caregiver**    | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                |
-| **Assign Caregiver** | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                   |
-| **Edit**             | `coming in v1.6`                                                                                                                                                                        |
-| **List**             | `list`                                                                                                                                                                                  |
-| **Find**             | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
-| **Delete**           | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                     |
-| **Clear**            | `clear`                                                                                                                                                                                 |
-| **Help**             | `help`                                                                                                                                                                                  |
+| Action                 | Format, Examples                                                                                                                                                                        |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add Senior**         | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
+| **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                |
+| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                   |
+| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                               |
+| **Edit**               | `coming in v1.6`                                                                                                                                                                        |
+| **List**               | `list`                                                                                                                                                                                  |
+| **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
+| **Delete**             | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                     |
+| **Clear**              | `clear`                                                                                                                                                                                 |
+| **Help**               | `help`                                                                                                                                                                                  |
