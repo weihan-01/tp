@@ -54,7 +54,7 @@ public class SeniorCard extends UiPart<Region> {
 
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code SeniorCard} with the given {@code Senior} and index to display.
      */
     public SeniorCard(Senior senior, int displayedIndex, Logic logic) {
         super(FXML);

@@ -3,11 +3,14 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
@@ -22,6 +25,8 @@ import seedu.address.model.person.Senior;
 class JsonSerializableAddressBook {
 
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
+
+    private static final Logger logger = LogsCenter.getLogger(JsonSerializableAddressBook.class);
 
     private final List<JsonAdaptedSenior> seniors = new ArrayList<>();
     private final List<JsonAdaptedCaregiver> caregivers = new ArrayList<>();
@@ -105,6 +110,8 @@ class JsonSerializableAddressBook {
             }
         }
 
+        logger.log(Level.INFO, "All seniors from JSON records have been added");
+
         for (JsonAdaptedCaregiver jsonAdaptedCaregiver : caregivers) {
             Caregiver caregiver = jsonAdaptedCaregiver.toModelType();
             if (addressBook.hasPerson(caregiver)) {
@@ -112,6 +119,8 @@ class JsonSerializableAddressBook {
             }
             addressBook.addCaregiver(caregiver);
         }
+
+        logger.log(Level.INFO, "All caregivers from JSON records have been added");
 
         // Create map of all caregivers to reference by ID
         java.util.Map<Integer, Caregiver> byKey = addressBook.getCaregiverList().stream()
@@ -133,6 +142,8 @@ class JsonSerializableAddressBook {
                 throw new ParseException(String.format(MESSAGE_DUPLICATE_PERSON, caregiverId));
             }
         }
+
+        logger.log(Level.INFO, "All existing assignments between seniors and caregivers from JSON records have been added");
 
         // Restore (or initialize) the caregiver ID sequence.
         if (seniorSeq == null || caregiverSeq == null) {

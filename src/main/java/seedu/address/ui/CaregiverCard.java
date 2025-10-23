@@ -56,7 +56,7 @@ public class CaregiverCard extends UiPart<Region> {
 
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code CaregiverCard} with the given {@code Caregiver} and index to display.
      */
     public CaregiverCard(Person person, int displayedIndex, Logic logic) {
         super(FXML);
