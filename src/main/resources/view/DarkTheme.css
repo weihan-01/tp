@@ -375,3 +375,13 @@
     -fx-background-color: rgba(224, 224, 224, 0.22);
     -fx-text-fill: #777777;
 }
+
+/* Highlights the entire list row (the whole person card) when pinned */
+.list-cell.pinned-card {
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-border-color: #e53935;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, #e53935, 10, 0.2, 0, 0);
+}
