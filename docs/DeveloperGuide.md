@@ -609,6 +609,74 @@ Example Commands
 
 assign s/1 c/3
 
+**Use case 6: Pin a contact (Caregiver or Senior): pin**
+
+**MSS**
+
+1. User pins a contact using the command "pin n/NAME"
+2. AddressBook highlights the contact and move it to the top of the list. Any previously pinned contact is unpinned.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. Missing name (pin n/)
+
+    * 1a1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
+
+      Use case resumes at step 1.
+
+* 1b. Wrong prefix used (e.g. pin /Yap Mei Ting)
+
+    * 1b1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
+
+      Use case resumes at step 1.
+
+* 1c. Name not found in AddressBook
+
+    * 1c1. AddressBook shows an error message. - “No person found with the name: NAME”
+
+      Use case resumes at step 1.
+
+* 1d. Target already pinned
+
+    * 1d1. AddressBook shows an error message. - “NAME is already the pinned person.”
+
+      Use case ends.
+
+Command Format
+
+pin n/NAME
+
+Example Commands
+
+pin n/Yap Mei Ting
+
+**Use case 7: Unpin a contact (Caregiver or Senior): unpin**
+
+**MSS**
+
+1. User unpins the currently pinned contact using the command "unpin"
+2. AddressBook remove the pinned highlighted contact and displays the list accordingly.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No contact is currently pinned
+
+    * 1a1. AddressBook shows an error message. - "No one is pinned."
+
+      Use case resumes at step 1.
+
+Command Format
+
+unpin
+
+Example Commands
+
+unpin
+
 ### Non-Functional Requirements
 
 1. Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
