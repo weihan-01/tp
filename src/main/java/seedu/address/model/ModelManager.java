@@ -147,6 +147,24 @@ public class ModelManager implements Model {
      * {@code versionedAddressBook}
      */
     @Override
+    public ObservableList<Senior> getAllSeniorList() {
+        return addressBook.getSeniorList();
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList<Caregiver> getAllCaregiverList() {
+        return addressBook.getCaregiverList();
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
     public ObservableList<Senior> getFilteredSeniorList() {
         return filteredSeniors;
     }

@@ -103,6 +103,12 @@ public interface Model {
      */
     void setCaregiver(Caregiver target, Caregiver editedPerson);
 
+    /** Returns an unmodifiable view of the senior list */
+    ObservableList<Senior> getAllSeniorList();
+
+    /** Returns an unmodifiable view of the caregiver list */
+    ObservableList<Caregiver> getAllCaregiverList();
+
     /** Returns an unmodifiable view of the filtered senior list */
     ObservableList<Senior> getFilteredSeniorList();
 
