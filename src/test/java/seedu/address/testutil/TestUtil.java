@@ -5,9 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Senior;
 
 /**
  * A utility class for test cases.
@@ -33,23 +33,28 @@ public class TestUtil {
     }
 
     /**
-     * Returns the middle index of the person in the {@code model}'s person list.
+     * Returns the senior in the {@code model}'s senior list at {@code index}.
      */
-    public static Index getMidIndex(Model model) {
-        return Index.fromOneBased(model.getFilteredPersonList().size() / 2);
+    public static Senior getSenior(Model model, Integer index) {
+        return model.getFilteredSeniorList().stream()
+                .filter(s -> {
+                    Integer seniorId = s.getSeniorId();
+                    return seniorId != null && (seniorId.equals(index));
+                })
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * Returns the last index of the person in the {@code model}'s person list.
-     */
-    public static Index getLastIndex(Model model) {
-        return Index.fromOneBased(model.getFilteredPersonList().size());
-    }
-
-    /**
-     * Returns the person in the {@code model}'s person list at {@code index}.
-     */
-    public static Person getPerson(Model model, Index index) {
-        return model.getFilteredPersonList().get(index.getZeroBased());
+    * Returns the caregiver in the {@code model}'s caregiver list at {@code index}.
+    */
+    public static Caregiver getCaregiver(Model model, Integer index) {
+        return model.getFilteredCaregiverList().stream()
+             .filter(c -> {
+                 Integer caregiverId = c.getCaregiverId();
+                 return caregiverId != null && (caregiverId.equals(index));
+             })
+             .findFirst()
+             .orElse(null);
     }
 }

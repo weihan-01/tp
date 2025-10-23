@@ -11,28 +11,47 @@ import seedu.address.model.tag.Tag;
 
 /**
  * Represents an Elderly in the address book.
- *
  */
 public class Senior extends Person {
+
+    // Senior data fields
+    private final Integer seniorId;
     private final Set<Tag> riskTags = new HashSet<>();
     private Caregiver caregiver;
 
     /**
-     * Every field must be present and not null.
-     * Caregiver can be null if no caregiver is assigned.
+     * Instantiates a senior with all required and optional senior attributes
+     * @param name Name of the senior
+     * @param phone Phone number of the senior
+     * @param address Address of the senior's home
+     * @param riskTags Risk status of the senior i.e. High Risk, Medium Risk or Low Risk
+     * @param note Additional caregiving notes for the senior
+     * @param caregiver Caregiver assigned to the senior
+     * @param seniorId ID of the senior assigned by AddressBook
      */
-    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note, Caregiver caregiver) {
+    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags,
+                  Note note, Caregiver caregiver, Integer seniorId) {
         super(name, phone, address, note);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);
-        this.caregiver = caregiver; // Can be null
+        this.caregiver = caregiver;
+        this.seniorId = seniorId;
     }
 
     /**
-     * Convenience constructor for Senior without a caregiver.
+     * Immutable factory: return a new Senior with the given id.
      */
-    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags, Note note) {
-        this(name, phone, address, riskTags, note, null);
+    public Senior withId(int id) {
+        return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
+                getNote(), caregiver, Integer.valueOf(id));
+    }
+
+    /**
+     * Immutable factory: return a new Senior with the given caregiver.
+     */
+    public Senior withCaregiver(Caregiver caregiver) {
+        return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
+                getNote(), caregiver, getSeniorId());
     }
 
     /**
@@ -49,6 +68,24 @@ public class Senior extends Person {
      */
     public Caregiver getCaregiver() {
         return caregiver;
+    }
+
+    /**
+     * Returns the caregiver's id assigned to this senior.
+     * Returns null if no caregiver is assigned.
+     */
+    public Integer getCaregiverId() {
+        if (caregiver == null) {
+            return null;
+        }
+        return caregiver.getCaregiverId();
+    }
+
+    /**
+     * Returns the ID assigned to this senior.
+     */
+    public Integer getSeniorId() {
+        return seniorId;
     }
 
     /**
@@ -71,6 +108,7 @@ public class Senior extends Person {
         return new ToStringBuilder(super.toString())
                 .add("riskTags", riskTags)
                 .add("caregiver", caregiver != null ? caregiver.getName() : "No caregiver")
+                .add("seniorId", seniorId)
                 .toString();
     }
 }

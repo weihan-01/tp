@@ -7,21 +7,27 @@ import java.util.Objects;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
- * Represents a Person in the address book.
+ * Represents an abstract Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Person {
+public abstract class Person {
 
-    // Identity fields
+    // General identity fields
     private final Name name;
     private final Phone phone;
 
-    // Data fields
+    // General data fields
     private final Address address;
     private final Note note;
 
     /**
-     * Every field must be present and not null.
+     * Initialises Person fields with all required person attributes
+     * Fields must be present and not null
+     *
+     * @param name Name of the person
+     * @param phone Phone number of the person
+     * @param address Address of the person's home
+     * @param note Additional notes for the person
      */
     public Person(Name name, Phone phone, Address address, Note note) {
         requireAllNonNull(name, phone, address);

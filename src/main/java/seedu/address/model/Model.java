@@ -60,47 +60,98 @@ public interface Model {
      */
     boolean hasPerson(Person person);
 
-
     /**
-     * Deletes the given person.
-     * The person must exist in the address book.
+     * Returns the caregiver with the same id as {@code caregiverId} in the address book.
      */
-    void deletePerson(Person target);
+    Caregiver getCaregiverWithId(Integer caregiverId);
 
     /**
-     * Adds the given person.
+     * Deletes the given senior.
+     * The senior must exist in the address book.
+     */
+    void deleteSenior(Senior target);
+
+    /**
+     * Deletes the given caregiver.
+     * The caregiver must exist in the address book.
+     */
+    void deleteCaregiver(Caregiver target);
+
+    /**
+     * Adds the given senior.
      * {@code person} must not already exist in the address book.
      */
-    void addPerson(Person person);
+    void addSenior(Senior senior);
 
     /**
-     * Replaces the given person {@code target} with {@code editedPerson}.
+     * Adds the given caregiver.
+     * {@code person} must not already exist in the address book.
+     */
+    void addCaregiver(Caregiver caregiver);
+
+    /**
+     * Replaces the given senior {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
-    void setPerson(Person target, Person editedPerson);
-
-    /** Returns an unmodifiable view of the filtered person list */
-    ObservableList<Person> getFilteredPersonList();
+    void setSenior(Senior target, Senior editedPerson);
 
     /**
-     * Updates the filter of the filtered person list to filter by the given {@code predicate}.
+     * Replaces the given caregiver {@code target} with {@code editedPerson}.
+     * {@code target} must exist in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     */
+    void setCaregiver(Caregiver target, Caregiver editedPerson);
+
+    /** Returns an unmodifiable view of the senior list */
+    ObservableList<Senior> getAllSeniorList();
+
+    /** Returns an unmodifiable view of the caregiver list */
+    ObservableList<Caregiver> getAllCaregiverList();
+
+    /** Returns an unmodifiable view of the filtered senior list */
+    ObservableList<Senior> getFilteredSeniorList();
+
+    /** Returns an unmodifiable view of the filtered senior list */
+    ObservableList<Caregiver> getFilteredCaregiverList();
+
+    /**
+     * Updates the filter of the filtered senior list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Person> predicate);
+    void updateFilteredSeniorList(Predicate<Person> predicate);
+
+    /**
+     * Updates the filter of the filtered caregiver list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredCaregiverList(Predicate<Person> predicate);
 
     /**
      * Allocates and returns the next caregiver identifier.
-     * The identifier is unique within the address book and has the form {@code cN},
+     * The identifier is unique within the address book and has the form {@code N},
      * where {@code N} is a monotonically increasing positive integer.
      * <p>
      * This method does not add a caregiver; it only reserves an ID for immediate use.
      * Implementations should persist the underlying sequence so IDs remain monotonic
      * across application restarts.
      *
-     * @return the next unused caregiver ID (e.g. {@code "c10"}).
+     * @return the next unused caregiver ID (e.g. {@code "10"}).
      */
-    String allocateCaregiverId();
+    int allocateCaregiverId();
+
+    /**
+     * Allocates and returns the next senior identifier.
+     * The identifier is unique within the address book and has the form {@code N},
+     * where {@code N} is a monotonically increasing positive integer.
+     * <p>
+     * This method does not add a caregiver; it only reserves an ID for immediate use.
+     * Implementations should persist the underlying sequence so IDs remain monotonic
+     * across application restarts.
+     *
+     * @return the next unused caregiver ID (e.g. {@code "10"}).
+     */
+    int allocateSeniorId();
 
     /**
      * Returns the name of the Senior's assigned caregiver (1).

@@ -19,9 +19,9 @@ import seedu.address.model.tag.Tag;
 /**
  * A UI component that displays information of a {@code Person}.
  */
-public class PersonCard extends UiPart<Region> {
+public class CaregiverCard extends UiPart<Region> {
 
-    private static final String FXML = "PersonListCard.fxml";
+    private static final String FXML = "CaregiverListCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -37,8 +37,6 @@ public class PersonCard extends UiPart<Region> {
     private HBox cardPane;
     @FXML
     private Label name;
-    @FXML
-    private Label id;
     @FXML
     private Label phone;
     @FXML
@@ -58,9 +56,9 @@ public class PersonCard extends UiPart<Region> {
 
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
+     * Creates a {@code CaregiverCard} with the given {@code Caregiver} and index to display.
      */
-    public PersonCard(Person person, int displayedIndex, Logic logic) {
+    public CaregiverCard(Person person, int displayedIndex, Logic logic) {
         super(FXML);
         // make FlowPane expand and wrap
         HBox.setHgrow(assignedChips, Priority.ALWAYS);
@@ -82,7 +80,6 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         this.logic = logic;
 
-        id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
@@ -92,7 +89,7 @@ public class PersonCard extends UiPart<Region> {
         renderChips();
     }
 
-    public PersonCard(Person person, int displayedIndex) {
+    public CaregiverCard(Person person, int displayedIndex) {
         this(person, displayedIndex, null);
     }
 
@@ -126,7 +123,7 @@ public class PersonCard extends UiPart<Region> {
                     : List.of(cgName));
         } else if (person instanceof Caregiver c) {
             assignedTitle.setText("Seniors:");
-            var names = (logic == null) ? java.util.List.<String>of()
+            var names = (logic == null) ? List.<String>of()
                     : logic.getAssignedSeniorNames(c);
 
             assignedRow.setManaged(true);
@@ -142,7 +139,7 @@ public class PersonCard extends UiPart<Region> {
         }
     }
 
-    private void showAssigned(java.util.List<String> names) {
+    private void showAssigned(List<String> names) {
         assignedRow.setManaged(true);
         assignedRow.setVisible(true);
         assignedChips.getChildren().clear();
@@ -201,14 +198,12 @@ public class PersonCard extends UiPart<Region> {
             }
         } else if (person instanceof Caregiver) {
             Caregiver c = (Caregiver) person;
-            String cgId = c.getCaregiverId();
-            if (cgId != null && !cgId.isBlank()) {
-                tags.setManaged(true);
-                tags.setVisible(true);
-                Label chip = makeChip(cgId);
-                chip.getStyleClass().add("chip-caregiver");
-                tags.getChildren().add(chip);
-            }
+            int cgId = c.getCaregiverId();
+            tags.setManaged(true);
+            tags.setVisible(true);
+            Label chip = makeChip(String.format("C%06d", cgId));
+            chip.getStyleClass().add("chip-caregiver");
+            tags.getChildren().add(chip);
         }
     }
 

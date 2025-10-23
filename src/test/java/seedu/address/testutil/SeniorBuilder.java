@@ -16,10 +16,10 @@ import seedu.address.model.util.SampleDataUtil;
  */
 public class SeniorBuilder {
 
-    public static final String DEFAULT_NAME = PersonBuilder.DEFAULT_NAME;
-    public static final String DEFAULT_PHONE = PersonBuilder.DEFAULT_PHONE;
-    public static final String DEFAULT_ADDRESS = PersonBuilder.DEFAULT_ADDRESS;
-    public static final String DEFAULT_NOTE = PersonBuilder.DEFAULT_NOTE;
+    public static final String DEFAULT_NAME = "Amy Bee";
+    public static final String DEFAULT_PHONE = "85355255";
+    public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_NOTE = "";
 
     private Name name;
     private Phone phone;
@@ -91,6 +91,6 @@ public class SeniorBuilder {
     }
 
     public Senior build() {
-        return new Senior(name, phone, address, tags, note);
+        return new Senior(name, phone, address, null, note, null, null);
     }
 }

@@ -4,13 +4,15 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.commands.PinCommand.cloneWithNote;
 import static seedu.address.logic.commands.PinCommand.isPinned;
 import static seedu.address.logic.commands.PinCommand.stripPinned;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Senior;
 
 /**
  * Unpins whoever is currently pinned. Takes no arguments.
@@ -31,13 +33,22 @@ public class UnpinCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> all = getAllPersons(model);
+        List<Senior> fullSeniorList = model.getAllSeniorList();
+        List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
         int count = 0;
-        for (Person p : all) {
-            if (isPinned(p)) {
-                Person unpinned = cloneWithNote(p, stripPinned(p.getNote()));
-                model.setPerson(p, unpinned);
+        for (Senior s : fullSeniorList) {
+            if (isPinned(s)) {
+                Person unpinned = cloneWithNote(s, stripPinned(s.getNote()));
+                model.setSenior(s, (Senior) unpinned);
+                count++;
+            }
+        }
+
+        for (Caregiver c : fullCaregiverList) {
+            if (isPinned(c)) {
+                Person unpinned = cloneWithNote(c, stripPinned(c.getNote()));
+                model.setCaregiver(c, (Caregiver) unpinned);
                 count++;
             }
         }
@@ -46,16 +57,8 @@ public class UnpinCommand extends Command {
             throw new CommandException(MESSAGE_NOTHING_PINNED);
         }
 
-        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
         return new CommandResult(MESSAGE_SUCCESS_ANY);
     }
-
-    private static List<Person> getAllPersons(Model model) {
-        try {
-            return new ArrayList<>(model.getAddressBook().getPersonList());
-        } catch (Throwable t) {
-            return new ArrayList<>(model.getFilteredPersonList());
-        }
-    }
-
 }
