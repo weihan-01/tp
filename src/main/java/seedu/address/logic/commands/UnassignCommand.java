@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
@@ -15,14 +14,14 @@ import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Senior;
 
 /**
- * Assigns a caregiver to a senior in the address book.
+ * Unassigns a caregiver from a senior in the address book.
  */
-public class AssignCommand extends Command {
+public class UnassignCommand extends Command {
 
-    public static final String COMMAND_WORD = "assign";
+    public static final String COMMAND_WORD = "unassign";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Assigns a caregiver to a senior identified by their index numbers "
+            + ": Unassigns a caregiver from a senior identified by their index numbers "
             + "in the displayed person list.\n"
             + "Parameters: "
             + PREFIX_SENIOR + "SENIOR_INDEX "
@@ -31,24 +30,21 @@ public class AssignCommand extends Command {
             + PREFIX_SENIOR + "1 "
             + PREFIX_CAREGIVER + "3";
 
-    public static final String MESSAGE_ASSIGN_SUCCESS = "Senior %1$s has been assigned to Caregiver %2$s";
+    public static final String MESSAGE_UNASSIGN_SUCCESS = "Senior %1$s has been unassigned from Caregiver %2$s";
     public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
     public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
-    public static final String MESSAGE_NOT_SENIOR = "Person at index %1$d is not a senior";
-    public static final String MESSAGE_NOT_CAREGIVER = "Person at index %1$d is not a caregiver";
-    public static final String MESSAGE_ALREADY_ASSIGNED = "This caregiver is already assigned to this senior";
+    public static final String MESSAGE_NOT_ASSIGNED = "This caregiver is not currently assigned to this senior";
 
     private final Integer seniorIndex;
     private final Integer caregiverIndex;
 
     /**
-     * Creates an AssignCommand to assign the specified {@code Caregiver} to the specified {@code Senior}
+     * Creates an UnassignCommand to unassign the specified {@code Caregiver} from the specified {@code Senior}
      *
      * @param seniorIndex Index of the senior in the filtered person list
      * @param caregiverIndex Index of the caregiver in the filtered person list
      */
-    public AssignCommand(Integer seniorIndex, Integer caregiverIndex) {
-        requireAllNonNull(seniorIndex, caregiverIndex);
+    public UnassignCommand(Integer seniorIndex, Integer caregiverIndex) {
         this.seniorIndex = seniorIndex;
         this.caregiverIndex = caregiverIndex;
     }
@@ -71,12 +67,12 @@ public class AssignCommand extends Command {
 
         // Find senior by seniorId
         Senior senior = fullSeniorList.stream()
-            .filter(s -> {
-                Integer seniorId = s.getSeniorId();
-                return seniorId != null && (seniorId.equals(seniorIndex));
-            })
-            .findFirst()
-            .orElse(null);
+                .filter(s -> {
+                    Integer seniorId = s.getSeniorId();
+                    return seniorId != null && (seniorId.equals(seniorIndex));
+                })
+                .findFirst()
+                .orElse(null);
         if (senior == null) {
             throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
@@ -93,35 +89,35 @@ public class AssignCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
         }
 
-        // Check if already assigned
-        if (senior.hasCaregiver() && senior.getCaregiver().isSamePerson(caregiver)) {
-            throw new CommandException(MESSAGE_ALREADY_ASSIGNED);
+        // Check if assigned correctly
+        if (!(senior.hasCaregiver() && senior.getCaregiver().isSamePerson(caregiver))) {
+            throw new CommandException(MESSAGE_NOT_ASSIGNED);
         }
 
-        // Create updated senior with assigned caregiver
-        Senior updatedSenior = createSeniorWithCaregiver(senior, caregiver);
+        // Build updated senior with caregiver removed
+        Senior updatedSenior = createSeniorWithoutCaregiver(senior);
 
         model.setSenior(senior, updatedSenior);
         model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
         model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS,
+        return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS,
                 senior.getName(), caregiver.getName()));
     }
 
     /**
      * Creates and returns a {@code Senior} with the details of {@code senior}
-     * and assigned with {@code caregiver}.
+     * with caregiver as null.
      */
-    private Senior createSeniorWithCaregiver(Senior senior, Caregiver caregiver) {
+    private Senior createSeniorWithoutCaregiver(Senior senior) {
         return new Senior(
-            senior.getName(),
-            senior.getPhone(),
-            senior.getAddress(),
-            senior.getRiskTags(),
-            senior.getNote(),
-            caregiver,
-            senior.getSeniorId()
+                senior.getName(),
+                senior.getPhone(),
+                senior.getAddress(),
+                senior.getRiskTags(),
+                senior.getNote(),
+                null,
+                senior.getSeniorId()
         );
     }
 
@@ -132,13 +128,13 @@ public class AssignCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AssignCommand)) {
+        if (!(other instanceof UnassignCommand)) {
             return false;
         }
 
-        AssignCommand otherAssignCommand = (AssignCommand) other;
-        return seniorIndex.equals(otherAssignCommand.seniorIndex)
-                && caregiverIndex.equals(otherAssignCommand.caregiverIndex);
+        UnassignCommand otherUnassignCommand = (UnassignCommand) other;
+        return seniorIndex.equals(otherUnassignCommand.seniorIndex)
+                && caregiverIndex.equals(otherUnassignCommand.caregiverIndex);
     }
 
     @Override

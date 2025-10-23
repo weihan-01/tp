@@ -35,14 +35,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/gracesong146)]
 [[portfolio](team/gracesong146.md)]
 
-* Role: 
+* Role:
   * Co-Lead
   * Documentation
   * Deliverables and Deadlines
   * Scheduling and Tracking
-* Responsibilities: 
+* Responsibilities:
   * Responsible for overall project coordination.
-  * Responsible for the quality of various project documents. 
+  * Responsible for the quality of various project documents.
   * Ensure project deliverables are done on time and in the right format.
   * In charge of defining, assigning, and tracking project tasks.
 
@@ -53,10 +53,10 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/weihan-01)]
 [[portfolio](team/johndoe.md)]
 
-* Role:  
-  * Code Quality 
+* Role:
+  * Code Quality
   * Integration
-* Responsibilities: 
+* Responsibilities:
   * Looks after code quality, ensures adherence to coding standards, etc.
   * In charge of versioning of the code, maintaining the code repository, integrating various parts of the software to create a whole.
 
@@ -67,10 +67,10 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/yymeiting)]
 [[portfolio](team/johndoe.md)]
 
-* Role: 
+* Role:
   * Testing
   * Code Quality
-* Responsibilities: 
+* Responsibilities:
   * Ensures the testing of the project is done properly and on time.
   * Looks after code quality, ensures adherence to coding standards, etc.
 
@@ -81,7 +81,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](http://github.com/whchenyicn)]
 [[portfolio](team/johndoe.md)]
 
-* Role: 
+* Role:
   * Testing
   * Documentation
 * Responsibilities:

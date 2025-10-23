@@ -79,7 +79,7 @@ public class UniquePersonList<T extends Person> implements Iterable<T> {
         }
     }
 
-    public void setPersons(UniquePersonList replacement) {
+    public void setPersons(UniquePersonList<T> replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
     }
@@ -120,7 +120,7 @@ public class UniquePersonList<T extends Person> implements Iterable<T> {
             return false;
         }
 
-        UniquePersonList otherUniquePersonList = (UniquePersonList) other;
+        UniquePersonList<T> otherUniquePersonList = (UniquePersonList<T>) other;
         return internalList.equals(otherUniquePersonList.internalList);
     }
 

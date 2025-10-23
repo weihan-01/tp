@@ -15,11 +15,18 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonHasAnyTagPredicate;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.PersonUtil;
 
 public class AddressBookParserTest {
 
@@ -82,5 +89,29 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_filterSingleTag() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        FilterCommand command = (FilterCommand) parser.parseCommand("filter t/lr");
+        FilterCommand expected = new FilterCommand(new PersonHasAnyTagPredicate(List.of("lr")));
+        assertEquals(expected, command);
+    }
+
+    @Test
+    public void parseCommand_filterMultipleTags() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        // First t/ is empty on purpose to cover the "trim -> empty -> continue" branch in your parser
+        FilterCommand command = (FilterCommand) parser.parseCommand("filter t/   t/LR t/hr  ");
+        FilterCommand expected = new FilterCommand(new PersonHasAnyTagPredicate(List.of("lr", "hr")));
+        assertEquals(expected, command);
+    }
+
+
+    public void parseCommand_unassign_returnsUnassignCommand() throws Exception {
+        AddressBookParser parser = new AddressBookParser();
+        assertEquals(UnassignCommand.class,
+                parser.parseCommand(UnassignCommand.COMMAND_WORD + " s/1 c/2").getClass());
     }
 }

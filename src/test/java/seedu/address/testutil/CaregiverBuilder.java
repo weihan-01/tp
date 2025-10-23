@@ -7,7 +7,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
 
 /**
- * A utility class to help with building Person objects.
+ * A utility class to help with building Caregiver objects.
  */
 public class CaregiverBuilder {
 
@@ -15,30 +15,34 @@ public class CaregiverBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_NOTE = "";
+    public static final Integer DEFAULT_CAREGIVER_ID = 1;
 
     private Name name;
     private Phone phone;
     private Address address;
     private Note note;
+    private Integer caregiverId;
 
     /**
-     * Creates a {@code PersonBuilder} with the default details.
+     * Creates a {@code CaregiverBuilder} with the default details.
      */
     public CaregiverBuilder() {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         address = new Address(DEFAULT_ADDRESS);
         note = new Note(DEFAULT_NOTE);
+        caregiverId = DEFAULT_CAREGIVER_ID;
     }
 
     /**
-     * Initializes the PersonBuilder with the data of {@code personToCopy}.
+     * Initializes the CaregiverBuilder with the data of {@code caregiverToCopy}.
      */
     public CaregiverBuilder(Caregiver caregiverToCopy) {
         name = caregiverToCopy.getName();
         phone = caregiverToCopy.getPhone();
         address = caregiverToCopy.getAddress();
         note = caregiverToCopy.getNote();
+        caregiverId = caregiverToCopy.getCaregiverId();
     }
 
     /**
@@ -46,22 +50,6 @@ public class CaregiverBuilder {
      */
     public CaregiverBuilder withName(String name) {
         this.name = new Name(name);
-        return this;
-    }
-
-    /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Caregiver} that we are building.
-     */
-    public CaregiverBuilder withTags(String ... tags) {
-        // this.tags = SampleDataUtil.getTagSet(tags);
-        return this;
-    }
-
-    /**
-     * Sets the {@code Address} of the {@code Caregiver} that we are building.
-     */
-    public CaregiverBuilder withAddress(String address) {
-        this.address = new Address(address);
         return this;
     }
 
@@ -74,6 +62,14 @@ public class CaregiverBuilder {
     }
 
     /**
+     * Sets the {@code Address} of the {@code Caregiver} that we are building.
+     */
+    public CaregiverBuilder withAddress(String address) {
+        this.address = new Address(address);
+        return this;
+    }
+
+    /**
      * Sets the {@code Note} of the {@code Caregiver} that we are building.
      */
     public CaregiverBuilder withNote(String note) {
@@ -81,8 +77,15 @@ public class CaregiverBuilder {
         return this;
     }
 
-    public Caregiver build() {
-        return new Caregiver(name, phone, address, note, null);
+    /**
+     * Sets the caregiver ID, e.g. "c7". Must match c\\d+ (same as model validation).
+     */
+    public CaregiverBuilder withCaregiverId(Integer caregiverId) {
+        this.caregiverId = caregiverId;
+        return this;
     }
 
+    public Caregiver build() {
+        return new Caregiver(name, phone, address, note, caregiverId);
+    }
 }

@@ -24,26 +24,79 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
+    public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
+    public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
+    public static final String MESSAGE_NO_PERSONS = "No such senior and caregiver exist.";
 
-    private final Integer targetIndex;
+    private final Integer seniorIndex;
+    private final Integer caregiverIndex;
 
-    public DeleteCommand(Integer targetIndex) {
-        this.targetIndex = targetIndex;
+    /**
+     * Creates a {@code DeleteCommand} deleting a specific person by id.
+     * <p>
+     * The command will delete exactly the person whose id matches {@code seniorIndex} and {@code caregiverIndex}.
+     *
+     * @param seniorIndex the id of the senior to pin;
+     * @param caregiverIndex the id of the caregiver to pin;
+     */
+    public DeleteCommand(Integer seniorIndex, Integer caregiverIndex) {
+        this.seniorIndex = seniorIndex;
+        this.caregiverIndex = caregiverIndex;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Senior> lastShownSeniorList = model.getFilteredSeniorList();
-        List<Caregiver> lastShownCaregiverList = model.getFilteredCaregiverList();
+        List<Senior> fullSeniorList = model.getAllSeniorList();
+        List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
-        if (targetIndex < 0) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        // Find senior by seniorId
+        Senior senior = fullSeniorList.stream()
+                .filter(s -> {
+                    Integer seniorId = s.getSeniorId();
+                    return seniorId != null && (seniorId.equals(seniorIndex));
+                })
+                .findFirst()
+                .orElse(null);
+        if (seniorIndex != null && senior == null) {
+            throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
 
-        Senior seniorToDelete = lastShownSeniorList.get(targetIndex);
-        model.deleteSenior(seniorToDelete);
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(seniorToDelete)));
+        // Find caregiver by caregiverId
+        Caregiver caregiver = fullCaregiverList.stream()
+                .filter(c -> {
+                    Integer caregiverId = c.getCaregiverId();
+                    return caregiverId != null && (caregiverId.equals(caregiverIndex));
+                })
+                .findFirst()
+                .orElse(null);
+        if (caregiverIndex != null && caregiver == null) {
+            throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
+        }
+
+        // If deleting a caregiver, clear references from seniors
+        if (senior != null) {
+            model.deleteSenior(senior);
+        }
+        if (caregiver != null) {
+            model.getAddressBook().getSeniorList().stream()
+                    .filter(s -> s.getCaregiver() != null && s.getCaregiver().isSamePerson(caregiver))
+                    .forEach(s -> s.setCaregiver(null));
+            model.deleteCaregiver(caregiver);
+        }
+
+
+        if (senior != null && caregiver == null) {
+            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(senior)));
+        } else if (senior == null && caregiver != null) {
+            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(caregiver)));
+        } else if (senior != null & caregiver != null) {
+            return new CommandResult(
+                    String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(senior)) + " and "
+                            + String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(caregiver)));
+        } else {
+            throw new CommandException(MESSAGE_NO_PERSONS);
+        }
     }
 
     @Override
@@ -58,13 +111,15 @@ public class DeleteCommand extends Command {
         }
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return targetIndex.equals(otherDeleteCommand.targetIndex);
+        return seniorIndex.equals(otherDeleteCommand.seniorIndex)
+                && caregiverIndex.equals(otherDeleteCommand.caregiverIndex);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("targetIndex", targetIndex)
+                .add("seniorIndex", seniorIndex)
+                .add("caregiverIndex", caregiverIndex)
                 .toString();
     }
 }
