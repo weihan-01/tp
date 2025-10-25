@@ -28,26 +28,34 @@ public class SeniorListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(SeniorListPanel.class);
     private final Logic logic;
 
+    private final javafx.collections.ObservableList<seedu.address.model.person.Senior> backingList;
+
     @FXML
     private ListView<Senior> seniorListView;
+    @FXML
+    private javafx.scene.layout.HBox pinnedBar;
 
     /**
-     * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
+     * Creates a {@code SeniorListPanel} with the given {@code ObservableList}.
      */
     public SeniorListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
         this.logic = logic;
 
-        SortedList<Senior> sorted = getSeniorsSorted(seniorList);
-        seniorListView.setItems(sorted);
+        // keep a reference to the original list
+        this.backingList = seniorList;
 
-        // keep your existing cell factory
-        seniorListView.setCellFactory(listView -> new SeniorListPanel.SeniorListViewCell(logic));
+        SortedList<Senior> sorted = getSeniorsSorted(seniorList);
+        var visibleList = new javafx.collections.transformation.FilteredList<>(backingList, s -> !isPinnedSenior(s));
+        seniorListView.setItems(visibleList);
 
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
         seniorList.addListener((ListChangeListener<Senior>) change -> seniorListView.refresh());
-        caregiverList.addListener((ListChangeListener<Caregiver>) change -> seniorListView.refresh());
         seniorListView.setCellFactory(listView -> new SeniorListViewCell(logic));
+
+        // refresh header now and whenever list mutates (pin/unpin changes replace items)
+        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Senior>) c -> refreshPinnedBar());
+        refreshPinnedBar();
     }
 
     private static SortedList<Senior> getSeniorsSorted(ObservableList<Senior> personList) {
@@ -73,6 +81,7 @@ public class SeniorListPanel extends UiPart<Region> {
      */
     private static class SeniorListViewCell extends ListCell<Senior> {
         private final Logic logic;
+
         SeniorListViewCell(Logic logic) {
             this.logic = logic;
         }
@@ -97,6 +106,29 @@ public class SeniorListPanel extends UiPart<Region> {
                 }
             }
         }
+    }
+
+    private void refreshPinnedBar() {
+        // find first pinned senior
+        java.util.Optional<seedu.address.model.person.Senior> pinnedOpt =
+                backingList.stream().filter(this::isPinnedSenior).findFirst();
+
+        pinnedBar.getChildren().clear();
+        if (pinnedOpt.isPresent()) {
+            var pinned = pinnedOpt.get();
+            // reuse your existing card
+            var card = new SeniorCard(pinned, 1); // index not shown/important in header
+            pinnedBar.getChildren().add(card.getRoot());
+            pinnedBar.setVisible(true);
+            pinnedBar.setManaged(true);
+        } else {
+            pinnedBar.setVisible(false);
+            pinnedBar.setManaged(false);
+        }
+    }
+
+    private boolean isPinnedSenior(seedu.address.model.person.Senior s) {
+        return isPinned(s);
     }
 
 }

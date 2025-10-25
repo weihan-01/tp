@@ -28,26 +28,34 @@ public class CaregiverListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(CaregiverListPanel.class);
     private final Logic logic;
 
+    private final javafx.collections.ObservableList<seedu.address.model.person.Caregiver> backingList;
+
     @FXML
     private ListView<Caregiver> caregiverListView;
+    @FXML
+    private javafx.scene.layout.HBox pinnedBar;
 
     /**
-     * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
+     * Creates a {@code CaregiverListPanel} with the given {@code ObservableList}.
      */
     public CaregiverListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
         this.logic = logic;
 
-        SortedList<Caregiver> sorted = getCaregiverSorted(caregiverList);
-        caregiverListView.setItems(sorted);
+        // keep a reference to the original list
+        this.backingList = caregiverList;
 
-        // keep your existing cell factory
-        caregiverListView.setCellFactory(listView -> new CaregiverListPanel.CaregiverListViewCell(logic));
+        SortedList<Caregiver> sorted = getCaregiverSorted(caregiverList);
+        var visibleList = new javafx.collections.transformation.FilteredList<>(backingList, c -> !isPinnedCaregiver(c));
+        caregiverListView.setItems(visibleList);
 
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
-        seniorList.addListener((ListChangeListener<Senior>) change -> caregiverListView.refresh());
         caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
+
+        // refresh header now and whenever list mutates (pin/unpin changes replace items)
+        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>) c -> refreshPinnedBar());
+        refreshPinnedBar();
     }
 
     private static SortedList<Caregiver> getCaregiverSorted(ObservableList<Caregiver> personList) {
@@ -73,6 +81,7 @@ public class CaregiverListPanel extends UiPart<Region> {
      */
     private static class CaregiverListViewCell extends ListCell<Caregiver> {
         private final Logic logic;
+
         CaregiverListViewCell(Logic logic) {
             this.logic = logic;
         }
@@ -97,6 +106,29 @@ public class CaregiverListPanel extends UiPart<Region> {
                 }
             }
         }
+    }
+
+    private void refreshPinnedBar() {
+        // find first pinned caregiver
+        java.util.Optional<seedu.address.model.person.Caregiver> pinnedOpt =
+                backingList.stream().filter(this::isPinnedCaregiver).findFirst();
+
+        pinnedBar.getChildren().clear();
+        if (pinnedOpt.isPresent()) {
+            var pinned = pinnedOpt.get();
+            // reuse your existing card
+            var card = new CaregiverCard(pinned, 1); // index not shown/important in header
+            pinnedBar.getChildren().add(card.getRoot());
+            pinnedBar.setVisible(true);
+            pinnedBar.setManaged(true);
+        } else {
+            pinnedBar.setVisible(false);
+            pinnedBar.setManaged(false);
+        }
+    }
+
+    private boolean isPinnedCaregiver(seedu.address.model.person.Caregiver c) {
+        return isPinned(c);
     }
 
 }
