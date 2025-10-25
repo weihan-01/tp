@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.PinCommand.stripPinned;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
+import java.util.Objects;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -16,19 +17,40 @@ import seedu.address.model.person.Senior;
 
 /**
  * Unpins whoever is currently pinned. Takes no arguments.
- *
+ * <p>
  * Usage: {@code unpin}
  */
 public class UnpinCommand extends Command {
 
     public static final String COMMAND_WORD = "unpin";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Unpins the pinned person.\n"
-            + "No arguments allowed.\n"
-            + "Example: " + COMMAND_WORD;
+    // scope selector
+    public enum Scope {SENIOR, CAREGIVER, BOTH}
 
-    public static final String MESSAGE_SUCCESS_ANY = "Unpinned.";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Unpins pinned person(s).\n"
+            + "Parameters: [s|senior | c|caregiver | all]\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + "\n"
+            + "  " + COMMAND_WORD + " s\n"
+            + "  " + COMMAND_WORD + " c";
+
+    public static final String MESSAGE_SUCCESS_ANY = "Unpinned pinned person(s).";
+    public static final String MESSAGE_SUCCESS_SENIOR = "Unpinned pinned senior.";
+    public static final String MESSAGE_SUCCESS_CAREGIVER = "Unpinned pinned caregiver.";
     public static final String MESSAGE_NOTHING_PINNED = "No one is pinned.";
+    public static final String MESSAGE_NOTHING_PINNED_SENIOR = "No pinned senior.";
+    public static final String MESSAGE_NOTHING_PINNED_CAREGIVER = "No pinned caregiver.";
+
+    private final Scope scope;
+
+    // keep a no-arg ctor if something else calls it; default to BOTH
+    public UnpinCommand() {
+        this(Scope.BOTH);
+    }
+
+    public UnpinCommand(Scope scope) {
+        this.scope = requireNonNull(scope);
+    }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
@@ -37,28 +59,60 @@ public class UnpinCommand extends Command {
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
         int count = 0;
-        for (Senior s : fullSeniorList) {
-            if (isPinned(s)) {
-                Person unpinned = cloneWithNote(s, stripPinned(s.getNote()));
-                model.setSenior(s, (Senior) unpinned);
-                count++;
+        // Unpin seniors if scope is BOTH or SENIOR
+        if (scope != Scope.CAREGIVER) {
+            for (Senior s : fullSeniorList) {
+                if (isPinned(s)) {
+                    Person unpinned = cloneWithNote(s, stripPinned(s.getNote()));
+                    model.setSenior(s, (Senior) unpinned);
+                    count++;
+                }
             }
         }
-
-        for (Caregiver c : fullCaregiverList) {
-            if (isPinned(c)) {
-                Person unpinned = cloneWithNote(c, stripPinned(c.getNote()));
-                model.setCaregiver(c, (Caregiver) unpinned);
-                count++;
+        // Unpin caregivers if scope is BOTH or CAREGIVER
+        if (scope != Scope.SENIOR) {
+            for (Caregiver c : fullCaregiverList) {
+                if (isPinned(c)) {
+                    Person unpinned = cloneWithNote(c, stripPinned(c.getNote()));
+                    model.setCaregiver(c, (Caregiver) unpinned);
+                    count++;
+                }
             }
+
         }
 
         if (count == 0) {
-            throw new CommandException(MESSAGE_NOTHING_PINNED);
+            switch (scope) {
+            case SENIOR:
+                throw new CommandException(MESSAGE_NOTHING_PINNED_SENIOR);
+            case CAREGIVER:
+                throw new CommandException(MESSAGE_NOTHING_PINNED_CAREGIVER);
+            default:
+                throw new CommandException(MESSAGE_NOTHING_PINNED);
+            }
         }
 
         model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
         model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(MESSAGE_SUCCESS_ANY);
+
+        switch (scope) {
+        case SENIOR:
+            return new CommandResult(MESSAGE_SUCCESS_SENIOR);
+        case CAREGIVER:
+            return new CommandResult(MESSAGE_SUCCESS_CAREGIVER);
+        default:
+            return new CommandResult(MESSAGE_SUCCESS_ANY);
+        }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof UnpinCommand) && ((UnpinCommand) o).scope == this.scope;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(scope);
     }
 }
