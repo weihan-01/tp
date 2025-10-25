@@ -5,6 +5,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.logic.Messages;
@@ -25,9 +26,9 @@ public class PinCommand extends Command {
 
     public static final String COMMAND_WORD = "pin";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Pins a person by exact name.\n"
-            + "Parameters: s/SENIOR_INDEX c/CAREGIVER_INDEX\n"
-            + "Example: " + COMMAND_WORD + " s/5 c/3";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Pins exactly one person.\n"
+            + "Parameters: s/SENIOR_INDEX  |  c/CAREGIVER_INDEX\n"
+            + "Examples: " + COMMAND_WORD + " s/5    OR    " + COMMAND_WORD + " c/3";
 
     public static final String MESSAGE_SUCCESS = "Pinned: %s";
     public static final String MESSAGE_ALREADY_PINNED = "%1$s is already pinned.";
@@ -231,16 +232,22 @@ public class PinCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        return other == this
-                || (other instanceof PinCommand
-                && seniorIndex.equals(((PinCommand) other).seniorIndex)
-                && caregiverIndex.equals(((PinCommand) other).caregiverIndex));
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof PinCommand)) {
+            return false;
+        }
+        PinCommand o = (PinCommand) other;
+        return Objects.equals(this.seniorIndex, o.seniorIndex)
+                && Objects.equals(this.caregiverIndex, o.caregiverIndex);
     }
 
     @Override
     public String toString() {
-        return getClass().getCanonicalName()
-                + "{seniorId=" + seniorIndex
-                + "caregiverId=" + caregiverIndex + "}";
+        String which = (seniorIndex != null)
+                ? ("seniorId=" + seniorIndex)
+                : ("caregiverId=" + caregiverIndex);
+        return getClass().getCanonicalName() + "{" + which + "}";
     }
 }

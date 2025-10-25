@@ -27,12 +27,24 @@ public class PinCommandParser implements Parser<PinCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SENIOR, PREFIX_CAREGIVER);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_SENIOR) && !arePrefixesPresent(argMultimap, PREFIX_CAREGIVER)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
+        // if prefix is present
+        boolean hasSenior = argMultimap.getValue(PREFIX_SENIOR).isPresent();
+        boolean hasCaregiver = argMultimap.getValue(PREFIX_CAREGIVER).isPresent();
+
+        // must be EXACTLY one of s/ or c/
+        if ((hasSenior && hasCaregiver) || (!hasSenior && !hasCaregiver)) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
         }
 
-        Integer seniorId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
-        Integer caregiverId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+        Integer seniorId = null;
+        Integer caregiverId = null;
+
+        if (hasSenior) {
+            seniorId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
+        } else { // hasCaregiver
+            caregiverId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+        }
 
         return new PinCommand(seniorId, caregiverId);
     }
