@@ -29,11 +29,13 @@ public class CaregiverListPanel extends UiPart<Region> {
     private final Logic logic;
 
     private final javafx.collections.ObservableList<seedu.address.model.person.Caregiver> backingList;
+    private final javafx.collections.ObservableList<Caregiver> pinnedHeaderItems =
+            javafx.collections.FXCollections.observableArrayList();
 
     @FXML
     private ListView<Caregiver> caregiverListView;
     @FXML
-    private javafx.scene.layout.HBox pinnedBar;
+    private ListView<Caregiver> pinnedHeaderList;
 
     /**
      * Creates a {@code CaregiverListPanel} with the given {@code ObservableList}.
@@ -53,9 +55,14 @@ public class CaregiverListPanel extends UiPart<Region> {
         caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
 
+        // header list: same cell factory so it looks identical
+        pinnedHeaderList.setItems(pinnedHeaderItems);
+        pinnedHeaderList.setCellFactory(listView -> new CaregiverListPanel.CaregiverListViewCell(logic));
+        pinnedHeaderList.setFocusTraversable(false); // don’t steal keyboard focus
+
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
-        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>) c -> refreshPinnedBar());
-        refreshPinnedBar();
+        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>) c -> refreshPinnedHeader());
+        refreshPinnedHeader();
     }
 
     private static SortedList<Caregiver> getCaregiverSorted(ObservableList<Caregiver> personList) {
@@ -108,23 +115,15 @@ public class CaregiverListPanel extends UiPart<Region> {
         }
     }
 
-    private void refreshPinnedBar() {
-        // find first pinned caregiver
-        java.util.Optional<seedu.address.model.person.Caregiver> pinnedOpt =
+    private void refreshPinnedHeader() {
+        java.util.Optional<Caregiver> pinnedOpt =
                 backingList.stream().filter(this::isPinnedCaregiver).findFirst();
 
-        pinnedBar.getChildren().clear();
-        if (pinnedOpt.isPresent()) {
-            var pinned = pinnedOpt.get();
-            // reuse your existing card
-            var card = new CaregiverCard(pinned, 1); // index not shown/important in header
-            pinnedBar.getChildren().add(card.getRoot());
-            pinnedBar.setVisible(true);
-            pinnedBar.setManaged(true);
-        } else {
-            pinnedBar.setVisible(false);
-            pinnedBar.setManaged(false);
-        }
+        pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
+
+        boolean show = !pinnedHeaderItems.isEmpty();
+        pinnedHeaderList.setVisible(show);
+        pinnedHeaderList.setManaged(show);
     }
 
     private boolean isPinnedCaregiver(seedu.address.model.person.Caregiver c) {

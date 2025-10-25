@@ -29,11 +29,13 @@ public class SeniorListPanel extends UiPart<Region> {
     private final Logic logic;
 
     private final javafx.collections.ObservableList<seedu.address.model.person.Senior> backingList;
+    private final javafx.collections.ObservableList<Senior> pinnedHeaderItems =
+            javafx.collections.FXCollections.observableArrayList();
 
     @FXML
     private ListView<Senior> seniorListView;
     @FXML
-    private javafx.scene.layout.HBox pinnedBar;
+    private ListView<Senior> pinnedHeaderList;
 
     /**
      * Creates a {@code SeniorListPanel} with the given {@code ObservableList}.
@@ -53,9 +55,14 @@ public class SeniorListPanel extends UiPart<Region> {
         seniorList.addListener((ListChangeListener<Senior>) change -> seniorListView.refresh());
         seniorListView.setCellFactory(listView -> new SeniorListViewCell(logic));
 
+        // header list: same cell factory so it looks identical
+        pinnedHeaderList.setItems(pinnedHeaderItems);
+        pinnedHeaderList.setCellFactory(listView -> new SeniorListViewCell(logic));
+        pinnedHeaderList.setFocusTraversable(false); // don’t steal keyboard focus
+
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
-        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Senior>) c -> refreshPinnedBar());
-        refreshPinnedBar();
+        backingList.addListener((javafx.collections.ListChangeListener<? super Senior>) c -> refreshPinnedHeader());
+        refreshPinnedHeader();
     }
 
     private static SortedList<Senior> getSeniorsSorted(ObservableList<Senior> personList) {
@@ -108,23 +115,15 @@ public class SeniorListPanel extends UiPart<Region> {
         }
     }
 
-    private void refreshPinnedBar() {
-        // find first pinned senior
-        java.util.Optional<seedu.address.model.person.Senior> pinnedOpt =
+    private void refreshPinnedHeader() {
+        java.util.Optional<Senior> pinnedOpt =
                 backingList.stream().filter(this::isPinnedSenior).findFirst();
 
-        pinnedBar.getChildren().clear();
-        if (pinnedOpt.isPresent()) {
-            var pinned = pinnedOpt.get();
-            // reuse your existing card
-            var card = new SeniorCard(pinned, 1); // index not shown/important in header
-            pinnedBar.getChildren().add(card.getRoot());
-            pinnedBar.setVisible(true);
-            pinnedBar.setManaged(true);
-        } else {
-            pinnedBar.setVisible(false);
-            pinnedBar.setManaged(false);
-        }
+        pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
+
+        boolean show = !pinnedHeaderItems.isEmpty();
+        pinnedHeaderList.setVisible(show);
+        pinnedHeaderList.setManaged(show);
     }
 
     private boolean isPinnedSenior(seedu.address.model.person.Senior s) {

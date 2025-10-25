@@ -4,6 +4,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox fx:id="pinnedBar" spacing="6" visible="false" managed="false"/>
+    <ListView fx:id="pinnedHeaderList" visible="false" managed="false" />
     <ListView fx:id="caregiverListView" VBox.vgrow="ALWAYS" />
 </VBox>
