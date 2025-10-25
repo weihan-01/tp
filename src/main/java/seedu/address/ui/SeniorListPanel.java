@@ -97,21 +97,19 @@ public class SeniorListPanel extends UiPart<Region> {
         protected void updateItem(Senior senior, boolean empty) {
             super.updateItem(senior, empty);
 
-            // always clear style first (cells are reused!)
-            getStyleClass().remove(PINNED_STYLE_CLASS);
-
             if (empty || senior == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(new SeniorCard(senior, getIndex() + 1, logic).getRoot());
-                // tag the WHOLE CELL when pinned (affects entire card)
-                if (isPinned(senior)) {
-                    if (!getStyleClass().contains(PINNED_STYLE_CLASS)) {
-                        getStyleClass().add(PINNED_STYLE_CLASS);
-                    }
-                }
+                return;
             }
+
+            // Build the normal card
+            SeniorCard card = new SeniorCard(senior, getIndex() + 1, logic);
+            Region root = card.getRoot();  // UiPart<Region> root of the card
+
+            // Important: don't add styles to the ListCell itself anymore
+            setGraphic(root);
+            setText(null);
         }
     }
 

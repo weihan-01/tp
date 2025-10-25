@@ -376,12 +376,19 @@
     -fx-text-fill: #777777;
 }
 
-/* Highlights the entire list row (the whole person card) when pinned */
-.list-cell.pinned-card {
-    -fx-background-insets: 0;
-    -fx-background-radius: 10;
-    -fx-border-color: #e53935;
+.pinned-card {
+    -fx-border-color: #e84d4d;
     -fx-border-width: 2;
-    -fx-border-radius: 10;
-    -fx-effect: dropshadow(gaussian, #e53935, 10, 0.2, 0, 0);
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;   /* match your card's bg radius */
+    -fx-padding: 2;              /* tiny inset so border isn't clipped */
 }
+
+/* Optional: ensure it stays visible when the row is selected */
+.list-cell:filled:selected .pinned-card {
+    -fx-border-color: #ffa4a4;
+}
+
+
+#pinnedHeaderList .scroll-bar:vertical { -fx-pref-width: 6; }
+#pinnedHeaderList { -fx-padding: 0 0 8 0; }

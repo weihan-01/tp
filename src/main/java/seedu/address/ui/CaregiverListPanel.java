@@ -97,21 +97,19 @@ public class CaregiverListPanel extends UiPart<Region> {
         protected void updateItem(Caregiver caregiver, boolean empty) {
             super.updateItem(caregiver, empty);
 
-            // always clear style first (cells are reused!)
-            getStyleClass().remove(PINNED_STYLE_CLASS);
-
             if (empty || caregiver == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(new CaregiverCard(caregiver, getIndex() + 1, logic).getRoot());
-                // tag the WHOLE CELL when pinned (affects entire card)
-                if (isPinned(caregiver)) {
-                    if (!getStyleClass().contains(PINNED_STYLE_CLASS)) {
-                        getStyleClass().add(PINNED_STYLE_CLASS);
-                    }
-                }
+                return;
             }
+
+            // Build the normal card
+            CaregiverCard card = new CaregiverCard(caregiver, getIndex() + 1, logic);
+            Region root = card.getRoot();  // UiPart<Region> root of the card
+
+            // Important: don't add styles to the ListCell itself anymore
+            setGraphic(root);
+            setText(null);
         }
     }
 
