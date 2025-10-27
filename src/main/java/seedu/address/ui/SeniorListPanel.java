@@ -11,7 +11,9 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
@@ -60,6 +62,11 @@ public class SeniorListPanel extends UiPart<Region> {
         pinnedHeaderList.setCellFactory(listView -> new SeniorListViewCell(logic));
         pinnedHeaderList.setFocusTraversable(false); // don’t steal keyboard focus
 
+        pinnedHeaderList.setFixedCellSize(-1); // variable row height
+        pinnedHeaderList.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        pinnedHeaderList.setMinHeight(135);
+        pinnedHeaderList.setMaxHeight(140); // max
+
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
         backingList.addListener((javafx.collections.ListChangeListener<? super Senior>) c -> refreshPinnedHeader());
         refreshPinnedHeader();
@@ -105,9 +112,13 @@ public class SeniorListPanel extends UiPart<Region> {
 
             // Build the normal card
             SeniorCard card = new SeniorCard(senior, getIndex() + 1, logic);
-            Region root = card.getRoot();  // UiPart<Region> root of the card
+            Region root = card.getRoot(); // UiPart<Region> root of the card
 
-            // Important: don't add styles to the ListCell itself anymore
+            root.getStyleClass().remove(PINNED_STYLE_CLASS);
+            if (isPinned(senior)) {
+                root.getStyleClass().add(PINNED_STYLE_CLASS);
+            }
+
             setGraphic(root);
             setText(null);
         }

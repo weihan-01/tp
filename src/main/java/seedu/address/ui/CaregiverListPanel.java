@@ -60,6 +60,11 @@ public class CaregiverListPanel extends UiPart<Region> {
         pinnedHeaderList.setCellFactory(listView -> new CaregiverListPanel.CaregiverListViewCell(logic));
         pinnedHeaderList.setFocusTraversable(false); // don’t steal keyboard focus
 
+        pinnedHeaderList.setFixedCellSize(-1); // variable row height
+        pinnedHeaderList.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        pinnedHeaderList.setMinHeight(135);
+        pinnedHeaderList.setMaxHeight(135); // max
+
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
         backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>) c -> refreshPinnedHeader());
         refreshPinnedHeader();
@@ -105,9 +110,13 @@ public class CaregiverListPanel extends UiPart<Region> {
 
             // Build the normal card
             CaregiverCard card = new CaregiverCard(caregiver, getIndex() + 1, logic);
-            Region root = card.getRoot();  // UiPart<Region> root of the card
+            Region root = card.getRoot(); // UiPart<Region> root of the card
 
-            // Important: don't add styles to the ListCell itself anymore
+            root.getStyleClass().remove(PINNED_STYLE_CLASS);
+            if (isPinned(caregiver)) {
+                root.getStyleClass().add(PINNED_STYLE_CLASS);
+            }
+
             setGraphic(root);
             setText(null);
         }

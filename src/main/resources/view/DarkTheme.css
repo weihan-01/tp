@@ -380,8 +380,8 @@
     -fx-border-color: #e84d4d;
     -fx-border-width: 2;
     -fx-border-radius: 12;
-    -fx-background-radius: 12;   /* match your card's bg radius */
-    -fx-padding: 2;              /* tiny inset so border isn't clipped */
+    -fx-background-radius: 12; /* match the card's bg radius */
+    -fx-padding: 2; /* tiny inset so border isn't clipped */
 }
 
 /* Optional: ensure it stays visible when the row is selected */
@@ -392,3 +392,26 @@
 
 #pinnedHeaderList .scroll-bar:vertical { -fx-pref-width: 6; }
 #pinnedHeaderList { -fx-padding: 0 0 8 0; }
+
+/* Lighter background for pinned cards (override #cardPane which sets transparent) */
+#cardPane.pinned-card {
+    -fx-background-color: derive(#092732, 35%); /* dark blue rectangle */
+    -fx-background-radius: 12;
+}
+
+/* Keep it readable when the row is selected */
+.list-cell:filled:selected #cardPane.pinned-card {
+    -fx-background-color: derive(#1d1d1d, 42%);
+}
+
+/* collapse the space below the pinned header list */
+#pinnedHeaderList {
+    -fx-padding: 0; /* was 0 0 8 0 */
+    -fx-background-insets: 0;
+    -fx-border-width: 0; /* no divider */
+}
+
+/* make the header row blend with the page so it doesn't leave a strip */
+#pinnedHeaderList .list-cell {
+    -fx-background-color: transparent;
+}
