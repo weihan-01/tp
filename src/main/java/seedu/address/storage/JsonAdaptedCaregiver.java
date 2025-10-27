@@ -26,6 +26,7 @@ class JsonAdaptedCaregiver {
     private final String phone;
     private final String address;
     private final String note;
+    private final Boolean pinned;
 
     /** Only used when role is Caregiver */
     private final Integer caregiverId;
@@ -37,13 +38,15 @@ class JsonAdaptedCaregiver {
                                 @JsonProperty("phone") String phone,
                                 @JsonProperty("address") String address,
                                 @JsonProperty("note") String note,
-                                @JsonProperty("caregiverId") Integer caregiverId) {
+                                @JsonProperty("caregiverId") Integer caregiverId,
+                                @JsonProperty("pinned") Boolean pinned) {
         this.role = role;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.note = note;
         this.caregiverId = caregiverId;
+        this.pinned = pinned;
     }
 
     /** Constructs from model. */
@@ -54,6 +57,7 @@ class JsonAdaptedCaregiver {
         this.note = source.getNote().value;
         this.role = "CAREGIVER";
         this.caregiverId = ((Caregiver) source).getCaregiverId();
+        this.pinned = source.isPinned();
     }
 
     /** Converts this JSON-friendly object back into the model's {@code Person} subtype. */
@@ -89,7 +93,7 @@ class JsonAdaptedCaregiver {
             // If you keep old data around, either delete data/addressbook.json or backfill IDs before loading.
             throw new IllegalValueException("Caregiver is missing caregiverId.");
         }
-        return new Caregiver(modelName, modelPhone, modelAddress, modelNote, caregiverId);
+        return new Caregiver(modelName, modelPhone, modelAddress, modelNote, caregiverId, pinned);
     }
 
     @Override
@@ -101,6 +105,7 @@ class JsonAdaptedCaregiver {
                 .add("address", address)
                 .add("note", note)
                 .add("caregiverId", caregiverId)
+                .add("pinned", pinned)
                 .toString();
     }
 }

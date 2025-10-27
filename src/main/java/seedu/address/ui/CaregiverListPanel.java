@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.logic.commands.PinCommand.isPinned;
-
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -66,14 +64,16 @@ public class CaregiverListPanel extends UiPart<Region> {
         pinnedHeaderList.setMaxHeight(135); // max
 
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
-        backingList.addListener((javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>) c -> refreshPinnedHeader());
+        backingList.addListener(
+                (javafx.collections.ListChangeListener<? super seedu.address.model.person.Caregiver>)
+                        c -> refreshPinnedHeader());
         refreshPinnedHeader();
     }
 
     private static SortedList<Caregiver> getCaregiverSorted(ObservableList<Caregiver> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
-            boolean ap = isPinned(a);
-            boolean bp = isPinned(b);
+            boolean ap = a.isPinned();
+            boolean bp = b.isPinned();
 
             if (ap != bp) {
                 return ap ? -1 : 1;
@@ -113,7 +113,7 @@ public class CaregiverListPanel extends UiPart<Region> {
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);
-            if (isPinned(caregiver)) {
+            if (caregiver.isPinned()) {
                 root.getStyleClass().add(PINNED_STYLE_CLASS);
             }
 
@@ -124,7 +124,7 @@ public class CaregiverListPanel extends UiPart<Region> {
 
     private void refreshPinnedHeader() {
         java.util.Optional<Caregiver> pinnedOpt =
-                backingList.stream().filter(this::isPinnedCaregiver).findFirst();
+                backingList.stream().filter(Caregiver::isPinned).findFirst();
 
         pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
 
@@ -134,7 +134,7 @@ public class CaregiverListPanel extends UiPart<Region> {
     }
 
     private boolean isPinnedCaregiver(seedu.address.model.person.Caregiver c) {
-        return isPinned(c);
+        return c.isPinned();
     }
 
 }

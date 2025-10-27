@@ -1,8 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.commands.PinCommand.cloneWithNote;
-import static seedu.address.logic.commands.PinCommand.isPinned;
 import static seedu.address.logic.commands.PinCommand.stripPinned;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
@@ -12,7 +10,6 @@ import java.util.Objects;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
@@ -24,8 +21,10 @@ public class UnpinCommand extends Command {
 
     public static final String COMMAND_WORD = "unpin";
 
-    // scope selector
-    public enum Scope {SENIOR, CAREGIVER, BOTH}
+    /**
+     * scope selector
+     */
+    public enum Scope { SENIOR, CAREGIVER, BOTH }
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Unpins pinned person(s).\n"
             + "Parameters: [s|senior | c|caregiver | all]\n"
@@ -59,26 +58,25 @@ public class UnpinCommand extends Command {
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
         int count = 0;
+
         // Unpin seniors if scope is BOTH or SENIOR
         if (scope != Scope.CAREGIVER) {
             for (Senior s : fullSeniorList) {
-                if (isPinned(s)) {
-                    Person unpinned = cloneWithNote(s, stripPinned(s.getNote()));
-                    model.setSenior(s, (Senior) unpinned);
+                if (s.isPinned()) {
+                    model.setSenior(s, s.withPinned(false).withNote(stripPinned(s.getNote())));
                     count++;
                 }
             }
         }
+
         // Unpin caregivers if scope is BOTH or CAREGIVER
         if (scope != Scope.SENIOR) {
             for (Caregiver c : fullCaregiverList) {
-                if (isPinned(c)) {
-                    Person unpinned = cloneWithNote(c, stripPinned(c.getNote()));
-                    model.setCaregiver(c, (Caregiver) unpinned);
+                if (c.isPinned()) {
+                    model.setCaregiver(c, c.withPinned(false).withNote(stripPinned(c.getNote())));
                     count++;
                 }
             }
-
         }
 
         if (count == 0) {

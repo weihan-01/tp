@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.logic.commands.PinCommand.isPinned;
-
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -11,9 +9,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
@@ -68,14 +64,16 @@ public class SeniorListPanel extends UiPart<Region> {
         pinnedHeaderList.setMaxHeight(140); // max
 
         // refresh header now and whenever list mutates (pin/unpin changes replace items)
-        backingList.addListener((javafx.collections.ListChangeListener<? super Senior>) c -> refreshPinnedHeader());
+        backingList.addListener(
+                (javafx.collections.ListChangeListener<? super Senior>)
+                        c -> refreshPinnedHeader());
         refreshPinnedHeader();
     }
 
     private static SortedList<Senior> getSeniorsSorted(ObservableList<Senior> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
-            boolean ap = isPinned(a);
-            boolean bp = isPinned(b);
+            boolean ap = a.isPinned();
+            boolean bp = b.isPinned();
 
             if (ap != bp) {
                 return ap ? -1 : 1;
@@ -115,7 +113,7 @@ public class SeniorListPanel extends UiPart<Region> {
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);
-            if (isPinned(senior)) {
+            if (senior.isPinned()) {
                 root.getStyleClass().add(PINNED_STYLE_CLASS);
             }
 
@@ -126,7 +124,7 @@ public class SeniorListPanel extends UiPart<Region> {
 
     private void refreshPinnedHeader() {
         java.util.Optional<Senior> pinnedOpt =
-                backingList.stream().filter(this::isPinnedSenior).findFirst();
+                backingList.stream().filter(Senior::isPinned).findFirst();
 
         pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
 
@@ -136,7 +134,7 @@ public class SeniorListPanel extends UiPart<Region> {
     }
 
     private boolean isPinnedSenior(seedu.address.model.person.Senior s) {
-        return isPinned(s);
+        return s.isPinned();
     }
 
 }

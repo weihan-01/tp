@@ -13,8 +13,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments for the {@code pin} command.
  * <p>
- * Expected format: {@code pin n/NAME}. This parser extracts the {@code NAME} value from the
- * {@code n/} prefix and constructs a {@link seedu.address.logic.commands.PinCommand}.
+ * Expected format: {@code pin c/id or pin s/id}.
  * If the required prefix is missing or empty, a {@link ParseException} is thrown with the
  * appropriate usage message.
  *

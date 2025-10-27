@@ -44,7 +44,7 @@ public class AddCaregiverCommandParser implements Parser<AddCaregiverCommand> {
                 : new Address("N/A"); // keep Address non-empty for validation
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
 
-        Caregiver caregiver = new Caregiver(name, phone, address, note, null);
+        Caregiver caregiver = new Caregiver(name, phone, address, note, null, false);
 
         // Return command with fields; Caregiver (with ID) is created in execute()
         return new AddCaregiverCommand(caregiver);

@@ -33,6 +33,7 @@ class JsonAdaptedSenior {
     private final String phone;
     private final String address;
     private final String note;
+    private final Boolean pinned;
 
     /**
      * Only used when role == "SENIOR": we store the single risk tag
@@ -52,7 +53,8 @@ class JsonAdaptedSenior {
                              @JsonProperty("note") String note,
                              @JsonProperty("risk") List<JsonAdaptedTag> risk,
                              @JsonProperty("seniorId") Integer seniorId,
-                             @JsonProperty("caregiverId") Integer caregiverId) {
+                             @JsonProperty("caregiverId") Integer caregiverId,
+                             @JsonProperty("pinned") Boolean pinned) {
         this.role = role;
         this.name = name;
         this.phone = phone;
@@ -63,6 +65,7 @@ class JsonAdaptedSenior {
         }
         this.seniorId = seniorId;
         this.caregiverId = caregiverId;
+        this.pinned = pinned;
     }
 
     /** Constructs from model. */
@@ -78,6 +81,7 @@ class JsonAdaptedSenior {
                 .collect(Collectors.toList()));
         this.seniorId = source.getSeniorId();
         this.caregiverId = source.getCaregiverId();
+        this.pinned = source.isPinned();
     }
 
     /** Returns the caregiver ID provided, */
@@ -119,7 +123,7 @@ class JsonAdaptedSenior {
             riskSet.add(t.toModelType());
         }
 
-        return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, seniorId);
+        return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, seniorId, pinned);
     }
 
     @Override
@@ -133,6 +137,7 @@ class JsonAdaptedSenior {
                 .add("riskTags", riskTags)
                 .add("seniorId", seniorId)
                 .add("caregiverId", caregiverId)
+                .add("pinned", pinned)
                 .toString();
     }
 }

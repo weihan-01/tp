@@ -44,7 +44,7 @@ public class AssignCommand extends Command {
     /**
      * Creates an AssignCommand to assign the specified {@code Caregiver} to the specified {@code Senior}
      *
-     * @param seniorIndex Index of the senior in the filtered person list
+     * @param seniorIndex    Index of the senior in the filtered person list
      * @param caregiverIndex Index of the caregiver in the filtered person list
      */
     public AssignCommand(Integer seniorIndex, Integer caregiverIndex) {
@@ -71,12 +71,12 @@ public class AssignCommand extends Command {
 
         // Find senior by seniorId
         Senior senior = fullSeniorList.stream()
-            .filter(s -> {
-                Integer seniorId = s.getSeniorId();
-                return seniorId != null && (seniorId.equals(seniorIndex));
-            })
-            .findFirst()
-            .orElse(null);
+                .filter(s -> {
+                    Integer seniorId = s.getSeniorId();
+                    return seniorId != null && (seniorId.equals(seniorIndex));
+                })
+                .findFirst()
+                .orElse(null);
         if (senior == null) {
             throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
         }
@@ -115,13 +115,14 @@ public class AssignCommand extends Command {
      */
     private Senior createSeniorWithCaregiver(Senior senior, Caregiver caregiver) {
         return new Senior(
-            senior.getName(),
-            senior.getPhone(),
-            senior.getAddress(),
-            senior.getRiskTags(),
-            senior.getNote(),
-            caregiver,
-            senior.getSeniorId()
+                senior.getName(),
+                senior.getPhone(),
+                senior.getAddress(),
+                senior.getRiskTags(),
+                senior.getNote(),
+                caregiver,
+                senior.getSeniorId(),
+                senior.isPinned()
         );
     }
 

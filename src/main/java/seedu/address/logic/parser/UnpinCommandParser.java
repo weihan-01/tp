@@ -8,6 +8,14 @@ import java.util.Locale;
 import seedu.address.logic.commands.UnpinCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses input arguments for the {@code unpin} command.
+ * <p>
+ * Expected format: {@code unpin c} or {@code unpin s} or {@code unpin a}.
+ * If the required prefix is missing or empty, a {@link ParseException} is thrown with the
+ * appropriate usage message.
+ * @see seedu.address.logic.commands.UnpinCommand
+ */
 public class UnpinCommandParser implements Parser<UnpinCommand> {
     @Override
     public UnpinCommand parse(String args) throws ParseException {
