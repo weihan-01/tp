@@ -36,6 +36,10 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
+    // default size
+    private static final double MIN_WINDOW_WIDTH = 700;
+    private static final double MIN_WINDOW_HEIGHT = 600;
+
     @FXML
     private StackPane commandBoxPlaceholder;
 
@@ -133,8 +137,16 @@ public class MainWindow extends UiPart<Stage> {
      * Sets the default size based on {@code guiSettings}.
      */
     private void setWindowDefaultSize(GuiSettings guiSettings) {
-        primaryStage.setHeight(guiSettings.getWindowHeight());
-        primaryStage.setWidth(guiSettings.getWindowWidth());
+        // enforce minimums first
+        primaryStage.setMinWidth(MIN_WINDOW_WIDTH);
+        primaryStage.setMinHeight(MIN_WINDOW_HEIGHT);
+
+        // restore size but never smaller than the minimums
+        double w = Math.max(guiSettings.getWindowWidth(), MIN_WINDOW_WIDTH);
+        double h = Math.max(guiSettings.getWindowHeight(), MIN_WINDOW_HEIGHT);
+        primaryStage.setWidth(w);
+        primaryStage.setHeight(h);
+
         if (guiSettings.getWindowCoordinates() != null) {
             primaryStage.setX(guiSettings.getWindowCoordinates().getX());
             primaryStage.setY(guiSettings.getWindowCoordinates().getY());
