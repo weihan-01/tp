@@ -53,6 +53,7 @@ public class CaregiverListPanel extends UiPart<Region> {
         caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
 
+        seniorList.addListener((ListChangeListener<Senior>) c -> caregiverListView.refresh());
         // header list: same cell factory so it looks identical
         pinnedHeaderList.setItems(pinnedHeaderItems);
         pinnedHeaderList.setCellFactory(listView -> new CaregiverListPanel.CaregiverListViewCell(logic));

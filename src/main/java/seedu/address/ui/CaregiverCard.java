@@ -1,37 +1,27 @@
 package seedu.address.ui;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
 
 /**
- * A UI component that displays information of a {@code Person}.
+ * A UI component that displays information of a {@code Caregiver}.
  */
 public class CaregiverCard extends UiPart<Region> {
 
     private static final String FXML = "CaregiverListCard.fxml";
 
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
-
-    public final Person person;
+    public final Caregiver caregiver;
+    private ImageView pinIcon;
 
     @FXML
     private HBox cardPane;
@@ -58,13 +48,13 @@ public class CaregiverCard extends UiPart<Region> {
     /**
      * Creates a {@code CaregiverCard} with the given {@code Caregiver} and index to display.
      */
-    public CaregiverCard(Person person, int displayedIndex, Logic logic) {
+    public CaregiverCard(Caregiver caregiver, int displayedIndex, Logic logic) {
         super(FXML);
         // make FlowPane expand and wrap
         HBox.setHgrow(assignedChips, Priority.ALWAYS);
         assignedChips.setMaxWidth(Double.MAX_VALUE);
 
-        // wrap to remaining width of the card (title + padding ≈ 160; adjust if needed)
+        // wrap to remaining width of the card (title + padding ≈ 160)
         assignedChips.prefWrapLengthProperty().bind(
                 cardPane.widthProperty()
                         .subtract(assignedTitle.widthProperty())
@@ -74,28 +64,56 @@ public class CaregiverCard extends UiPart<Region> {
         assignedChips.setPrefHeight(Region.USE_COMPUTED_SIZE);
         assignedChips.setMinHeight(Region.USE_PREF_SIZE);
 
-        // optional: nicer spacing
+        // nicer spacing
         assignedChips.setHgap(6);
         assignedChips.setVgap(4);
-        this.person = person;
+
+        this.caregiver = caregiver;
         this.logic = logic;
 
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
+        name.setText(caregiver.getName().fullName);
+        phone.setText(caregiver.getPhone().value);
+        address.setText(caregiver.getAddress().value);
 
         renderNote();
         renderAssignedRow();
         renderChips();
-    }
 
-    public CaregiverCard(Person person, int displayedIndex) {
-        this(person, displayedIndex, null);
+        // PIN
+        // --- pin icon ---
+        pinIcon = new ImageView(new Image(
+                Objects.requireNonNull(getClass().getResource("/images/pin.png")).toExternalForm()
+        ));
+        pinIcon.setFitWidth(18);
+        pinIcon.setPreserveRatio(true);
+        pinIcon.setSmooth(true);
+        pinIcon.setManaged(false);
+        pinIcon.setMouseTransparent(true);
+        pinIcon.getStyleClass().add("pin-icon");
+
+        cardPane.getChildren().add(pinIcon);
+
+        // absolute top-right inside the card
+        pinIcon.setLayoutY(6);
+        pinIcon.layoutXProperty().bind(
+                cardPane.widthProperty().subtract(pinIcon.fitWidthProperty()).subtract(8)
+        );
+        // show only if pinned
+        updatePinIcon(caregiver.isPinned());
+        // --- end pin icon ---
+
+        if (caregiver.isPinned()) {
+            if (!cardPane.getStyleClass().contains("pinned-bg")) {
+                cardPane.getStyleClass().add("pinned-bg");
+            }
+        } else {
+            cardPane.getStyleClass().remove("pinned-bg");
+        }
     }
 
     private void renderNote() {
         // NOTE: show if non-empty, else hide (cells are reused -> always set both managed & visible)
-        String nv = person.getNote() == null ? "" : person.getNote().value;
+        String nv = caregiver.getNote() == null ? "" : caregiver.getNote().value;
         if (nv != null && !nv.trim().isEmpty()) {
             note.setText(nv);
             note.setManaged(true);
@@ -110,45 +128,21 @@ public class CaregiverCard extends UiPart<Region> {
     private void renderAssignedRow() {
         assignedRow.setManaged(false);
         assignedRow.setVisible(false);
-
         if (logic == null) {
-            return; // tests / safety
-        }
-
-        if (person instanceof Senior s) {
-            assignedTitle.setText("Caregiver:");
-            String cgName = logic.getAssignedCaregiverName(s);
-            showAssigned(cgName == null || cgName.isBlank()
-                    ? List.of()
-                    : List.of(cgName));
-        } else if (person instanceof Caregiver c) {
-            assignedTitle.setText("Seniors:");
-            var names = (logic == null) ? List.<String>of()
-                    : logic.getAssignedSeniorNames(c);
-
-            assignedRow.setManaged(true);
-            assignedRow.setVisible(true);
-
-            if (names == null || names.isEmpty()) {
-                assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
-            } else {
-                assignedChips.getChildren().setAll(
-                        names.stream().map(n -> makeAssignedChip(n, false)).toList()
-                );
-            }
-        }
-    }
-
-    private void showAssigned(List<String> names) {
-        assignedRow.setManaged(true);
-        assignedRow.setVisible(true);
-        assignedChips.getChildren().clear();
-
-        if (names == null || names.isEmpty()) {
-            assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
             return;
         }
-        names.forEach(n -> assignedChips.getChildren().add(makeAssignedChip(n, false)));
+
+        assignedTitle.setText("Seniors:");
+        var names = logic.getAssignedSeniorNames(caregiver);
+
+        assignedRow.setManaged(true);
+        assignedRow.setVisible(true);
+        if (names == null || names.isEmpty()) {
+            assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
+        } else {
+            assignedChips.getChildren().setAll(
+                    names.stream().map(n -> makeAssignedChip(n, false)).toList());
+        }
     }
 
     private Label makeAssignedChip(String text, boolean emptyStyle) {
@@ -161,44 +155,15 @@ public class CaregiverCard extends UiPart<Region> {
     }
 
     /**
-     * Risk chip for Senior; caregiver id chip for Caregiver; hide row otherwise.
+     * Caregiver ID chip.
      */
     private void renderChips() {
         tags.getChildren().clear();
         tags.setManaged(false);
         tags.setVisible(false);
 
-        if (person instanceof Senior) {
-            Senior s = (Senior) person;
-            Set<Tag> risk = s.getRiskTags();
-            if (risk != null && !risk.isEmpty()) {
-                tags.setManaged(true);
-                tags.setVisible(true);
-                risk.stream()
-                        .sorted(Comparator.comparing(t -> t.tagName))
-                        .forEach(t -> {
-                            String chipStr = riskLabel(t.tagName);
-                            Label chip = makeChip(chipStr);
-                            chip.getStyleClass().add("tag-chip"); // base pill style
-                            switch (t.tagName.toUpperCase()) {
-                            case "HR":
-                                chip.getStyleClass().add("chip-hr");
-                                break; // red
-                            case "MR":
-                                chip.getStyleClass().add("chip-mr");
-                                break; // orange
-                            case "LR":
-                                chip.getStyleClass().add("chip-lr");
-                                break; // yellow
-                            default:
-                                break;
-                            }
-                            tags.getChildren().add(chip);
-                        });
-            }
-        } else if (person instanceof Caregiver) {
-            Caregiver c = (Caregiver) person;
-            int cgId = c.getCaregiverId();
+        Integer cgId = caregiver.getCaregiverId();
+        if (cgId != null) {
             tags.setManaged(true);
             tags.setVisible(true);
             Label chip = makeChip(String.format("C%06d", cgId));
@@ -213,19 +178,10 @@ public class CaregiverCard extends UiPart<Region> {
         return l;
     }
 
-    private static String riskLabel(String code) {
-        if (code == null) {
-            return "";
-        }
-        switch (code.trim().toUpperCase()) {
-        case "HR":
-            return "High Risk";
-        case "MR":
-            return "Medium Risk";
-        case "LR":
-            return "Low Risk";
-        default:
-            return code; // any unexpected tag shows as-is
+    private void updatePinIcon(boolean show) {
+        if (pinIcon != null) {
+            pinIcon.setVisible(show);
         }
     }
+
 }

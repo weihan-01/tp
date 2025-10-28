@@ -2,10 +2,13 @@ package seedu.address.ui;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -30,6 +33,7 @@ public class SeniorCard extends UiPart<Region> {
      */
 
     public final Senior senior;
+    private ImageView pinIcon;
 
     @FXML
     private HBox cardPane;
@@ -85,10 +89,37 @@ public class SeniorCard extends UiPart<Region> {
         renderNote();
         renderAssignedRow();
         renderChips();
-    }
 
-    public SeniorCard(Senior senior, int displayedIndex) {
-        this(senior, displayedIndex, null);
+        // PIN
+        // --- pin icon ---
+        pinIcon = new ImageView(new Image(
+                Objects.requireNonNull(getClass().getResource("/images/pin.png")).toExternalForm()
+        ));
+        pinIcon.setFitWidth(18);
+        pinIcon.setPreserveRatio(true);
+        pinIcon.setSmooth(true);
+        pinIcon.setManaged(false);
+        pinIcon.setMouseTransparent(true);
+        pinIcon.getStyleClass().add("pin-icon");
+
+        cardPane.getChildren().add(pinIcon);
+
+        // absolute top-right inside the card
+        pinIcon.setLayoutY(6);
+        pinIcon.layoutXProperty().bind(
+                cardPane.widthProperty().subtract(pinIcon.fitWidthProperty()).subtract(8)
+        );
+        // show only if pinned
+        updatePinIcon(senior.isPinned());
+        // --- end pin icon ---
+
+        if (senior.isPinned()) {
+            if (!cardPane.getStyleClass().contains("pinned-bg")) {
+                cardPane.getStyleClass().add("pinned-bg");
+            }
+        } else {
+            cardPane.getStyleClass().remove("pinned-bg");
+        }
     }
 
     private void renderNote() {
@@ -142,7 +173,7 @@ public class SeniorCard extends UiPart<Region> {
     }
 
     /**
-     * Risk chip for Senior; caregiver id chip for Caregiver; hide row otherwise.
+     * Risk chip for Senior.
      */
     private void renderChips() {
         tags.getChildren().clear();
@@ -159,26 +190,26 @@ public class SeniorCard extends UiPart<Region> {
             tags.getChildren().add(idChip);
 
             risk.stream()
-                .sorted(Comparator.comparing(t -> t.tagName))
-                .forEach(t -> {
-                    String chipStr = riskLabel(t.tagName);
-                    Label chip = makeChip(chipStr);
-                    chip.getStyleClass().add("tag-chip"); // base pill style
-                    switch (t.tagName.toUpperCase()) {
-                    case "HR":
-                        chip.getStyleClass().add("chip-hr");
-                        break; // red
-                    case "MR":
-                        chip.getStyleClass().add("chip-mr");
-                        break; // orange
-                    case "LR":
-                        chip.getStyleClass().add("chip-lr");
-                        break; // yellow
-                    default:
-                        break;
-                    }
-                    tags.getChildren().add(chip);
-                });
+                    .sorted(Comparator.comparing(t -> t.tagName))
+                    .forEach(t -> {
+                        String chipStr = riskLabel(t.tagName);
+                        Label chip = makeChip(chipStr);
+                        chip.getStyleClass().add("tag-chip"); // base pill style
+                        switch (t.tagName.toUpperCase()) {
+                        case "HR":
+                            chip.getStyleClass().add("chip-hr");
+                            break; // red
+                        case "MR":
+                            chip.getStyleClass().add("chip-mr");
+                            break; // orange
+                        case "LR":
+                            chip.getStyleClass().add("chip-lr");
+                            break; // yellow
+                        default:
+                            break;
+                        }
+                        tags.getChildren().add(chip);
+                    });
         }
     }
 
@@ -203,4 +234,11 @@ public class SeniorCard extends UiPart<Region> {
             return code; // any unexpected tag shows as-is
         }
     }
+
+    private void updatePinIcon(boolean show) {
+        if (pinIcon != null) {
+            pinIcon.setVisible(show);
+        }
+    }
+
 }
