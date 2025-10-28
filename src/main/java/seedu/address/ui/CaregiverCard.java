@@ -14,7 +14,11 @@ import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
 
 /**
- * A UI component that displays information of a {@code Caregiver}.
+ * A UI component that displays a {@link Caregiver} as a card in the caregiver list.
+ * <p>
+ * The card shows the caregiver's name, phone, address, note, a caregiver-id chip, and
+ * a list of assigned seniors as chips. If the caregiver is marked as pinned, a pin icon
+ * is overlaid at the top-right and a subtle pinned background style is applied.
  */
 public class CaregiverCard extends UiPart<Region> {
 
@@ -46,7 +50,10 @@ public class CaregiverCard extends UiPart<Region> {
 
 
     /**
-     * Creates a {@code CaregiverCard} with the given {@code Caregiver} and index to display.
+     * Creates a {@code CaregiverCard} with the given {@code Caregiver} and backing {@code Logic}.
+     *
+     * @param caregiver      the caregiver whose data is displayed by this card (non-null)
+     * @param logic          logic facade for querying assignment names; may be null in tests
      */
     public CaregiverCard(Caregiver caregiver, Logic logic) {
         super(FXML);
@@ -111,6 +118,12 @@ public class CaregiverCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Shows or hides the note label based on the caregiver's note value.
+     * <p>
+     * This method always sets both {@code managed} and {@code visible} flags to ensure
+     * proper layout when list cells are reused by JavaFX.
+     */
     private void renderNote() {
         // NOTE: show if non-empty, else hide (cells are reused -> always set both managed & visible)
         String nv = caregiver.getNote() == null ? "" : caregiver.getNote().value;
@@ -125,6 +138,12 @@ public class CaregiverCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Populates the "Seniors:" row with chips for each assigned senior.
+     * <p>
+     * When {@code logic} is null (e.g., certain tests), the row is skipped.
+     * If no seniors are assigned, shows a single "Unassigned" placeholder chip.
+     */
     private void renderAssignedRow() {
         assignedRow.setManaged(false);
         assignedRow.setVisible(false);
@@ -145,6 +164,13 @@ public class CaregiverCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Creates a styled chip label for the assigned row.
+     *
+     * @param text       chip text
+     * @param emptyStyle whether to apply the "empty" variant (used for "Unassigned")
+     * @return a {@link Label} configured with chip styles
+     */
     private Label makeAssignedChip(String text, boolean emptyStyle) {
         Label l = new Label(text);
         l.getStyleClass().addAll("tag-chip", "chip-assigned");
@@ -155,7 +181,8 @@ public class CaregiverCard extends UiPart<Region> {
     }
 
     /**
-     * Caregiver ID chip.
+     * Renders the caregiver ID chip (e.g., {@code C000123}) in the tags row.
+     * Hides the row if the caregiver ID is null.
      */
     private void renderChips() {
         tags.getChildren().clear();
@@ -172,12 +199,23 @@ public class CaregiverCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Creates a base tag chip label with the shared tag-chip style class.
+     *
+     * @param text chip text
+     * @return a {@link Label} styled as a tag chip
+     */
     private static Label makeChip(String text) {
         Label l = new Label(text);
         l.getStyleClass().add("tag-chip");
         return l;
     }
 
+    /**
+     * Shows or hides the pin icon overlay without affecting layout.
+     *
+     * @param show {@code true} to display the pin; {@code false} to hide it
+     */
     private void updatePinIcon(boolean show) {
         if (pinIcon != null) {
             pinIcon.setVisible(show);

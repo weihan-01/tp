@@ -17,7 +17,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
- * Panel containing the list of persons.
+ * Panel containing the list of seniors plus a small header area that shows
+ * the currently pinned senior (if any).
  */
 public class SeniorListPanel extends UiPart<Region> {
     private static final String FXML = "SeniorListPanel.fxml";
@@ -36,7 +37,11 @@ public class SeniorListPanel extends UiPart<Region> {
     private ListView<Senior> pinnedHeaderList;
 
     /**
-     * Creates a {@code SeniorListPanel} with the given {@code ObservableList}.
+     * Creates a {@code SeniorListPanel} with the given lists and logic.
+     *
+     * @param seniorList     observable list of seniors from the model (backing list for this panel)
+     * @param caregiverList  observable list of caregivers (observed only to refresh when assignments change)
+     * @param logic          logic facade used by cards to resolve display data (e.g., assigned caregiver names)
      */
     public SeniorListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
@@ -70,6 +75,13 @@ public class SeniorListPanel extends UiPart<Region> {
         refreshPinnedHeader();
     }
 
+    /**
+     * Returns a live-sorted view of {@code personList} where pinned seniors appear first,
+     * followed by alphabetical ordering by name (case-insensitive).
+     *
+     * @param personList the observable seniors list to sort
+     * @return a {@link SortedList} that updates ordering automatically on mutations
+     */
     private static SortedList<Senior> getSeniorsSorted(ObservableList<Senior> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
             boolean ap = a.isPinned();
@@ -122,6 +134,10 @@ public class SeniorListPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Updates the header area so it shows exactly one pinned senior if present,
+     * or hides the header when there is none.
+     */
     private void refreshPinnedHeader() {
         java.util.Optional<Senior> pinnedOpt =
                 backingList.stream().filter(Senior::isPinned).findFirst();
@@ -133,6 +149,12 @@ public class SeniorListPanel extends UiPart<Region> {
         pinnedHeaderList.setManaged(show);
     }
 
+    /**
+     * Helper used by the main list’s filtered view to exclude the pinned senior.
+     *
+     * @param s the senior to check
+     * @return {@code true} if the senior is pinned
+     */
     private boolean isPinnedSenior(seedu.address.model.person.Senior s) {
         return s.isPinned();
     }

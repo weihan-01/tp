@@ -18,7 +18,11 @@ import seedu.address.model.person.Senior;
 import seedu.address.model.tag.Tag;
 
 /**
- * A UI component that displays information of a {@code Person}.
+ * A UI component that displays a {@link Senior} as a card in the seniors list.
+ * <p>
+ * The card renders basic fields (name, phone, address, note), risk-tag chips, and the
+ * assigned caregiver chip. When the senior is marked as pinned, a pin icon is shown at
+ * the top-right and the card receives a subtle pinned background style.
  */
 public class SeniorCard extends UiPart<Region> {
 
@@ -58,7 +62,10 @@ public class SeniorCard extends UiPart<Region> {
 
 
     /**
-     * Creates a {@code SeniorCard} with the given {@code Senior} and index to display.
+     * Creates a {@code SeniorCard} that renders the given {@link Senior}.
+     *
+     * @param senior the senior to display (non-null)
+     * @param logic  logic facade for resolving assigned caregiver names; may be null in tests
      */
     public SeniorCard(Senior senior, Logic logic) {
         super(FXML);
@@ -122,6 +129,11 @@ public class SeniorCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Shows or hides the note label based on the senior's note value.
+     * <p>
+     * Both {@code managed} and {@code visible} are set to ensure correct layout in reused cells.
+     */
     private void renderNote() {
         // NOTE: show if non-empty, else hide (cells are reused -> always set both managed & visible)
         String nv = senior.getNote() == null ? "" : senior.getNote().value;
@@ -136,6 +148,10 @@ public class SeniorCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Populates the "Caregiver:" row with a single chip of the assigned caregiver's name.
+     * If none is assigned, shows an "Unassigned" placeholder chip.
+     */
     private void renderAssignedRow() {
         assignedRow.setManaged(false);
         assignedRow.setVisible(false);
@@ -151,6 +167,11 @@ public class SeniorCard extends UiPart<Region> {
                 : List.of(cgName));
     }
 
+    /**
+     * Updates the assigned-chip container with the given names.
+     *
+     * @param names list of names to render; empty or null shows a single "Unassigned" chip
+     */
     private void showAssigned(java.util.List<String> names) {
         assignedRow.setManaged(true);
         assignedRow.setVisible(true);
@@ -163,6 +184,13 @@ public class SeniorCard extends UiPart<Region> {
         names.forEach(n -> assignedChips.getChildren().add(makeAssignedChip(n, false)));
     }
 
+    /**
+     * Creates a styled chip label for the assigned row.
+     *
+     * @param text       chip text
+     * @param emptyStyle whether to apply the "empty" variant (used for "Unassigned")
+     * @return a {@link Label} configured with chip styles
+     */
     private Label makeAssignedChip(String text, boolean emptyStyle) {
         Label l = new Label(text);
         l.getStyleClass().addAll("tag-chip", "chip-assigned");
@@ -173,7 +201,8 @@ public class SeniorCard extends UiPart<Region> {
     }
 
     /**
-     * Risk chip for Senior.
+     * Renders the senior's risk chips and ID chip in the tags row.
+     * Hides the row if no risk tags are present.
      */
     private void renderChips() {
         tags.getChildren().clear();
@@ -213,12 +242,23 @@ public class SeniorCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Creates a base tag chip label with the shared tag-chip style class.
+     *
+     * @param text chip text
+     * @return a {@link Label} styled as a tag chip
+     */
     private static Label makeChip(String text) {
         Label l = new Label(text);
         l.getStyleClass().add("tag-chip");
         return l;
     }
-
+    /**
+     * Returns the display label for a risk code.
+     *
+     * @param code risk tag code (e.g., "HR", "MR", "LR")
+     * @return human-readable label or the original code if unrecognized
+     */
     private static String riskLabel(String code) {
         if (code == null) {
             return "";
@@ -235,6 +275,11 @@ public class SeniorCard extends UiPart<Region> {
         }
     }
 
+    /**
+     * Shows or hides the pin icon overlay without affecting layout.
+     *
+     * @param show {@code true} to display the pin; {@code false} to hide it
+     */
     private void updatePinIcon(boolean show) {
         if (pinIcon != null) {
             pinIcon.setVisible(show);

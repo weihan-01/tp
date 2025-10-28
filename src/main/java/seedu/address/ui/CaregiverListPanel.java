@@ -17,7 +17,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 
 /**
- * Panel containing the list of persons.
+ * Panel containing the list of caregivers plus a small header area that shows
+ * the currently pinned caregiver (if any).
  */
 public class CaregiverListPanel extends UiPart<Region> {
     private static final String FXML = "CaregiverListPanel.fxml";
@@ -36,7 +37,11 @@ public class CaregiverListPanel extends UiPart<Region> {
     private ListView<Caregiver> pinnedHeaderList;
 
     /**
-     * Creates a {@code CaregiverListPanel} with the given {@code ObservableList}.
+     * Creates a {@code CaregiverListPanel}.
+     *
+     * @param seniorList     seniors list (observed only for refresh when assignments change)
+     * @param caregiverList  caregivers list from the model; also used to derive the pinned header
+     * @param logic          logic facade passed down to cards for resolving display data
      */
     public CaregiverListPanel(ObservableList<Senior> seniorList, ObservableList<Caregiver> caregiverList, Logic logic) {
         super(FXML);
@@ -71,6 +76,13 @@ public class CaregiverListPanel extends UiPart<Region> {
         refreshPinnedHeader();
     }
 
+    /**
+     * Returns a {@link SortedList} view that keeps caregivers ordered by
+     * pinned-first and then by name (case-insensitive).
+     *
+     * @param personList the observable caregivers list
+     * @return a live-sorted view
+     */
     private static SortedList<Caregiver> getCaregiverSorted(ObservableList<Caregiver> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
             boolean ap = a.isPinned();
@@ -90,7 +102,8 @@ public class CaregiverListPanel extends UiPart<Region> {
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code Caregiver} using a {@code CaregiverCard}.
+     * Custom {@link ListCell} that renders a {@link Caregiver} using a {@link CaregiverCard}.
+     * Adds a CSS class to the card root when the caregiver is pinned.
      */
     private static class CaregiverListViewCell extends ListCell<Caregiver> {
         private final Logic logic;
@@ -99,6 +112,10 @@ public class CaregiverListPanel extends UiPart<Region> {
             this.logic = logic;
         }
 
+        /**
+         * Updates the cell’s content to display the given caregiver.
+         * Ensures empty cells are cleared and applies the pinned style when applicable.
+         */
         @Override
         protected void updateItem(Caregiver caregiver, boolean empty) {
             super.updateItem(caregiver, empty);
@@ -123,6 +140,10 @@ public class CaregiverListPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Refreshes the header ListView so it shows the single pinned caregiver if one exists,
+     * or hides the header area otherwise.
+     */
     private void refreshPinnedHeader() {
         java.util.Optional<Caregiver> pinnedOpt =
                 backingList.stream().filter(Caregiver::isPinned).findFirst();
@@ -134,6 +155,12 @@ public class CaregiverListPanel extends UiPart<Region> {
         pinnedHeaderList.setManaged(show);
     }
 
+    /**
+     * Predicate helper for filtering out the pinned caregiver from the main list.
+     *
+     * @param c caregiver to test
+     * @return {@code true} if the caregiver is pinned
+     */
     private boolean isPinnedCaregiver(seedu.address.model.person.Caregiver c) {
         return c.isPinned();
     }
