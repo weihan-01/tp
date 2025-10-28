@@ -66,8 +66,8 @@ public class SeniorListPanel extends UiPart<Region> {
 
         // Implement logic when senior list is empty, display message prompt
         Label emptySeniorsListPlaceholder = createEmptySeniorsPlaceholder();
-        Runnable refreshPlaceholder = createRefreshPlaceholder
-                (backingList, emptySeniorsListPlaceholder, MESSAGE_NO_SENIORS_PROMPT);
+        Runnable refreshPlaceholder = createRefreshPlaceholder(
+                backingList, emptySeniorsListPlaceholder, MESSAGE_NO_SENIORS_PROMPT);
         initializeSeniorPlaceholder(refreshPlaceholder, backingList);
         seniorListView.setPlaceholder(emptySeniorsListPlaceholder);
 

@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.logic.Messages.MESSAGE_NO_CAREGIVERS_PROMPT;
+
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -18,9 +20,6 @@ import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
-
-import static seedu.address.logic.Messages.MESSAGE_NO_CAREGIVERS_PROMPT;
-import static seedu.address.logic.Messages.MESSAGE_NO_SENIORS_PROMPT;
 
 /**
  * Panel containing the list of caregivers plus a small header area that shows
@@ -66,8 +65,8 @@ public class CaregiverListPanel extends UiPart<Region> {
 
         // Implement logic when senior list is empty, display message prompt
         Label emptySeniorsListPlaceholder = createEmptyCaregiverPlaceholder();
-        Runnable refreshPlaceholder = createRefreshPlaceholder
-                (backingList, emptySeniorsListPlaceholder, MESSAGE_NO_CAREGIVERS_PROMPT);
+        Runnable refreshPlaceholder = createRefreshPlaceholder(
+                backingList, emptySeniorsListPlaceholder, MESSAGE_NO_CAREGIVERS_PROMPT);
         initializeSeniorPlaceholder(refreshPlaceholder, backingList);
         caregiverListView.setPlaceholder(emptySeniorsListPlaceholder);
 
@@ -206,7 +205,8 @@ public class CaregiverListPanel extends UiPart<Region> {
      * @param message the message to display when the list is empty
      * @return a Runnable that refreshes the placeholder's text and visibility
      */
-    private Runnable createRefreshPlaceholder(ObservableList<Caregiver> backingList, Label placeholder, String message) {
+    private Runnable createRefreshPlaceholder(
+            ObservableList<Caregiver> backingList, Label placeholder, String message) {
         return () -> {
             boolean isEmpty = backingList.isEmpty();
             placeholder.setText(isEmpty ? message : "");
