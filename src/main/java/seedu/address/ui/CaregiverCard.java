@@ -48,7 +48,7 @@ public class CaregiverCard extends UiPart<Region> {
     /**
      * Creates a {@code CaregiverCard} with the given {@code Caregiver} and index to display.
      */
-    public CaregiverCard(Caregiver caregiver, int displayedIndex, Logic logic) {
+    public CaregiverCard(Caregiver caregiver, Logic logic) {
         super(FXML);
         // make FlowPane expand and wrap
         HBox.setHgrow(assignedChips, Priority.ALWAYS);

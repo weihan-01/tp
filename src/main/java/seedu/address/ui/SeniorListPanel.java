@@ -109,7 +109,7 @@ public class SeniorListPanel extends UiPart<Region> {
             }
 
             // Build the normal card
-            SeniorCard card = new SeniorCard(senior, getIndex() + 1, logic);
+            SeniorCard card = new SeniorCard(senior, logic);
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);

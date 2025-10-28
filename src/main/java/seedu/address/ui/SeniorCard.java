@@ -60,7 +60,7 @@ public class SeniorCard extends UiPart<Region> {
     /**
      * Creates a {@code SeniorCard} with the given {@code Senior} and index to display.
      */
-    public SeniorCard(Senior senior, int displayedIndex, Logic logic) {
+    public SeniorCard(Senior senior, Logic logic) {
         super(FXML);
         // make FlowPane expand and wrap
         HBox.setHgrow(assignedChips, Priority.ALWAYS);

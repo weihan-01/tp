@@ -110,7 +110,7 @@ public class CaregiverListPanel extends UiPart<Region> {
             }
 
             // Build the normal card
-            CaregiverCard card = new CaregiverCard(caregiver, getIndex() + 1, logic);
+            CaregiverCard card = new CaregiverCard(caregiver, logic);
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);
