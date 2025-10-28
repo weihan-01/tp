@@ -64,8 +64,8 @@ public class AddressBookParser {
         case AddCaregiverCommand.COMMAND_WORD:
             return new AddCaregiverCommandParser().parse(arguments);
 
-//        case EditCommand.COMMAND_WORD:
-//            return new EditCommandParser().parse(arguments);
+        //        case EditCommand.COMMAND_WORD:
+        //            return new EditCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
@@ -98,7 +98,7 @@ public class AddressBookParser {
             return new PinCommandParser().parse(arguments);
 
         case UnpinCommand.COMMAND_WORD:
-            return new UnpinCommand();
+            return new UnpinCommandParser().parse(arguments);
 
         default:
             logger.finer("This user input caused a ParseException: " + userInput);

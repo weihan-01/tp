@@ -13,8 +13,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments for the {@code pin} command.
  * <p>
- * Expected format: {@code pin n/NAME}. This parser extracts the {@code NAME} value from the
- * {@code n/} prefix and constructs a {@link seedu.address.logic.commands.PinCommand}.
+ * Expected format: {@code pin c/id or pin s/id}.
  * If the required prefix is missing or empty, a {@link ParseException} is thrown with the
  * appropriate usage message.
  *
@@ -27,12 +26,24 @@ public class PinCommandParser implements Parser<PinCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SENIOR, PREFIX_CAREGIVER);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_SENIOR) && !arePrefixesPresent(argMultimap, PREFIX_CAREGIVER)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
+        // if prefix is present
+        boolean hasSenior = argMultimap.getValue(PREFIX_SENIOR).isPresent();
+        boolean hasCaregiver = argMultimap.getValue(PREFIX_CAREGIVER).isPresent();
+
+        // must be EXACTLY one of s/ or c/
+        if ((hasSenior && hasCaregiver) || (!hasSenior && !hasCaregiver)) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
         }
 
-        Integer seniorId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
-        Integer caregiverId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+        Integer seniorId = null;
+        Integer caregiverId = null;
+
+        if (hasSenior) {
+            seniorId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
+        } else { // hasCaregiver
+            caregiverId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+        }
 
         return new PinCommand(seniorId, caregiverId);
     }

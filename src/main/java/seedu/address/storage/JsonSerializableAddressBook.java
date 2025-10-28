@@ -143,7 +143,8 @@ class JsonSerializableAddressBook {
             }
         }
 
-        logger.log(Level.INFO, "All existing assignments between seniors and caregivers from JSON records have been added");
+        logger.log(Level.INFO,
+                "All existing assignments between seniors and caregivers from JSON records have been added");
 
         // Restore (or initialize) the caregiver ID sequence.
         if (seniorSeq == null || caregiverSeq == null) {

@@ -28,10 +28,11 @@ public class Senior extends Person {
      * @param note Additional caregiving notes for the senior
      * @param caregiver Caregiver assigned to the senior
      * @param seniorId ID of the senior assigned by AddressBook
+     * @param pinned boolean variable for if senior is pinned
      */
     public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags,
-                  Note note, Caregiver caregiver, Integer seniorId) {
-        super(name, phone, address, note);
+                  Note note, Caregiver caregiver, Integer seniorId, boolean pinned) {
+        super(name, phone, address, note, pinned);
         requireAllNonNull(riskTags);
         this.riskTags.addAll(riskTags);
         this.caregiver = caregiver;
@@ -43,7 +44,7 @@ public class Senior extends Person {
      */
     public Senior withId(int id) {
         return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
-                getNote(), caregiver, Integer.valueOf(id));
+                getNote(), caregiver, Integer.valueOf(id), isPinned());
     }
 
     /**
@@ -51,7 +52,7 @@ public class Senior extends Person {
      */
     public Senior withCaregiver(Caregiver caregiver) {
         return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
-                getNote(), caregiver, getSeniorId());
+                getNote(), caregiver, getSeniorId(), isPinned());
     }
 
     /**
@@ -101,6 +102,26 @@ public class Senior extends Person {
      */
     public boolean hasCaregiver() {
         return caregiver != null;
+    }
+
+    /**
+     * Returns Senior if Senior is pinned
+     * @param value where it is a boolean value showing if senior is pinned.
+     * @return Senior if Senior is pinned
+     */
+    public Senior withPinned(boolean value) {
+        return new Senior(getName(), getPhone(), getAddress(),
+                getRiskTags(), getNote(), getCaregiver(), getSeniorId(), value);
+    }
+
+    /**
+     * Returns this senior's note.
+     * @param newNote
+     * @return Note
+     */
+    public Senior withNote(Note newNote) {
+        return new Senior(getName(), getPhone(), getAddress(),
+                getRiskTags(), newNote, getCaregiver(), getSeniorId(), isPinned());
     }
 
     @Override

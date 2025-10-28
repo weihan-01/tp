@@ -57,7 +57,7 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         }
 
         Senior senior = new Senior(name, phone, address, riskTag,
-                note, null, null);
+                note, null, null, false);
 
         // Return command with fields; Senior (with ID) is created in execute()
         return new AddSeniorCommand(senior, caregiverId);

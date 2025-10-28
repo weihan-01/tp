@@ -117,7 +117,8 @@ public class UnassignCommand extends Command {
                 senior.getRiskTags(),
                 senior.getNote(),
                 null,
-                senior.getSeniorId()
+                senior.getSeniorId(),
+                senior.isPinned()
         );
     }
 

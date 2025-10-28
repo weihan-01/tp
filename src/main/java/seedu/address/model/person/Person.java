@@ -19,6 +19,7 @@ public abstract class Person {
     // General data fields
     private final Address address;
     private final Note note;
+    private final boolean pinned;
 
     /**
      * Initialises Person fields with all required person attributes
@@ -29,12 +30,13 @@ public abstract class Person {
      * @param address Address of the person's home
      * @param note Additional notes for the person
      */
-    public Person(Name name, Phone phone, Address address, Note note) {
+    public Person(Name name, Phone phone, Address address, Note note, boolean pinned) {
         requireAllNonNull(name, phone, address);
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.note = note;
+        this.pinned = pinned;
     }
 
     public Name getName() {
@@ -51,6 +53,10 @@ public abstract class Person {
 
     public Note getNote() {
         return note;
+    }
+
+    public boolean isPinned() {
+        return pinned;
     }
 
     /**

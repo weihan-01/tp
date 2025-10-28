@@ -5,7 +5,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
+import java.util.Objects;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -15,7 +15,6 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new {@link PinCommand}.
@@ -25,9 +24,9 @@ public class PinCommand extends Command {
 
     public static final String COMMAND_WORD = "pin";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Pins a person by exact name.\n"
-            + "Parameters: s/SENIOR_INDEX c/CAREGIVER_INDEX\n"
-            + "Example: " + COMMAND_WORD + " s/5 c/3";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Pins exactly one person.\n"
+            + "Parameters: s/SENIOR_INDEX  |  c/CAREGIVER_INDEX\n"
+            + "Examples: " + COMMAND_WORD + " s/5    OR    " + COMMAND_WORD + " c/3";
 
     public static final String MESSAGE_SUCCESS = "Pinned: %s";
     public static final String MESSAGE_ALREADY_PINNED = "%1$s is already pinned.";
@@ -61,7 +60,6 @@ public class PinCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        // Find target by exact name (case-insensitve) within ALL persons
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
@@ -89,36 +87,36 @@ public class PinCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
         }
 
-        // If already pinned, no operation
-        if (senior != null && isPinned(senior)) {
+        // Already pinned? (use boolean flag)
+        if (senior != null && senior.isPinned()) {
             return new CommandResult(String.format(MESSAGE_ALREADY_PINNED, senior.getName()));
         }
-        if (caregiver != null && isPinned(caregiver)) {
+        if (caregiver != null && caregiver.isPinned()) {
             return new CommandResult(String.format(MESSAGE_ALREADY_PINNED, caregiver.getName()));
         }
 
         if (senior != null) {
+            // unpin any existing senior
             for (Senior s : fullSeniorList) {
-                if (isPinned(s)) {
-                    Person unpinned = cloneWithNote(s, stripPinned(s.getNote()));
-                    model.setSenior(s, (Senior) unpinned);
+                if (s.isPinned()) {
+                    model.setSenior(s, s.withPinned(false).withNote(stripPinned(s.getNote())));
                 }
             }
-            // Pin targets
-            model.setSenior(senior, (Senior) cloneWithNote(senior, markPinned(senior.getNote())));
+            // pin target + ensure note shows "PINNED"
+            model.setSenior(senior, senior.withPinned(true).withNote(markPinned(senior.getNote())));
         }
 
         if (caregiver != null) {
+            // unpin any existing caregiver
             for (Caregiver c : fullCaregiverList) {
-                if (isPinned(c)) {
-                    Person unpinned = cloneWithNote(c, stripPinned(c.getNote()));
-                    model.setCaregiver(c, (Caregiver) unpinned);
+                if (c.isPinned()) {
+                    model.setCaregiver(c, c.withPinned(false).withNote(stripPinned(c.getNote())));
                 }
             }
-            model.setCaregiver(caregiver, (Caregiver) cloneWithNote(caregiver, markPinned(caregiver.getNote())));
+            // pin target + keep "PINNED" text for display/back-compat
+            model.setCaregiver(caregiver, caregiver.withPinned(true).withNote(markPinned(caregiver.getNote())));
         }
 
-        // Refresh list so the UI resorts (comparator should put pin first)
         model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
         model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
@@ -126,7 +124,7 @@ public class PinCommand extends Command {
             return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(senior)));
         } else if (senior == null && caregiver != null) {
             return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(caregiver)));
-        } else if (senior != null & caregiver != null) {
+        } else if (senior != null && caregiver != null) { // && (bugfix from &)
             return new CommandResult(
                     String.format(MESSAGE_SUCCESS, Messages.format(senior)) + " and "
                             + String.format(MESSAGE_SUCCESS, Messages.format(caregiver)));
@@ -147,34 +145,7 @@ public class PinCommand extends Command {
         return null;
     }
 
-    /**
-     * Returns whether the given {@link Person} is marked as pinned.
-     * <p>
-     * A person is considered pinned if their {@link Note} text starts with the sentinel
-     * {@code PIN_SENTINEL} (case-insensitive), optionally followed by a space and one of
-     * {@code ":"} or {@code "|"}, or by a single trailing space. Examples that return {@code true}:
-     * <ul>
-     *   <li>{@code "PINNED"}</li>
-     *   <li>{@code "PINNED : some note"}</li>
-     *   <li>{@code "PINNED | some note"}</li>
-     *   <li>{@code "PINNED some note"}</li>
-     * </ul>
-     *
-     * @param p the person to check; must not be {@code null}
-     * @return {@code true} if the person's note indicates they are pinned; {@code false} otherwise
-     * @throws NullPointerException if {@code p} is {@code null}
-     */
-    public static boolean isPinned(Person p) {
-        Note n = p.getNote();
-        String s = n == null ? "" : n.toString();
-
-        String norm = s.trim();
-        return norm.equalsIgnoreCase(PIN_SENTINEL)
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " ")
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + ":")
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " |");
-    }
-
+    /** Keep "PINNED" prefix in the note for display/back-compat. */
     private static Note markPinned(Note existing) {
         String cur = existing == null ? "" : existing.toString();
         cur = cur.trim();
@@ -187,14 +158,11 @@ public class PinCommand extends Command {
         return new Note(PIN_SENTINEL + " | " + cur);
     }
 
+    /** Remove legacy "PINNED ..." prefix when unpinning. */
     protected static Note stripPinned(Note existing) {
         String cur = existing == null ? "" : existing.toString();
-        if (cur == null) {
-            cur = "";
-        }
         String norm = cur.trim();
 
-        // Remove common prefixes we add
         for (String sep : new String[]{":", "|"}) {
             String pref = PIN_SENTINEL + " " + sep;
             if (norm.toUpperCase(Locale.ROOT).startsWith(pref)) {
@@ -212,35 +180,24 @@ public class PinCommand extends Command {
         return existing; // nothing to strip
     }
 
-    /**
-     * Clone a person preserving its concrete type, but with a different Note.
-     */
-    protected static Person cloneWithNote(Person original, Note newNote) throws CommandException {
-        if (original instanceof Senior) {
-            Senior s = (Senior) original;
-            Set<Tag> risk = s.getRiskTags();
-            return new Senior(s.getName(), s.getPhone(),
-                        s.getAddress(), risk, newNote, s.getCaregiver(), s.getSeniorId());
-        } else if (original instanceof Caregiver) {
-            Caregiver c = (Caregiver) original;
-            return new Caregiver(c.getName(), c.getPhone(), c.getAddress(), newNote, c.getCaregiverId());
-        } else {
-            throw new CommandException(MESSAGE_INVALID_PERSON);
-        }
-    }
-
     @Override
     public boolean equals(Object other) {
-        return other == this
-                || (other instanceof PinCommand
-                && seniorIndex.equals(((PinCommand) other).seniorIndex)
-                && caregiverIndex.equals(((PinCommand) other).caregiverIndex));
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof PinCommand)) {
+            return false;
+        }
+        PinCommand o = (PinCommand) other;
+        return Objects.equals(this.seniorIndex, o.seniorIndex)
+                && Objects.equals(this.caregiverIndex, o.caregiverIndex);
     }
 
     @Override
     public String toString() {
-        return getClass().getCanonicalName()
-                + "{seniorId=" + seniorIndex
-                + "caregiverId=" + caregiverIndex + "}";
+        String which = (seniorIndex != null)
+                ? ("seniorId=" + seniorIndex)
+                : ("caregiverId=" + caregiverIndex);
+        return getClass().getCanonicalName() + "{" + which + "}";
     }
 }
