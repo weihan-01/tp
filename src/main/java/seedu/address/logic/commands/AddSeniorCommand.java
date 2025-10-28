@@ -57,6 +57,7 @@ public class AddSeniorCommand extends Command {
         this.caregiverId = caregiverId;
     }
 
+
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);

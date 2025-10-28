@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -53,7 +54,8 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
 
         Integer caregiverId = null;
         if (argMultimap.getValue(PREFIX_CID).isPresent()) {
-            caregiverId = ParserUtil.parseCaregiverId(argMultimap.getValue(PREFIX_CID).orElse(null));
+            caregiverId = ParserUtil.parseIndex(
+                    Objects.requireNonNull(argMultimap.getValue(PREFIX_CID).orElse(null)));
         }
 
         Senior senior = new Senior(name, phone, address, riskTag,
