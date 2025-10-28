@@ -1,12 +1,12 @@
 package seedu.address.commons.util;
 
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Senior;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Senior;
 
 /**
  * Utilities for common command validations and lookups.
@@ -47,6 +47,13 @@ public class CommandUtil {
                 .orElse(null);
     }
 
+    /**
+     * Returns the {@link Senior} whose {@code seniorId} matches the given id, or {@code null} if none is found.
+     *
+     * @param seniors list to search; must not be {@code null}
+     * @param seniorId id to match; may be {@code null}
+     * @return the matching {@link Senior}, or {@code null} if not found or if {@code seniorId} is {@code null}
+     */
     public static Senior findSeniorByIdOrNull(
             List<Senior> seniors,
             Integer seniorId
@@ -54,6 +61,13 @@ public class CommandUtil {
         return findFirstByIdOrNull(seniors, seniorId, Senior::getSeniorId);
     }
 
+    /**
+     * Returns the {@link Caregiver} whose {@code caregiverId} matches the given id, or {@code null} if none is found.
+     *
+     * @param caregiver list to search; must not be {@code null}
+     * @param caregiverId id to match; may be {@code null}
+     * @return the matching {@link Caregiver}, or {@code null} if not found or if {@code caregiverId} is {@code null}
+     */
     public static Caregiver findCaregiverByIdOrNull(
             List<Caregiver> caregiver,
             Integer caregiverId
@@ -61,6 +75,15 @@ public class CommandUtil {
         return findFirstByIdOrNull(caregiver, caregiverId, Caregiver::getCaregiverId);
     }
 
+    /**
+     * Returns the {@link Senior} whose {@code seniorId} matches the given id, or throws if none is found.
+     *
+     * @param seniors list to search and must not be null
+     * @param seniorId id to match and must not be null
+     * @param errorIfInvalid error message for the thrown exception if no match is found; must not be {@code null}
+     * @return the matching {@link Senior}
+     * @throws CommandException if {@code seniorId} is not found in {@code seniors}
+     */
     public static Senior findSeniorById(
             List<Senior> seniors,
             Integer seniorId,
@@ -73,6 +96,17 @@ public class CommandUtil {
         return s;
     }
 
+    /**
+     * Validates an optional {@code seniorId}. If {@code seniorId} is {@code null}, returns {@code null}.
+     * If non-null, returns the matching {@link Senior} or throws if no match is found.
+     *
+     * @param seniors        list to search; must not be {@code null}
+     * @param seniorId       optional id to validate; may be {@code null}
+     * @param errorIfInvalid error message for the thrown exception if {@code seniorId} is non-null but not found;
+     *                       must not be {@code null}
+     * @return the matching {@link Senior} when {@code seniorId} is non-null; otherwise {@code null}
+     * @throws CommandException if {@code seniorId} is non-null and not found in {@code seniors}
+     */
     public static Senior validateOptionalSeniorId(
             List<Senior> seniors,
             Integer seniorId,
@@ -85,6 +119,15 @@ public class CommandUtil {
         return senior; // may be null if seniorId is null
     }
 
+    /**
+     * Returns the {@link Caregiver} whose {@code caregiverId} matches the given id, or throws if none is found.
+     *
+     * @param caregivers list to search; must not be {@code null}
+     * @param caregiverId id to match; must not be {@code null}
+     * @param errorIfInvalid error message for the thrown exception if no match is found; must not be {@code null}
+     * @return the matching {@link Caregiver}
+     * @throws CommandException if {@code caregiverId} is not found in {@code caregivers}
+     */
     public static Caregiver findCaregiverById(
             List<Caregiver> caregivers,
             Integer caregiverId,
@@ -97,6 +140,17 @@ public class CommandUtil {
         return c;
     }
 
+    /**
+     * Validates an optional {@code caregiverId}. If {@code caregiverId} is {@code null}, returns {@code null}.
+     * If non-null, returns the matching {@link Caregiver} or throws if no match is found.
+     *
+     * @param caregivers     list to search; must not be {@code null}
+     * @param caregiverId    optional id to validate; may be {@code null}
+     * @param errorIfInvalid error message for the thrown exception if {@code caregiverId} is non-null but not found;
+     *                       must not be {@code null}
+     * @return the matching {@link Caregiver} when {@code caregiverId} is non-null; otherwise {@code null}
+     * @throws CommandException if {@code caregiverId} is non-null and not found in {@code caregivers}
+     */
     public static Caregiver validateOptionalCaregiverId(
             List<Caregiver> caregivers,
             Integer caregiverId,
@@ -108,6 +162,4 @@ public class CommandUtil {
         }
         return caregiver; // may be null if caregiverId is null
     }
-
-
 }

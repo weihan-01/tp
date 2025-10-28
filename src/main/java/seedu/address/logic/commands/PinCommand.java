@@ -58,10 +58,6 @@ public class PinCommand extends Command {
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
-        // Validate index
-        CommandUtil.validateIndex(seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
-        CommandUtil.validateIndex(caregiverIndex, MESSAGE_INVALID_SENIOR_INDEX);
-
         // Find senior by seniorIndex
         Senior senior = CommandUtil.validateOptionalSeniorId(
                 fullSeniorList, seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);

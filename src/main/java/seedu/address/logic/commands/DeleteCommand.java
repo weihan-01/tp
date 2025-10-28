@@ -51,10 +51,6 @@ public class DeleteCommand extends Command {
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
-        // Validate index
-        CommandUtil.validateIndex(seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
-        CommandUtil.validateIndex(caregiverIndex, MESSAGE_INVALID_SENIOR_INDEX);
-
         // Find senior by seniorId
         Senior senior = CommandUtil.validateOptionalSeniorId(
                 fullSeniorList, seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
@@ -73,7 +69,6 @@ public class DeleteCommand extends Command {
                     .forEach(s -> s.setCaregiver(null));
             model.deleteCaregiver(caregiver);
         }
-
 
         if (senior != null && caregiver == null) {
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(senior)));
