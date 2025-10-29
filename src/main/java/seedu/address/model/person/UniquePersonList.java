@@ -119,7 +119,8 @@ public class UniquePersonList<T extends Person> implements Iterable<T> {
         if (!(other instanceof UniquePersonList)) {
             return false;
         }
-        @SuppressWarnings("unchecked") //safe cast since other must be instance of UniquePersonList
+
+        @SuppressWarnings("unchecked") // safe cast since other must be instance of UniquePersonList
         UniquePersonList<T> otherUniquePersonList = (UniquePersonList<T>) other;
         return internalList.equals(otherUniquePersonList.internalList);
     }
