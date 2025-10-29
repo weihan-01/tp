@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.commands.FilterCommand.MESSAGE_NO_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
@@ -22,24 +23,14 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     public FilterCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_TAG);
 
-        List<String> rawTags = argMultimap.getAllValues(PREFIX_TAG);
-        List<String> tags = new ArrayList<>();
-
-        for (String s : rawTags) {
-            String t = s.trim();
-            if (t.isEmpty()) {
-                continue;
-            }
-            if (!ALLOWED.contains(t)) {
-                throw new ParseException("Invalid tag: \"" + t + "\".\nAllowed: lr, mr, hr, LR, MR, HR.");
-            }
-            tags.add(t.toLowerCase()); // normalize to lr/mr/hr
+        String rawTag = argMultimap.getValue(PREFIX_TAG).toString().trim();
+        if (rawTag.isEmpty()) {
+            throw new ParseException(MESSAGE_NO_TAG);
+        }
+        if (!ALLOWED.contains(rawTag)) {
+            throw new ParseException("Invalid tag: \"" + rawTag + "\".\nAllowed: lr, mr, hr, LR, MR, HR.");
         }
 
-        if (tags.isEmpty()) {
-            throw new ParseException(FilterCommand.MESSAGE_NO_TAGS);
-        }
-
-        return new FilterCommand(new PersonHasAnyTagPredicate(tags));
+        return new FilterCommand(new PersonHasAnyTagPredicate(rawTag));
     }
 }

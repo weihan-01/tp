@@ -55,7 +55,7 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(senior.getName())
                 .append("; Risk: ")
-                .append(senior.getRiskTags())
+                .append(senior.getRiskTag())
                 .append("; Phone: ")
                 .append(senior.getPhone())
                 .append("; Address: ")

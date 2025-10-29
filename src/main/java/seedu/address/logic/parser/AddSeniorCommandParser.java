@@ -18,7 +18,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * Parses input arguments and creates a new AddCommand object
@@ -49,7 +49,7 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
         // Risk tag as a single Tag (HR|MR|LR) so it passes Tag constraints
-        Set<Tag> riskTag = ParserUtil.parseRiskTagAsTagSet(argMultimap.getValue(PREFIX_TAG).get());
+        Tag riskTag = ParserUtil.parseRiskTag(argMultimap.getValue(PREFIX_TAG).get());
 
         Integer caregiverId = null;
         if (argMultimap.getValue(PREFIX_CID).isPresent()) {

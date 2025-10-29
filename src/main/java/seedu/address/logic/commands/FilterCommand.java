@@ -24,7 +24,7 @@ public class FilterCommand extends Command {
             + "Valid risk tags: hr (High Risk), mr (Medium Risk), lr (Low Risk)\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_TAG + "hr";
 
-    public static final String MESSAGE_NO_TAGS = "Please provide at least one tag.\n" + MESSAGE_USAGE;
+    public static final String MESSAGE_NO_TAG = "Please provide at least one tag.\n" + MESSAGE_USAGE;
     private final Predicate<Person> predicate;
 
     public FilterCommand(Predicate<Person> predicate) {

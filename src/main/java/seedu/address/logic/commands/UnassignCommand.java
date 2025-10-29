@@ -114,7 +114,7 @@ public class UnassignCommand extends Command {
                 senior.getName(),
                 senior.getPhone(),
                 senior.getAddress(),
-                senior.getRiskTags(),
+                senior.getRiskTag(),
                 senior.getNote(),
                 null,
                 senior.getSeniorId(),

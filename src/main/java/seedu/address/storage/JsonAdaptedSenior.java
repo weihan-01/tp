@@ -17,7 +17,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * Jackson-friendly version of {@link Person} and its subclasses.
@@ -33,13 +33,8 @@ class JsonAdaptedSenior {
     private final String phone;
     private final String address;
     private final String note;
+    private final String riskTag;
     private final Boolean pinned;
-
-    /**
-     * Only used when role == "SENIOR": we store the single risk tag
-     * (e.g., HR/MR/LR) as a one-element array for consistency.
-     */
-    private final List<JsonAdaptedTag> riskTags = new ArrayList<>();
 
     private final Integer seniorId;
     private final Integer caregiverId;
@@ -51,7 +46,7 @@ class JsonAdaptedSenior {
                              @JsonProperty("phone") String phone,
                              @JsonProperty("address") String address,
                              @JsonProperty("note") String note,
-                             @JsonProperty("risk") List<JsonAdaptedTag> risk,
+                             @JsonProperty("risk") String riskTag,
                              @JsonProperty("seniorId") Integer seniorId,
                              @JsonProperty("caregiverId") Integer caregiverId,
                              @JsonProperty("pinned") Boolean pinned) {
@@ -60,9 +55,7 @@ class JsonAdaptedSenior {
         this.phone = phone;
         this.address = address;
         this.note = note;
-        if (risk != null) {
-            this.riskTags.addAll(risk);
-        }
+        this.riskTag = riskTag;
         this.seniorId = seniorId;
         this.caregiverId = caregiverId;
         this.pinned = pinned;
@@ -74,11 +67,8 @@ class JsonAdaptedSenior {
         this.phone = source.getPhone().value;
         this.address = source.getAddress().value;
         this.note = source.getNote().value;
-
+        this.riskTag = source.getRiskTag().tagName;
         this.role = "SENIOR";
-        this.riskTags.addAll(source.getRiskTags().stream()
-                .map(JsonAdaptedTag::new)
-                .collect(Collectors.toList()));
         this.seniorId = source.getSeniorId();
         this.caregiverId = source.getCaregiverId();
         this.pinned = source.isPinned();
@@ -116,14 +106,15 @@ class JsonAdaptedSenior {
         }
         final Address modelAddress = new Address(address);
 
-        final Note modelNote = (note == null) ? new Note("") : new Note(note);
-
-        final Set<Tag> riskSet = new HashSet<>();
-        for (JsonAdaptedTag t : riskTags) {
-            riskSet.add(t.toModelType());
+        if (!Tag.isValidTagName(riskTag)) {
+            throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
         }
 
-        return new Senior(modelName, modelPhone, modelAddress, riskSet, modelNote, null, seniorId, pinned);
+        final Tag modelRiskTag = new Tag(riskTag);
+
+        final Note modelNote = (note == null) ? new Note("") : new Note(note);
+
+        return new Senior(modelName, modelPhone, modelAddress, modelRiskTag, modelNote, null, seniorId, pinned);
     }
 
     @Override
@@ -134,7 +125,7 @@ class JsonAdaptedSenior {
                 .add("phone", phone)
                 .add("address", address)
                 .add("note", note)
-                .add("riskTags", riskTags)
+                .add("riskTags", riskTag)
                 .add("seniorId", seniorId)
                 .add("caregiverId", caregiverId)
                 .add("pinned", pinned)

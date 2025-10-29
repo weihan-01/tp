@@ -8,8 +8,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.tag.Tag;
-
 public class ElderlyTest {
 
     @Test

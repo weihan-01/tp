@@ -1,9 +1,7 @@
 package seedu.address.ui;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * A UI component that displays a {@link Senior} as a card in the seniors list.
@@ -50,7 +48,7 @@ public class SeniorCard extends UiPart<Region> {
     @FXML
     private Label note;
     @FXML
-    private FlowPane tags;
+    private FlowPane tag;
     @FXML
     private HBox assignedRow;
     @FXML
@@ -205,40 +203,36 @@ public class SeniorCard extends UiPart<Region> {
      * Hides the row if no risk tags are present.
      */
     private void renderChips() {
-        tags.getChildren().clear();
-        tags.setManaged(false);
-        tags.setVisible(false);
+        tag.getChildren().clear();
+        tag.setManaged(false);
+        tag.setVisible(false);
 
-        Set<Tag> risk = senior.getRiskTags();
-        if (risk != null && !risk.isEmpty()) {
-            tags.setManaged(true);
-            tags.setVisible(true);
+        Tag risk = senior.getRiskTag();
+        if (risk != null) {
+            tag.setManaged(true);
+            tag.setVisible(true);
 
             Label idChip = makeChip(String.format("S%06d", senior.getSeniorId()));
             idChip.getStyleClass().add("chip-senior");
-            tags.getChildren().add(idChip);
+            tag.getChildren().add(idChip);
 
-            risk.stream()
-                    .sorted(Comparator.comparing(t -> t.tagName))
-                    .forEach(t -> {
-                        String chipStr = riskLabel(t.tagName);
-                        Label chip = makeChip(chipStr);
-                        chip.getStyleClass().add("tag-chip"); // base pill style
-                        switch (t.tagName.toUpperCase()) {
-                        case "HR":
-                            chip.getStyleClass().add("chip-hr");
-                            break; // red
-                        case "MR":
-                            chip.getStyleClass().add("chip-mr");
-                            break; // orange
-                        case "LR":
-                            chip.getStyleClass().add("chip-lr");
-                            break; // yellow
-                        default:
-                            break;
-                        }
-                        tags.getChildren().add(chip);
-                    });
+            String chipStr = riskLabel(risk.getTagName());
+            Label chip = makeChip(chipStr);
+            chip.getStyleClass().add("tag-chip"); // base pill style
+            switch (risk.getTagName().toUpperCase()) {
+            case "HR":
+                chip.getStyleClass().add("chip-hr");
+                break; // red
+            case "MR":
+                chip.getStyleClass().add("chip-mr");
+                break; // orange
+            case "LR":
+                chip.getStyleClass().add("chip-lr");
+                break; // yellow
+            default:
+                break;
+            }
+            tag.getChildren().add(chip);
         }
     }
 
