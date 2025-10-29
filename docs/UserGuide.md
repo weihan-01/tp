@@ -171,7 +171,7 @@ Examples:
 
   ![result for 'filter t/hr'](images/filter-hr.png)
 
-### Pinning a senior/ caregiver by senior/ caregiver index: `pin`
+### Pin a senior/ caregiver by their index: `pin`
 
 Pins maximum one senior and/ or one caregiver at the top of the respective panel display.
 
@@ -189,6 +189,29 @@ Examples:
 * `pin c/1 s/1` — invalid: only one person can be pinned at a time 
 
   ![result for 'pin s/1'](images/pin-senior-1.png)
+
+### Unpin a senior/ caregiver or both by their index: `unpin`
+
+Unpin a senior, a caregiver or both.
+Changes will be reflected on the display panel.
+
+Format: 
+`unpin s` - Unpins the senior
+`unpin c` - Unpins the caregiver
+`unpin a` or `unpin` - Unpins person(s)
+
+* Only the letters 's', 'c', or 'a' are allowed after unpin.
+Inputs are not case-sensitive. 
+* Any other characters or strings following unpin will trigger an error. 
+* If no senior or caregiver is currently pinned, issuing any unpin command will result in an error.
+
+Examples:
+* `unpin s` or `unpin S` — unpin senior 
+* `unpin c` or `unpin C` — unpin caregiver
+* `unpin` or `unpin a` or `unpin A` — unpins senior and/ or caregiver 
+* `unpin c/1` — invalid: incorrect format 
+
+  ![result for 'unpin c'](images/unpin-caregiver.png)
 
 ### Deleting a person : `delete`
 
