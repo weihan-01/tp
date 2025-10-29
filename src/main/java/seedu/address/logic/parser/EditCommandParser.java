@@ -81,7 +81,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         // Caregiver ID (only for seniors)
         if (isSenior && argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
             String caregiverStr = argMultimap.getValue(PREFIX_CAREGIVER).get();
-            editPersonDescriptor.setCaregiverId(ParserUtil.parseCaregiverId(caregiverStr));
+            editPersonDescriptor.setCaregiverId(ParserUtil.parseIndex(caregiverStr));
         }
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
