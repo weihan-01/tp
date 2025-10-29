@@ -171,6 +171,25 @@ Examples:
 
   ![result for 'filter t/hr'](images/filter-hr.png)
 
+### Pinning a senior/ caregiver by senior/ caregiver index: `pin`
+
+Pins maximum one senior and/ or one caregiver at the top of the respective panel display.
+
+Format: `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX`
+
+* Only one person can be pinned at a time.
+* Supplying an invalid senior or caregiver index will trigger an error.
+* Attempting to pin multiple individuals in a single command will result in an error.
+* If a senior or caregiver is already pinned, issuing a new pin command will replace the existing one. 
+The previously pinned person will be automatically unpinned.
+
+Examples:
+* `pin s/1` — pins senior at senior index 1 
+* `pin c/1` — pins caregiver at caregiver index 1
+* `pin c/1 s/1` — invalid: only one person can be pinned at a time 
+
+  ![result for 'pin s/1'](images/pin-senior-1.png)
+
 ### Deleting a person : `delete`
 
 Deletes the specified person from the address book.
