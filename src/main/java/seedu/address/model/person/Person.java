@@ -5,12 +5,16 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.EditPersonDescriptor;
 
 /**
  * Represents an abstract Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
+ *
+ * This class uses a self-referential generic pattern so that subclasses (e.g. Senior, Caregiver)
+ * can return their own type when edited, without needing explicit casting.
  */
-public abstract class Person {
+public abstract class Person<T extends Person<T>> {
 
     // General identity fields
     private final Name name;
@@ -22,13 +26,14 @@ public abstract class Person {
     private final boolean pinned;
 
     /**
-     * Initialises Person fields with all required person attributes
-     * Fields must be present and not null
+     * Initializes Person fields with all required person attributes.
+     * Fields must be present and not null.
      *
      * @param name Name of the person
      * @param phone Phone number of the person
      * @param address Address of the person's home
      * @param note Additional notes for the person
+     * @param pinned Whether the person is pinned
      */
     public Person(Name name, Phone phone, Address address, Note note, boolean pinned) {
         requireAllNonNull(name, phone, address);
@@ -63,7 +68,7 @@ public abstract class Person {
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
      */
-    public boolean isSamePerson(Person otherPerson) {
+    public boolean isSamePerson(Person<?> otherPerson) {
         if (otherPerson == this) {
             return true;
         }
@@ -82,21 +87,31 @@ public abstract class Person {
             return true;
         }
 
-        // instanceof handles nulls
-        if (!(other instanceof Person)) {
+        if (!(other instanceof Person<?>)) {
             return false;
         }
 
-        Person otherPerson = (Person) other;
+        Person<?> otherPerson = (Person<?>) other;
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address)
                 && note.equals(otherPerson.note);
     }
 
+    /**
+     * Creates a new edited copy of this person using the provided descriptor.
+     * Implemented differently in subclasses (Senior, Caregiver).
+     */
+    public abstract T edit(EditPersonDescriptor descriptor);
+
+    /**
+     * Returns the Id of the Person.
+     * Implemented differently in subclasses.
+     */
+    public abstract Integer getId();
+
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, address, note);
     }
 
@@ -109,5 +124,4 @@ public abstract class Person {
                 .add("note", note)
                 .toString();
     }
-
 }
