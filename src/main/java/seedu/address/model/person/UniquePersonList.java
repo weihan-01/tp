@@ -120,7 +120,7 @@ public class UniquePersonList<T extends Person> implements Iterable<T> {
             return false;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked") // safe cast since other must be instance of UniquePersonList
         UniquePersonList<T> otherUniquePersonList = (UniquePersonList<T>) other;
         return internalList.equals(otherUniquePersonList.internalList);
     }

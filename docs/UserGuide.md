@@ -37,8 +37,8 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
-   * `assign s/3 c/1`: Assigns the senior at index 3 to the caregiver at index 1 in the current list. 
-   
+   * `assign s/3 c/1`: Assigns the senior at index 3 to the caregiver at index 1 in the current list.
+
    * `unassign s/3 c/1`: Unassigns the caregiver at index 1 from the senior at index 3 in the current list.
 
    * `clear` : Deletes all contacts.

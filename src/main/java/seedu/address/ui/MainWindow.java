@@ -25,6 +25,10 @@ public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
 
+    // default size
+    private static final double MIN_WINDOW_WIDTH = 700;
+    private static final double MIN_WINDOW_HEIGHT = 600;
+
     private final Logger logger = LogsCenter.getLogger(getClass());
 
     private Stage primaryStage;
@@ -35,10 +39,6 @@ public class MainWindow extends UiPart<Stage> {
     private CaregiverListPanel caregiverListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
-
-    // default size
-    private static final double MIN_WINDOW_WIDTH = 700;
-    private static final double MIN_WINDOW_HEIGHT = 600;
 
     @FXML
     private StackPane commandBoxPlaceholder;

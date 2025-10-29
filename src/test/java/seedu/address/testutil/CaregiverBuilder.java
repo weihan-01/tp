@@ -16,12 +16,14 @@ public class CaregiverBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_NOTE = "";
     public static final Integer DEFAULT_CAREGIVER_ID = 1;
+    public static final Boolean DEFAULT_PIN = false;
 
     private Name name;
     private Phone phone;
     private Address address;
     private Note note;
     private Integer caregiverId;
+    private Boolean isPinned;
 
     /**
      * Creates a {@code CaregiverBuilder} with the default details.
@@ -32,6 +34,7 @@ public class CaregiverBuilder {
         address = new Address(DEFAULT_ADDRESS);
         note = new Note(DEFAULT_NOTE);
         caregiverId = DEFAULT_CAREGIVER_ID;
+        isPinned = DEFAULT_PIN;
     }
 
     /**
@@ -43,6 +46,7 @@ public class CaregiverBuilder {
         address = caregiverToCopy.getAddress();
         note = caregiverToCopy.getNote();
         caregiverId = caregiverToCopy.getCaregiverId();
+        isPinned = caregiverToCopy.isPinned();
     }
 
     /**
@@ -78,6 +82,14 @@ public class CaregiverBuilder {
     }
 
     /**
+     * Sets the {@code isPinned} of the {@code Caregiver} that we are building.
+     */
+    public CaregiverBuilder withPinned(Boolean isPinned) {
+        this.isPinned = isPinned;
+        return this;
+    }
+
+    /**
      * Sets the caregiver ID, e.g. "c7". Must match c\\d+ (same as model validation).
      */
     public CaregiverBuilder withCaregiverId(Integer caregiverId) {
@@ -86,6 +98,6 @@ public class CaregiverBuilder {
     }
 
     public Caregiver build() {
-        return new Caregiver(name, phone, address, note, caregiverId);
+        return new Caregiver(name, phone, address, note, caregiverId, isPinned);
     }
 }

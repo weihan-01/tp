@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.commands.PinCommand.stripPinned;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class UnpinCommand extends Command {
         if (scope != Scope.CAREGIVER) {
             for (Senior s : fullSeniorList) {
                 if (s.isPinned()) {
-                    model.setSenior(s, s.withPinned(false).withNote(stripPinned(s.getNote())));
+                    model.setSenior(s, s.withPinned(false));
                     count++;
                 }
             }
@@ -73,7 +72,7 @@ public class UnpinCommand extends Command {
         if (scope != Scope.SENIOR) {
             for (Caregiver c : fullCaregiverList) {
                 if (c.isPinned()) {
-                    model.setCaregiver(c, c.withPinned(false).withNote(stripPinned(c.getNote())));
+                    model.setCaregiver(c, c.withPinned(false));
                     count++;
                 }
             }

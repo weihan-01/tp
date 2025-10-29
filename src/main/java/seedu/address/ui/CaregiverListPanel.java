@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.logic.Messages.MESSAGE_NO_CAREGIVERS_PROMPT;
+
 import java.util.Comparator;
 import java.util.logging.Logger;
 
@@ -7,9 +9,12 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
+import javafx.scene.text.TextAlignment;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
@@ -57,6 +62,14 @@ public class CaregiverListPanel extends UiPart<Region> {
         // Refresh all rows whenever the list reports a change (e.g., a Senior was edited)
         caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
+
+        // Implement logic when senior list is empty, display message prompt
+        Label emptySeniorsListPlaceholder = createEmptyCaregiverPlaceholder();
+        Runnable refreshPlaceholder = createRefreshPlaceholder(
+                backingList, emptySeniorsListPlaceholder, MESSAGE_NO_CAREGIVERS_PROMPT);
+        initializeSeniorPlaceholder(refreshPlaceholder, backingList);
+        caregiverListView.setPlaceholder(emptySeniorsListPlaceholder);
+
 
         seniorList.addListener((ListChangeListener<Senior>) c -> {
             caregiverListView.refresh();
@@ -169,4 +182,47 @@ public class CaregiverListPanel extends UiPart<Region> {
         return c.isPinned();
     }
 
+    /**
+     * Creates and configures the placeholder Label for an empty seniors list.
+     * The Label is wrapped, center-aligned, and suitable for use as a ListView placeholder.
+     *
+     * @return a styled Label to display when no seniors are present
+     */
+    private Label createEmptyCaregiverPlaceholder() {
+        Label placeholder = new Label();
+        placeholder.setWrapText(true);
+        placeholder.setAlignment(Pos.TOP_CENTER);
+        placeholder.setTextAlignment(TextAlignment.CENTER);
+        return placeholder;
+    }
+
+    /**
+     * Generates a Runnable that updates the seniors placeholder based on the backing list's emptiness.
+     * The runnable sets placeholder text and visibility according to the list state.
+     *
+     * @param backingList the ObservableList representing the seniors
+     * @param placeholder the Label to update as the placeholder
+     * @param message the message to display when the list is empty
+     * @return a Runnable that refreshes the placeholder's text and visibility
+     */
+    private Runnable createRefreshPlaceholder(
+            ObservableList<Caregiver> backingList, Label placeholder, String message) {
+        return () -> {
+            boolean isEmpty = backingList.isEmpty();
+            placeholder.setText(isEmpty ? message : "");
+            placeholder.setVisible(isEmpty);
+        };
+    }
+
+    /**
+     * Initializes the seniors placeholder, ensuring it stays synchronized with the backing list.
+     * The placeholder refreshes immediately and on any subsequent list modifications.
+     *
+     * @param refreshPlaceholder the Runnable responsible for updating the placeholder
+     * @param backingList the ObservableList to monitor for changes
+     */
+    private void initializeSeniorPlaceholder(Runnable refreshPlaceholder, ObservableList<Caregiver> backingList) {
+        refreshPlaceholder.run();
+        backingList.addListener((ListChangeListener<? super Caregiver>) c -> refreshPlaceholder.run());
+    }
 }
