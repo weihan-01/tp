@@ -18,15 +18,16 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of the person identified by the index number "
-            + "used in the displayed person list.\n"
-            + "Example: " + COMMAND_WORD + " 1 n/John Tan p/91234567";
+            + ": Edits the details of the person identified by the senior or caregiver index.\n"
+            + "Specify one type of person only.\n"
+            + "Example: edit s/1 n/John Tan p/91234567\n"
+            + "Example: edit c/2 n/Jane Lim";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
 
-    private final int index; // using int instead of Index class
+    private final int index;
     private final EditPersonDescriptor editPersonDescriptor;
     private final boolean isSenior; // true if editing a Senior, false if editing a Caregiver
 
@@ -49,7 +50,6 @@ public class EditCommand extends Command {
         requireNonNull(model);
 
         if (isSenior) {
-            // --- Edit Senior ---
             List<Senior> lastShownList = model.getFilteredSeniorList();
 
             if (index < 0 || index >= lastShownList.size()) {
@@ -57,6 +57,16 @@ public class EditCommand extends Command {
             }
 
             Senior seniorToEdit = lastShownList.get(index);
+
+            // Resolve caregiver ID to object if present
+            if (editPersonDescriptor.getCaregiverId().isPresent()) {
+                Integer caregiverId = editPersonDescriptor.getCaregiverId().get();
+                Caregiver caregiver = model.getAllCaregiverList().stream()
+                        .filter(c -> caregiverId.equals(c.getCaregiverId()))
+                        .findFirst()
+                        .orElseThrow(() -> new CommandException("No caregiver found with ID " + caregiverId));
+                editPersonDescriptor.setCaregiver(caregiver);
+            }
 
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(MESSAGE_NOT_EDITED);
@@ -75,9 +85,7 @@ public class EditCommand extends Command {
                     String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Senior", Messages.format(editedSenior)));
 
         } else {
-            // --- Edit Caregiver ---
             List<Caregiver> lastShownList = model.getFilteredCaregiverList();
-
             if (index < 0 || index >= lastShownList.size()) {
                 throw new CommandException(MESSAGE_INVALID_INDEX);
             }

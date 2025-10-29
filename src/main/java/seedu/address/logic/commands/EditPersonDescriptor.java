@@ -11,8 +11,9 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Stores the details to edit the person with.
- * Each non-empty field value will replace the corresponding field value of the person.
+ * Stores the details to edit a person.
+ * Each non-empty field value will replace the corresponding field of the person.
+ * Fields that are not edited remain null.
  */
 public class EditPersonDescriptor {
 
@@ -20,10 +21,24 @@ public class EditPersonDescriptor {
     private Phone phone;
     private Address address;
     private Note note;
-
     private Set<Tag> riskTags; // Senior only
-    private Caregiver caregiver; // Senior only
-    private Boolean pinned; // Optional for all
+    private Caregiver caregiver; // actual Caregiver object, set in EditCommand
+    private Integer caregiverId; // temporary ID parsed from input
+    private Boolean pinned;
+
+    /**
+     * Returns true if at least one field is edited.
+     */
+    public boolean isAnyFieldEdited() {
+        return name != null
+                || phone != null
+                || address != null
+                || note != null
+                || riskTags != null
+                || caregiver != null
+                || caregiverId != null
+                || pinned != null;
+    }
 
     public Optional<Name> getName() {
         return Optional.ofNullable(name);
@@ -73,24 +88,19 @@ public class EditPersonDescriptor {
         this.caregiver = caregiver;
     }
 
+    public Optional<Integer> getCaregiverId() {
+        return Optional.ofNullable(caregiverId);
+    }
+
+    public void setCaregiverId(Integer caregiverId) {
+        this.caregiverId = caregiverId;
+    }
+
     public Optional<Boolean> getPinned() {
         return Optional.ofNullable(pinned);
     }
 
     public void setPinned(Boolean pinned) {
         this.pinned = pinned;
-    }
-
-    /**
-     * Returns true if any field is non-null (i.e. being edited).
-     */
-    public boolean isAnyFieldEdited() {
-        return name != null
-                || phone != null
-                || address != null
-                || note != null
-                || riskTags != null
-                || caregiver != null
-                || pinned != null;
     }
 }
