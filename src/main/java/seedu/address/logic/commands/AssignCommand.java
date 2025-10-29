@@ -8,6 +8,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -34,8 +35,6 @@ public class AssignCommand extends Command {
     public static final String MESSAGE_ASSIGN_SUCCESS = "Senior %1$s has been assigned to Caregiver %2$s";
     public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
     public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
-    public static final String MESSAGE_NOT_SENIOR = "Person at index %1$d is not a senior";
-    public static final String MESSAGE_NOT_CAREGIVER = "Person at index %1$d is not a caregiver";
     public static final String MESSAGE_ALREADY_ASSIGNED = "This caregiver is already assigned to this senior";
 
     private final Integer seniorIndex;
@@ -59,39 +58,20 @@ public class AssignCommand extends Command {
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
-        // Validate senior index
-        if (seniorIndex < 0) {
-            throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
-        }
+        // Validate caregiver and senior index
+        CommandUtil.validateIndex(seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
+        CommandUtil.validateIndex(caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
 
-        // Validate caregiver index
-        if (caregiverIndex < 0) {
-            throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
-        }
 
-        // Find senior by seniorId
-        Senior senior = fullSeniorList.stream()
-                .filter(s -> {
-                    Integer seniorId = s.getSeniorId();
-                    return seniorId != null && (seniorId.equals(seniorIndex));
-                })
-                .findFirst()
-                .orElse(null);
-        if (senior == null) {
-            throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
-        }
+        // Find senior by seniorIndex
+        Senior senior = CommandUtil.findSeniorById(
+                fullSeniorList, seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
 
-        // Find caregiver by caregiverId
-        Caregiver caregiver = fullCaregiverList.stream()
-                .filter(c -> {
-                    Integer caregiverId = c.getCaregiverId();
-                    return caregiverId != null && (caregiverId.equals(caregiverIndex));
-                })
-                .findFirst()
-                .orElse(null);
-        if (caregiver == null) {
-            throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
-        }
+
+        // Find caregiver by caregiverIndex
+        Caregiver caregiver = CommandUtil.findCaregiverById(
+                fullCaregiverList, caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
+
 
         // Check if already assigned
         if (senior.hasCaregiver() && senior.getCaregiver().isSamePerson(caregiver)) {

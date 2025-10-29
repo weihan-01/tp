@@ -23,71 +23,93 @@ import seedu.address.model.person.Senior;
  * A utility class containing a list of {@code Person} objects to be used in tests.
  */
 public class TypicalPersons {
-
     public static final Caregiver ALICE = new CaregiverBuilder()
             .withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withPhone("94351253")
             .withNote("10 years experience with nursing")
+            .withPinned(false)
             .build();
     public static final Caregiver BENSON = new CaregiverBuilder()
             .withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPhone("98765432")
             .withNote("Experience with dementia care")
+            .withPinned(false)
             .build();
     public static final Caregiver CARL = new CaregiverBuilder()
             .withName("Carl Kurz")
             .withPhone("95352563")
             .withAddress("Wall Street")
             .withNote("Speaks Chinese and English")
+            .withPinned(false)
             .build();
     public static final Senior DANIEL = new SeniorBuilder()
             .withName("Daniel Meier")
             .withPhone("87652533")
             .withAddress("10th Street")
+            .withTags("HR")
             .withNote("Needs diabetes medicine daily")
+            .withCaregiver(ALICE)
+            .withPinned(false)
             .build();
     public static final Senior ELLE = new SeniorBuilder()
             .withName("Elle Meyer")
             .withPhone("9482224")
             .withAddress("Michegan Ave")
+            .withTags("MR")
+            .withCaregiver(BENSON)
+            .withPinned(false)
             .build();
     public static final Senior FIONA = new SeniorBuilder()
             .withName("Fiona Kunz")
             .withPhone("9482427")
             .withAddress("Little Tokyo")
+            .withTags("LR")
+            .withNote("Stays alone")
+            .withCaregiver(CARL)
+            .withPinned(false)
             .build();
     public static final Senior GEORGE = new SeniorBuilder()
             .withName("George Best")
             .withPhone("9482442")
             .withAddress("4th Street")
+            .withTags("HR")
+            .withNote("Has Dementia")
+            .withCaregiver(ALICE)
+            .withPinned(false)
             .build();
 
     // Manually added
-    public static final Senior HOON = new SeniorBuilder()
+/*    public static final Senior HOON = new SeniorBuilder()
             .withName("Hoon Meier")
             .withPhone("8482424")
-            .withAddress("Little India").build();
+            .withAddress("Little India")
+            .withPinned(false)
+            .build();
     public static final Caregiver IDA = new CaregiverBuilder()
             .withName("Ida Mueller")
             .withPhone("8482131")
-            .withAddress("Chicago Ave").build();
+            .withAddress("Chicago Ave")
+            .withPinned(false)
+            .build();*/
 
     // Manually added - Person's details found in {@code CommandTestUtil}
+/*
     public static final Caregiver AMY = new CaregiverBuilder()
             .withName(VALID_NAME_AMY)
             .withPhone(VALID_PHONE_AMY)
             .withAddress(VALID_ADDRESS_AMY)
-            .withTags(VALID_TAG_FRIEND)
+            //.withTags(VALID_TAG_FRIEND)
             .withNote(VALID_NOTE_AMY).build();
     public static final Caregiver BOB = new CaregiverBuilder()
             .withName(VALID_NAME_BOB)
             .withPhone(VALID_PHONE_BOB)
             .withAddress(VALID_ADDRESS_BOB)
-            .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
+            //.withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .withNote(VALID_NOTE_BOB)
             .build();
+*/
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 

@@ -3,11 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Senior;
+import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
@@ -20,12 +16,24 @@ public class SeniorBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_NOTE = "";
+    public static final Caregiver DEFAULT_CAREGIVER = new CaregiverBuilder()
+            .withName("Alice Pauline")
+            .withAddress("123, Jurong West Ave 6, #08-111")
+            .withPhone("94351253")
+            .withNote("10 years experience with nursing")
+            .withPinned(false)
+            .build();
+    public static final Integer DEFAULT_SENIOR_ID = 1;
+    public static final Boolean DEFAULT_PINNED = false;
 
     private Name name;
     private Phone phone;
     private Address address;
     private Note note;
-    private Set<Tag> tags;
+    private Set<Tag> riskTags;
+    private Caregiver caregiver;
+    private Integer seniorId;
+    private Boolean isPinned;
 
     /**
      * Creates a {@code SeniorBuilder} with the default details.
@@ -34,8 +42,12 @@ public class SeniorBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         address = new Address(DEFAULT_ADDRESS);
+        //riskTags = new HashSet<>(); // seniors can have risk tags
+        riskTags = new HashSet<>();
         note = new Note(DEFAULT_NOTE);
-        tags = new HashSet<>(); // seniors can have risk tags
+        caregiver = DEFAULT_CAREGIVER;
+        seniorId = DEFAULT_SENIOR_ID;
+        isPinned = DEFAULT_PINNED;
     }
 
     /**
@@ -45,8 +57,11 @@ public class SeniorBuilder {
         name = seniorToCopy.getName();
         phone = seniorToCopy.getPhone();
         address = seniorToCopy.getAddress();
+        riskTags = new HashSet<>(seniorToCopy.getRiskTags());
         note = seniorToCopy.getNote();
-        tags = new HashSet<>(seniorToCopy.getRiskTags());
+        caregiver  = seniorToCopy.getCaregiver();
+        seniorId = seniorToCopy.getSeniorId();
+        isPinned = seniorToCopy.isPinned();
     }
 
     /**
@@ -86,11 +101,29 @@ public class SeniorBuilder {
      * Example: withTags("lr", "hr")
      */
     public SeniorBuilder withTags(String... tags) {
-        this.tags = SampleDataUtil.getTagSet(tags);
+        this.riskTags = SampleDataUtil.getTagSet(tags);
         return this;
     }
 
+    /**
+     * Parses the {@code isPinned} of the {@code Senior} that we are building.
+     */
+    public SeniorBuilder withPinned(Boolean isPinned) {
+        this.isPinned = isPinned;
+        return this;
+    }
+
+    /**
+     * Parses the {@code caregiver} of the {@code Senior} that we are building.
+     */
+    public SeniorBuilder withCaregiver(Caregiver caregiver) {
+        this.caregiver = caregiver;
+        return this;
+    }
+
+
+
     public Senior build() {
-        return new Senior(name, phone, address, null, note, null, null);
+        return new Senior(name, phone, address, riskTags, note, caregiver, seniorId, isPinned);
     }
 }
