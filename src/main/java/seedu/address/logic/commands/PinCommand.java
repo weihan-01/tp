@@ -98,13 +98,13 @@ public class PinCommand extends Command {
         model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
         if (senior != null && caregiver == null) {
-            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(senior)));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(senior)));
         } else if (senior == null && caregiver != null) {
-            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(caregiver)));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(caregiver)));
         } else if (senior != null && caregiver != null) { // && (bugfix from &)
             return new CommandResult(
-                    String.format(MESSAGE_SUCCESS, Messages.format(senior)) + " and "
-                            + String.format(MESSAGE_SUCCESS, Messages.format(caregiver)));
+                    String.format(MESSAGE_SUCCESS, Messages.formatSenior(senior)) + " and "
+                            + String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(caregiver)));
         } else {
             throw new CommandException(MESSAGE_NO_PERSONS);
         }
