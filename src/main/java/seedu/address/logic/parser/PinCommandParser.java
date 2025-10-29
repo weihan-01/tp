@@ -36,21 +36,38 @@ public class PinCommandParser implements Parser<PinCommand> {
                     MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
         }
 
+        // reject duplicates like "pin s/1 s/2" or "pin c/1 c/2"
+        if (argMultimap.getAllValues(PREFIX_SENIOR).size() > 1
+                || argMultimap.getAllValues(PREFIX_CAREGIVER).size() > 1) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
+        }
+
         Integer seniorId = null;
         Integer caregiverId = null;
 
-        if (hasSenior) {
-            seniorId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
-        } else { // hasCaregiver
-            caregiverId = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+
+        try {
+            if (hasSenior) {
+                String raw = argMultimap.getValue(PREFIX_SENIOR).get().trim();
+                // guard to fail fast on non-digits (example: "s/A" is rejected)
+                if (!raw.matches("\\d+")) {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
+                }
+                seniorId = ParserUtil.parseIndex(raw); // typically enforces >0, numeric
+            } else { // hasCaregiver
+                String raw = argMultimap.getValue(PREFIX_CAREGIVER).get().trim();
+                if (!raw.matches("\\d+")) {
+                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE));
+                }
+                caregiverId = ParserUtil.parseIndex(raw);
+            }
+        } catch (ParseException e) {
+            // Normalize any parse error to the command's usage message
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, PinCommand.MESSAGE_USAGE), e);
         }
 
         return new PinCommand(seniorId, caregiverId);
-    }
-
-    /** Returns true if all the given prefixes are present (value non-empty). */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }
