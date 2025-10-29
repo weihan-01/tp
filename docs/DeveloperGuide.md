@@ -167,7 +167,7 @@ The `Model` component,
 `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person`
 needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="800" />
 
 </box>
 
