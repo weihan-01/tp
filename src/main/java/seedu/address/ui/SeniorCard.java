@@ -18,7 +18,7 @@ import seedu.address.model.person.Tag;
 /**
  * A UI component that displays a {@link Senior} as a card in the seniors list.
  * <p>
- * The card renders basic fields (name, phone, address, note), risk-tag chips, and the
+ * The card renders basic fields (name, phone, address, note), risk-tags chips, and the
  * assigned caregiver chip. When the senior is marked as pinned, a pin icon is shown at
  * the top-right and the card receives a subtle pinned background style.
  */
@@ -48,7 +48,7 @@ public class SeniorCard extends UiPart<Region> {
     @FXML
     private Label note;
     @FXML
-    private FlowPane tag;
+    private FlowPane tags;
     @FXML
     private HBox assignedRow;
     @FXML
@@ -191,7 +191,7 @@ public class SeniorCard extends UiPart<Region> {
      */
     private Label makeAssignedChip(String text, boolean emptyStyle) {
         Label l = new Label(text);
-        l.getStyleClass().addAll("tag-chip", "chip-assigned");
+        l.getStyleClass().addAll("tags-chip", "chip-assigned");
         if (emptyStyle) {
             l.getStyleClass().add("chip-assigned-empty");
         }
@@ -203,22 +203,23 @@ public class SeniorCard extends UiPart<Region> {
      * Hides the row if no risk tags are present.
      */
     private void renderChips() {
-        tag.getChildren().clear();
-        tag.setManaged(false);
-        tag.setVisible(false);
+        tags.getChildren().clear();
+        tags.setManaged(false);
+        tags.setVisible(false);
 
         Tag risk = senior.getRiskTag();
         if (risk != null) {
-            tag.setManaged(true);
-            tag.setVisible(true);
+            tags.setManaged(true);
+            tags.setVisible(true);
 
             Label idChip = makeChip(String.format("S%06d", senior.getSeniorId()));
             idChip.getStyleClass().add("chip-senior");
-            tag.getChildren().add(idChip);
+            tags.getChildren().add(idChip);
 
             String chipStr = riskLabel(risk.getTagName());
             Label chip = makeChip(chipStr);
             chip.getStyleClass().add("tag-chip"); // base pill style
+
             switch (risk.getTagName().toUpperCase()) {
             case "HR":
                 chip.getStyleClass().add("chip-hr");
@@ -232,25 +233,25 @@ public class SeniorCard extends UiPart<Region> {
             default:
                 break;
             }
-            tag.getChildren().add(chip);
+            tags.getChildren().add(chip);
         }
     }
 
     /**
-     * Creates a base tag chip label with the shared tag-chip style class.
+     * Creates a base tags chip label with the shared tags-chip style class.
      *
      * @param text chip text
-     * @return a {@link Label} styled as a tag chip
+     * @return a {@link Label} styled as a tags chip
      */
     private static Label makeChip(String text) {
         Label l = new Label(text);
-        l.getStyleClass().add("tag-chip");
+        l.getStyleClass().add("tags-chip");
         return l;
     }
     /**
      * Returns the display label for a risk code.
      *
-     * @param code risk tag code (e.g., "HR", "MR", "LR")
+     * @param code risk tags code (e.g., "HR", "MR", "LR")
      * @return human-readable label or the original code if unrecognized
      */
     private static String riskLabel(String code) {
@@ -265,7 +266,7 @@ public class SeniorCard extends UiPart<Region> {
         case "LR":
             return "Low Risk";
         default:
-            return code; // any unexpected tag shows as-is
+            return code; // any unexpected tags shows as-is
         }
     }
 
