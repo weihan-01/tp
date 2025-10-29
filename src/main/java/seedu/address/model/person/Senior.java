@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.commands.EditPersonDescriptor;
 import seedu.address.model.tag.Tag;
 
 /**
  * Represents an Elderly in the address book.
  */
-public class Senior extends Person {
+public class Senior extends Person<Senior> {
 
     // Senior data fields
     private final Integer seniorId;
@@ -90,6 +91,14 @@ public class Senior extends Person {
     }
 
     /**
+     * Returns the ID assigned to this senior.
+     */
+    @Override
+    public Integer getId() {
+        return getSeniorId();
+    }
+
+    /**
      * Returns the caregiver assigned to this senior.
      * Returns null if no caregiver is assigned.
      */
@@ -122,6 +131,26 @@ public class Senior extends Person {
     public Senior withNote(Note newNote) {
         return new Senior(getName(), getPhone(), getAddress(),
                 getRiskTags(), newNote, getCaregiver(), getSeniorId(), isPinned());
+    }
+
+    /**
+     * Returns a new Senior with the edited attributes
+     *
+     * @param descriptor
+     * @return Senior
+     */
+    @Override
+    public Senior edit(EditPersonDescriptor descriptor) {
+        return new Senior(
+                descriptor.getName().orElse(getName()),
+                descriptor.getPhone().orElse(getPhone()),
+                descriptor.getAddress().orElse(getAddress()),
+                descriptor.getRiskTags().orElse(getRiskTags()),
+                descriptor.getNote().orElse(getNote()),
+                descriptor.getCaregiver().orElse(getCaregiver()),
+                getSeniorId(),
+                descriptor.getPinned().orElse(isPinned())
+        );
     }
 
     @Override
