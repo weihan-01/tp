@@ -11,43 +11,86 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Stores the details to edit the person with. Each non-empty field value will replace the
- * corresponding field value of the person.
+ * Stores the details to edit the person with.
+ * Each non-empty field value will replace the corresponding field value of the person.
  */
 public class EditPersonDescriptor {
+
     private Name name;
     private Phone phone;
     private Address address;
     private Note note;
 
-    private Set<Tag> riskTags;       // Senior only
-    private Caregiver caregiver;     // Senior only
-    private Boolean pinned;          // Optional for all
+    private Set<Tag> riskTags; // Senior only
+    private Caregiver caregiver; // Senior only
+    private Boolean pinned; // Optional for all
 
-    // getters and setters returning Optional
-    public Optional<Name> getName() { return Optional.ofNullable(name); }
-    public void setName(Name name) { this.name = name; }
+    public Optional<Name> getName() {
+        return Optional.ofNullable(name);
+    }
 
-    public Optional<Phone> getPhone() { return Optional.ofNullable(phone); }
-    public void setPhone(Phone phone) { this.phone = phone; }
+    public void setName(Name name) {
+        this.name = name;
+    }
 
-    public Optional<Address> getAddress() { return Optional.ofNullable(address); }
-    public void setAddress(Address address) { this.address = address; }
+    public Optional<Phone> getPhone() {
+        return Optional.ofNullable(phone);
+    }
 
-    public Optional<Note> getNote() { return Optional.ofNullable(note); }
-    public void setNote(Note note) { this.note = note; }
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
 
-    public Optional<Set<Tag>> getRiskTags() { return Optional.ofNullable(riskTags); }
-    public void setRiskTags(Set<Tag> riskTags) { this.riskTags = riskTags; }
+    public Optional<Address> getAddress() {
+        return Optional.ofNullable(address);
+    }
 
-    public Optional<Caregiver> getCaregiver() { return Optional.ofNullable(caregiver); }
-    public void setCaregiver(Caregiver caregiver) { this.caregiver = caregiver; }
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-    public Optional<Boolean> getPinned() { return Optional.ofNullable(pinned); }
-    public void setPinned(Boolean pinned) { this.pinned = pinned; }
+    public Optional<Note> getNote() {
+        return Optional.ofNullable(note);
+    }
 
+    public void setNote(Note note) {
+        this.note = note;
+    }
+
+    public Optional<Set<Tag>> getRiskTags() {
+        return Optional.ofNullable(riskTags);
+    }
+
+    public void setRiskTags(Set<Tag> riskTags) {
+        this.riskTags = riskTags;
+    }
+
+    public Optional<Caregiver> getCaregiver() {
+        return Optional.ofNullable(caregiver);
+    }
+
+    public void setCaregiver(Caregiver caregiver) {
+        this.caregiver = caregiver;
+    }
+
+    public Optional<Boolean> getPinned() {
+        return Optional.ofNullable(pinned);
+    }
+
+    public void setPinned(Boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    /**
+     * Returns true if any field is non-null (i.e. being edited).
+     */
     public boolean isAnyFieldEdited() {
-        return name != null || phone != null || address != null || note != null
-                || riskTags != null || caregiver != null || pinned != null;
+        return name != null
+                || phone != null
+                || address != null
+                || note != null
+                || riskTags != null
+                || caregiver != null
+                || pinned != null;
     }
 }
