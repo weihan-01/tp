@@ -180,9 +180,16 @@ public class CaregiverCard extends UiPart<Region> {
             for (Senior s: assigned) {
                 String n = s.getName().toString();
                 int idx = s.getId();
-                String label = "S" + (idx >= 0 ? (idx)
-                        + " " : "—. ") + n; // 1-based index if visible
-                assignedChips.getChildren().add(makeAssignedChip(label, false));
+                String label;
+
+                if (idx >= 0) {
+                    label = "S" + idx + " " + n;
+                } else {
+                    label = "S— " + n;
+                }
+
+                Label chip = makeAssignedChip(label, false);
+                assignedChips.getChildren().add(chip);
             }
         }
     }
