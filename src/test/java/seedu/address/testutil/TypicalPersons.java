@@ -50,7 +50,7 @@ public class TypicalPersons {
             .withAddress("10th Street")
             .withRiskTag("HR")
             .withNote("Needs diabetes medicine daily")
-            .withCaregiver(ALICE)
+            //.withCaregiver(ALICE)
             .withPinned(false)
             .build();
     public static final Senior ELLE = new SeniorBuilder()
@@ -58,7 +58,7 @@ public class TypicalPersons {
             .withPhone("9482224")
             .withAddress("Michegan Ave")
             .withRiskTag("MR")
-            .withCaregiver(BENSON)
+            //.withCaregiver(BENSON)
             .withPinned(false)
             .build();
     public static final Senior FIONA = new SeniorBuilder()
@@ -67,7 +67,7 @@ public class TypicalPersons {
             .withAddress("Little Tokyo")
             .withRiskTag("LR")
             .withNote("Stays alone")
-            .withCaregiver(CARL)
+            //.withCaregiver(CARL)
             .withPinned(false)
             .build();
     public static final Senior GEORGE = new SeniorBuilder()
@@ -76,7 +76,7 @@ public class TypicalPersons {
             .withAddress("4th Street")
             .withRiskTag("HR")
             .withNote("Has Dementia")
-            .withCaregiver(ALICE)
+            //.withCaregiver(ALICE)
             .withPinned(false)
             .build();
 
@@ -87,7 +87,7 @@ public class TypicalPersons {
             .withAddress("Little India")
             .withRiskTag("MR")
             .withNote("Prone to falling")
-            .withCaregiver(BENSON)
+            //.withCaregiver(BENSON)
             .withPinned(false)
             .build();
     public static final Caregiver IDA = new CaregiverBuilder()
