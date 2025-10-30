@@ -54,6 +54,7 @@ public class SeniorListPanel extends UiPart<Region> {
 
         // keep a reference to the original list
         this.backingList = seniorList;
+        ObservableList<Senior> originalAllSeniors = logic.getUnfilteredSeniorList();
 
         SortedList<Senior> sorted = getSeniorsSorted(seniorList);
         var visibleList = new javafx.collections.transformation.FilteredList<>(backingList, s -> !isPinnedSenior(s));
@@ -67,8 +68,8 @@ public class SeniorListPanel extends UiPart<Region> {
         // Implement logic when senior list is empty, display message prompt
         Label emptySeniorsListPlaceholder = createEmptySeniorsPlaceholder();
         Runnable refreshPlaceholder = createRefreshPlaceholder(
-                backingList, emptySeniorsListPlaceholder, MESSAGE_NO_SENIORS_PROMPT);
-        initializeSeniorPlaceholder(refreshPlaceholder, backingList);
+                originalAllSeniors, emptySeniorsListPlaceholder, MESSAGE_NO_SENIORS_PROMPT);
+        initializeSeniorPlaceholder(refreshPlaceholder, originalAllSeniors);
         seniorListView.setPlaceholder(emptySeniorsListPlaceholder);
 
 
@@ -215,5 +216,6 @@ public class SeniorListPanel extends UiPart<Region> {
         refreshPlaceholder.run();
         backingList.addListener((ListChangeListener<? super Senior>) c -> refreshPlaceholder.run());
     }
+
 
 }

@@ -42,7 +42,8 @@ public class AddSeniorCommand extends Command {
             + PREFIX_CID + "201";
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
-    public static final String MESSAGE_DUPLICATE_SENIOR = "Person with the same name already exists. Please amend your entry.";
+    public static final String MESSAGE_DUPLICATE_SENIOR = "Person "
+            + "with the same name already exists. Please amend your entry.";
     public static final String MESSAGE_NO_SUCH_CAREGIVER = "No caregiver exists with ID C%06d";
 
     private final Senior toAdd;
