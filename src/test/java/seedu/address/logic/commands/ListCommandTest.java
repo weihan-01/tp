@@ -1,8 +1,10 @@
+
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showCaregiverAtIndex;
 import static seedu.address.logic.commands.CommandTestUtil.showSeniorAtIndex;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +14,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
+
 /**
  * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
  */
+
 public class ListCommandTest {
 
     private Model model;
@@ -38,3 +42,4 @@ public class ListCommandTest {
         assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
     }
 }
+

@@ -1,187 +1,158 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.Messages;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
-import seedu.address.model.person.Tag;
 
 /**
- * Tests for {@link PinCommand}.
- * Mirrors the structure and utilities used by DeleteCommandTest/CommandTestUtil.
+ * Tests for {@link PinCommand} using CommandTestUtil's assert helpers,
+ * mirroring FilterCommandTest setup & style.
  */
 public class PinCommandTest {
 
-    private static final String PIN_SENTINEL = "PINNED";
+    private Model model;
+    private Model expectedModel;
 
-    private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Senior firstSenior;
+    private Caregiver firstCaregiver;
+
+    @BeforeEach
+    public void setUp() {
+        AddressBook ab = getTypicalAddressBook();
+        model = new ModelManager(ab, new UserPrefs());
+        expectedModel = new ModelManager(new AddressBook(ab), new UserPrefs());
+
+        List<Senior> seniors = model.getFilteredSeniorList();
+        if (!seniors.isEmpty()) {
+            firstSenior = seniors.get(0);
+        }
+        List<Caregiver> caregivers = model.getFilteredCaregiverList();
+        if (!caregivers.isEmpty()) {
+            firstCaregiver = caregivers.get(0);
+        }
+    }
+
+    // Test success paths
 
     @Test
-    public void execute_validNameUnfilteredList_success() {
-        // pick first person in the unfiltered list
-        Person personToPin = model.getFilteredPersonList().get(0);
-        Name nameArg = personToPin.getName();
+    public void execute_pinSenior_success() throws Exception {
+        Integer id = firstSenior.getSeniorId();
+        PinCommand command = new PinCommand(id, null);
 
-        PinCommand command = new PinCommand(nameArg);
-        String expectedMessage = String.format(PinCommand.MESSAGE_SUCCESS, personToPin.getName());
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        // expected: unpin any existing pinned, then pin target
-        unpinAll(expectedModel);
-        Person pinnedVersion = withPinnedNote(personToPin);
-        expectedModel.setPerson(personToPin, pinnedVersion);
+        String expectedMessage = String.format(PinCommand.MESSAGE_SUCCESS, Messages.formatSenior(firstSenior));
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
-    public void execute_alreadyPinned_success() throws Exception {
-        // Pre-pin a target in the model
-        Person target = model.getFilteredPersonList().get(0);
-        prePinInModel(model, target);
+    public void execute_pinCaregiver_success() throws Exception {
+        Integer id = firstCaregiver.getCaregiverId();
+        PinCommand command = new PinCommand(null, id);
 
-        // Expected model is identical (no change)
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        String expectedMessage = String.format(PinCommand.MESSAGE_SUCCESS, Messages.formatCaregiver(firstCaregiver));
 
-        PinCommand command = new PinCommand(target.getName());
-        String expectedMessage = String.format(PinCommand.MESSAGE_ALREADY_PINNED, target.getName());
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    // Test seniors and caregiver that has already been pinned
+    @Test
+    public void execute_pinAlreadyPinnedSenior_usesAlreadyPinnedMessage() throws Exception {
+        // Ensure both models are in pinned state, pin the first senior
+        Integer id = firstSenior.getSeniorId();
+        if (!firstSenior.isPinned()) {
+            new PinCommand(id, null).execute(model);
+        }
+        // Mirror on expectedModel so both are equal pre-assert
+        new PinCommand(id, null).execute(expectedModel);
+
+        // Re-pin senior
+        PinCommand command = new PinCommand(id, null);
+        String expectedMessage = String.format(PinCommand.MESSAGE_ALREADY_PINNED,
+                model.getFilteredSeniorList().stream()
+                        .filter(s -> id.equals(s.getSeniorId()))
+                        .findFirst().orElseThrow().getName());
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
-    public void execute_nameNotFound_failure() {
-        Name missing = new Name("This Name Does Not Exist");
-        PinCommand command = new PinCommand(missing);
+    public void execute_pinAlreadyPinnedCaregiver_usesAlreadyPinnedMessage() throws Exception {
+        // Ensure both models are in pinned state, pin the first caregiver
+        Integer id = firstCaregiver.getCaregiverId();
+        if (!firstCaregiver.isPinned()) {
+            new PinCommand(null, id).execute(model);
+        }
+        new PinCommand(null, id).execute(expectedModel);
 
-        assertCommandFailure(command, model,
-                String.format(PinCommand.MESSAGE_PERSON_NOT_FOUND, missing));
+        PinCommand command = new PinCommand(null, id);
+        String expectedMessage = String.format(PinCommand.MESSAGE_ALREADY_PINNED,
+                model.getFilteredCaregiverList().stream()
+                        .filter(c -> id.equals(c.getCaregiverId()))
+                        .findFirst().orElseThrow().getName());
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    // Test invalid indexes
+    @Test
+    public void execute_invalidSeniorIndex_throwsCommandException() {
+        Integer invalidId = 999999;
+        PinCommand command = new PinCommand(invalidId, null);
+
+        assertCommandFailure(command, model, PinCommand.MESSAGE_INVALID_SENIOR_INDEX);
+    }
+
+    @Test
+    public void execute_invalidCaregiverIndex_throwsCommandException() {
+        Integer invalidId = 999999;
+        PinCommand command = new PinCommand(null, invalidId);
+
+        assertCommandFailure(command, model, PinCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
+    }
+
+    @Test
+    public void equals_sameIds_true() {
+        PinCommand a = new PinCommand(1, null);
+        PinCommand b = new PinCommand(1, null);
+        assertTrue(a.equals(b));
+        assertTrue(a.equals(a));
+    }
+
+    @Test
+    public void equals_differentIds_false() {
+        PinCommand pinSnr1 = new PinCommand(1, null);
+        PinCommand pinSnr2 = new PinCommand(2, null);
+        PinCommand pinCgr1 = new PinCommand(null, 1);
+        PinCommand pinCgr2 = new PinCommand(null, 2);
+        assertFalse(pinSnr1.equals(pinSnr2));
+        assertFalse(pinCgr1.equals(pinCgr2));
+        assertFalse(pinSnr1.equals(pinCgr1));
     }
 
     @Test
     public void toStringMethod() {
-        Name name = new Name("Alice Tan");
-        PinCommand command = new PinCommand(name);
-        String expected = PinCommand.class.getCanonicalName() + "{targetName=" + name + "}";
-        assertEquals(expected, command.toString());
-    }
-
-    // helpers to construct the expected state (mirrors PinCommand behavior)
-
-    /** Removes the PINNED sentinel from every person’s note in the model. */
-    private static void unpinAll(Model m) {
-        List<Person> current = new ArrayList<>(m.getFilteredPersonList());
-        for (Person p : current) {
-            if (isPinned(p)) {
-                m.setPerson(p, cloneWithNote(p, stripPinned(p.getNote())));
-            }
-        }
-    }
-
-    /** Returns a copy of {@code p} whose Note is marked PINNED (prefix strategy). */
-    private static Person withPinnedNote(Person p) {
-        return cloneWithNote(p, markPinned(p.getNote()));
-    }
-
-    /** Adds PINNED to the note if not already present. */
-    private static Note markPinned(Note existing) {
-        String cur = existing == null ? "" : existing.toString();
-        if (cur == null) {
-            cur = "";
-        }
-        cur = cur.trim();
-        if (cur.isEmpty()) {
-            return new Note(PIN_SENTINEL);
-        }
-
-        if (cur.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL)) {
-            return existing;
-        }
-
-        return new Note(PIN_SENTINEL + " | " + cur);
-    }
-
-    /** Strips any PINNED sentinel prefix. */
-    private static Note stripPinned(Note existing) {
-        String cur = existing == null ? "" : existing.toString();
-        if (cur == null) {
-            cur = "";
-        }
-        String norm = cur.trim();
-        for (String sep : new String[]{":", "|"}) {
-            String pref = PIN_SENTINEL + " " + sep;
-            if (norm.toUpperCase(Locale.ROOT).startsWith(pref)) {
-                String rest = norm.substring(pref.length()).trim();
-                return new Note(rest);
-            }
-        }
-        if (norm.equalsIgnoreCase(PIN_SENTINEL)) {
-            return new Note("");
-        }
-        if (norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " ")) {
-            String rest = norm.substring((PIN_SENTINEL + " ").length()).trim();
-            return new Note(rest);
-        }
-        return existing;
-    }
-
-    /** True if the person’s note begins with the PINNED sentinel. */
-    private static boolean isPinned(Person p) {
-        Note n = p.getNote();
-        String s = n == null ? "" : n.toString();
-        if (s == null) {
-            s = "";
-        }
-        String norm = s.trim();
-        return norm.equalsIgnoreCase(PIN_SENTINEL)
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " ")
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + ":")
-                || norm.toUpperCase(Locale.ROOT).startsWith(PIN_SENTINEL + " |");
-    }
-
-    /**
-     * Clones {@code original} to the correct runtime type (Senior/Caregiver/Person),
-     * replacing only the {@link Note}. Preserves other fields/relations.
-     */
-    private static Person cloneWithNote(Person original, Note newNote) {
-        if (original instanceof Senior) {
-            Senior s = (Senior) original;
-            Set<Tag> risk = s.getRiskTags();
-            if (s.hasCaregiver()) {
-                return new Senior(s.getName(), s.getPhone(), s.getAddress(), risk, newNote, s.getCaregiver());
-            } else {
-                return new Senior(s.getName(), s.getPhone(), s.getAddress(), risk, newNote);
-            }
-        } else if (original instanceof Caregiver) {
-            Caregiver c = (Caregiver) original;
-            return new Caregiver(c.getName(), c.getPhone(), c.getAddress(), newNote, c.getCaregiverId());
-        } else {
-            return new Person(original.getName(), original.getPhone(), original.getAddress(), newNote);
-        }
-    }
-
-    /** Precondition helper: unpins all then pins {@code target} in the given model. */
-    private static void prePinInModel(Model m, Person target) throws CommandException {
-        unpinAll(m);
-        m.setPerson(target, withPinnedNote(target));
+        PinCommand pinSenior = new PinCommand(5, null);
+        PinCommand pinCaregiver = new PinCommand(null, 3);
+        String expectedSenior = PinCommand.class.getCanonicalName() + "{seniorId=5}";
+        String expectedCaregiver = PinCommand.class.getCanonicalName() + "{caregiverId=3}";
+        assertEquals(expectedSenior, pinSenior.toString());
+        assertEquals(expectedCaregiver, pinCaregiver.toString());
     }
 
 }

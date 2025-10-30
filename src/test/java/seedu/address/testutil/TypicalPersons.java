@@ -48,7 +48,7 @@ public class TypicalPersons {
             .withName("Daniel Meier")
             .withPhone("87652533")
             .withAddress("10th Street")
-            .withTags("HR")
+            .withRiskTag("HR")
             .withNote("Needs diabetes medicine daily")
             .withCaregiver(ALICE)
             .withPinned(false)
@@ -57,7 +57,7 @@ public class TypicalPersons {
             .withName("Elle Meyer")
             .withPhone("9482224")
             .withAddress("Michegan Ave")
-            .withTags("MR")
+            .withRiskTag("MR")
             .withCaregiver(BENSON)
             .withPinned(false)
             .build();
@@ -65,7 +65,7 @@ public class TypicalPersons {
             .withName("Fiona Kunz")
             .withPhone("9482427")
             .withAddress("Little Tokyo")
-            .withTags("LR")
+            .withRiskTag("LR")
             .withNote("Stays alone")
             .withCaregiver(CARL)
             .withPinned(false)
@@ -74,28 +74,32 @@ public class TypicalPersons {
             .withName("George Best")
             .withPhone("9482442")
             .withAddress("4th Street")
-            .withTags("HR")
+            .withRiskTag("HR")
             .withNote("Has Dementia")
             .withCaregiver(ALICE)
             .withPinned(false)
             .build();
 
     // Manually added
-/*    public static final Senior HOON = new SeniorBuilder()
+    public static final Senior HOON = new SeniorBuilder()
             .withName("Hoon Meier")
             .withPhone("8482424")
             .withAddress("Little India")
+            .withRiskTag("MR")
+            .withNote("Prone to falling")
+            .withCaregiver(BENSON)
             .withPinned(false)
             .build();
     public static final Caregiver IDA = new CaregiverBuilder()
             .withName("Ida Mueller")
             .withPhone("8482131")
             .withAddress("Chicago Ave")
+            .withNote("Weekly meeting on wednesdays")
             .withPinned(false)
-            .build();*/
+            .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
-/*
+
     public static final Caregiver AMY = new CaregiverBuilder()
             .withName(VALID_NAME_AMY)
             .withPhone(VALID_PHONE_AMY)
@@ -109,7 +113,7 @@ public class TypicalPersons {
             //.withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .withNote(VALID_NOTE_BOB)
             .build();
-*/
+
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 

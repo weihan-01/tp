@@ -3,12 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.Senior;
-import seedu.address.model.person.Tag;
+import seedu.address.model.person.*;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
@@ -20,6 +15,7 @@ public class SeniorBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_NOTE = "";
+    public static final String DEFAULT_TAG = "MR";
     public static final Caregiver DEFAULT_CAREGIVER = new CaregiverBuilder()
             .withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111")
@@ -34,7 +30,7 @@ public class SeniorBuilder {
     private Phone phone;
     private Address address;
     private Note note;
-    private Set<Tag> riskTags;
+    private Tag riskTag;
     private Caregiver caregiver;
     private Integer seniorId;
     private Boolean isPinned;
@@ -47,7 +43,7 @@ public class SeniorBuilder {
         phone = new Phone(DEFAULT_PHONE);
         address = new Address(DEFAULT_ADDRESS);
         //riskTags = new HashSet<>(); // seniors can have risk tags
-        riskTags = new HashSet<>();
+        riskTag = new Tag(DEFAULT_TAG);
         note = new Note(DEFAULT_NOTE);
         caregiver = DEFAULT_CAREGIVER;
         seniorId = DEFAULT_SENIOR_ID;
@@ -61,7 +57,8 @@ public class SeniorBuilder {
         name = seniorToCopy.getName();
         phone = seniorToCopy.getPhone();
         address = seniorToCopy.getAddress();
-        riskTags = new HashSet<>(seniorToCopy.getRiskTags());
+        //riskTags = new HashSet<>(seniorToCopy.getRiskTags());
+        riskTag  = seniorToCopy.getRiskTag();
         note = seniorToCopy.getNote();
         caregiver  = seniorToCopy.getCaregiver();
         seniorId = seniorToCopy.getSeniorId();
@@ -104,8 +101,8 @@ public class SeniorBuilder {
      * Parses the {@code tags} into a {@code Set<Tag>} and sets them.
      * Example: withTags("lr", "hr")
      */
-    public SeniorBuilder withTags(String... tags) {
-        this.riskTags = SampleDataUtil.getTagSet(tags);
+    public SeniorBuilder withRiskTag(String riskTag) {
+        this.riskTag = new Tag(riskTag);
         return this;
     }
 
@@ -128,6 +125,6 @@ public class SeniorBuilder {
 
 
     public Senior build() {
-        return new Senior(name, phone, address, riskTags, note, caregiver, seniorId, isPinned);
+        return new Senior(name, phone, address, riskTag, note, caregiver, seniorId, isPinned);
     }
 }
