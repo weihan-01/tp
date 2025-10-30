@@ -35,7 +35,7 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 
    * `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 n/Has experience with dementia caregiving` : Adds a caregiver contact named `Mei Hui` to the address book.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+   * `delete s/1` : Deletes the senior at index 1.
 
    * `assign s/3 c/1`: Assigns the senior at index 3 to the caregiver at index 1 in the current list.
 
@@ -215,17 +215,17 @@ Examples:
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified senior/caregiver from the address book.
 
-Format: `delete INDEX`
+Format: `delete c/INDEX or s/INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
+* Deletes the senior/caregiver at the specified `INDEX`.
+* The index refers to the index number shown in the displayed senior/caregiver list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `delete c/2` deletes the caregiver at index 2.
+* `delete s/2` deletes the senior at index 2.
 
 ### Clearing all entries : `clear`
 
@@ -314,6 +314,6 @@ _Details coming soon ..._
 | **Edit**               | `coming in v1.6`                                                                                                                                                                        |
 | **List**               | `list`                                                                                                                                                                                  |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
-| **Delete**             | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                                     |
+| **Delete**             | `delete s/INDEX`<br> e.g., `delete s/3`                                                                                                                                                 |
 | **Clear**              | `clear`                                                                                                                                                                                 |
 | **Help**               | `help`                                                                                                                                                                                  |
