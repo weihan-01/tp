@@ -35,7 +35,7 @@ public class AddCaregiverCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New caregiver added: %1$s";
     public static final String MESSAGE_DUPLICATE_CAREGIVER =
-            "Caregiver already exists. Please amend your entry.";
+            "Person with the same name already exists. Please amend your entry.";
 
     private final Caregiver toAdd;
 
