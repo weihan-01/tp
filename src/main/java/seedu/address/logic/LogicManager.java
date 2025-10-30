@@ -103,34 +103,12 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public int getDisplayedIndexOfSeniorByName(String fullName) {
-        if (fullName == null) {
-            return -1;
-        }
-        final ObservableList<Senior> visible = getFilteredSeniorList();
-        for (int i = 0; i < visible.size(); i++) {
-            Senior s = visible.get(i);
-            if (s != null && s.getName() != null
-                    && fullName.equals(s.getName().fullName)) {
-                return s.getId();
-            }
-        }
-        return -1;
+    public ObservableList<Senior> getAllSeniorList() {
+        return model.getAllSeniorList();
     }
 
     @Override
-    public int getDisplayedIndexOfCaregiverByName(String fullName) {
-        if (fullName == null) {
-            return -1;
-        }
-        final ObservableList<Caregiver> visible = getFilteredCaregiverList();
-        for (int i = 0; i < visible.size(); i++) {
-            Caregiver c = visible.get(i);
-            if (c != null && c.getName() != null
-                    && fullName.equals(c.getName().fullName)) {
-                return c.getId();
-            }
-        }
-        return -1;
+    public ObservableList<Caregiver> getAllCaregiverList() {
+        return model.getAllCaregiverList();
     }
 }

@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.List;
 import java.util.Objects;
 
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Senior;
 
 /**
  * A UI component that displays a {@link Caregiver} as a card in the caregiver list.
@@ -159,8 +161,25 @@ public class CaregiverCard extends UiPart<Region> {
         if (names == null || names.isEmpty()) {
             assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
         } else {
-            for (String n : names) {
-                int idx = logic.getDisplayedIndexOfSeniorByName(n); // returns -1 if not visible
+            String cgName = caregiver.getName().fullName;
+            List<Senior> allSeniors = logic.getAllSeniorList();
+            java.util.List<Senior> assigned = new java.util.ArrayList<>();
+
+            for (Senior s : allSeniors) {
+                String assignedCg = logic.getAssignedCaregiverName(s);
+                if (assignedCg != null && assignedCg.equals(cgName)) {
+                    assigned.add(s);
+                }
+            }
+
+            if (assigned.isEmpty()) {
+                assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
+                return;
+            }
+
+            for (Senior s: assigned) {
+                String n = s.getName().toString();
+                int idx = s.getId();
                 String label = "S" + (idx >= 0 ? (idx)
                         + " " : "—. ") + n; // 1-based index if visible
                 assignedChips.getChildren().add(makeAssignedChip(label, false));
