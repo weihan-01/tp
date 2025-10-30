@@ -20,10 +20,13 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of the person identified by the senior or caregiver index.\n"
-            + "Specify one type of person only.\n"
-            + "Example: edit s/1 n/John Tan p/91234567\n"
-            + "Example: edit c/2 n/Jane Lim";
+            + ": Edits the details of a senior or caregiver using their unique ID.\n"
+            + "Specify exactly one person type (senior or caregiver).\n"
+            + "Format: edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
+            + "        edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
+            + "Examples:\n"
+            + "  edit s/1 n/John Tan p/91234567\n"
+            + "  edit c/2 n/Jane Lim";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
