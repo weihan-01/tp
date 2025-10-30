@@ -56,6 +56,15 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        assert model.getFilteredSeniorList() != null :
+                "Filtered senior list must not be null";
+        assert model.getFilteredCaregiverList() != null :
+                "Filtered caregiver list must not be null";
+        assert model.getAllSeniorList() != null :
+                "All senior list must not be null";
+        assert model.getAllCaregiverList() != null :
+                "All caregiver list must not be null";
+
         if (isSenior) {
             List<Senior> lastShownList = model.getFilteredSeniorList();
 
@@ -82,6 +91,13 @@ public class EditCommand extends Command {
 
             Senior editedSenior = seniorToEdit.edit(editPersonDescriptor);
 
+            assert editedSenior != null
+                    : "Edited senior must not be null";
+            assert editedSenior.getId() != null
+                    : "Edited senior must retain a non-null ID";
+            assert editedSenior.getId().equals(seniorToEdit.getId())
+                    : "Edit must not change the senior's ID";
+
             if (!seniorToEdit.isSamePerson(editedSenior) && model.hasPerson(editedSenior)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
@@ -106,6 +122,13 @@ public class EditCommand extends Command {
             }
 
             Caregiver editedCaregiver = caregiverToEdit.edit(editPersonDescriptor);
+
+            assert editedCaregiver != null :
+                    "Edited caregiver must not be null";
+            assert editedCaregiver.getId() != null :
+                    "Edited caregiver must retain a non-null ID";
+            assert editedCaregiver.getId().equals(caregiverToEdit.getId())
+                    : "Edit must not change the caregiver's ID";
 
             if (!caregiverToEdit.isSamePerson(editedCaregiver) && model.hasPerson(editedCaregiver)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
