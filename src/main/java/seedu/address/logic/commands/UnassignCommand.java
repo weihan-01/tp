@@ -6,7 +6,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.CommandUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -35,6 +37,7 @@ public class UnassignCommand extends Command {
     public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
     public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
     public static final String MESSAGE_NOT_ASSIGNED = "This caregiver is not currently assigned to this senior";
+    private static final Logger logger = LogsCenter.getLogger(UnassignCommand.class.getName());
 
     private final Integer seniorIndex;
     private final Integer caregiverIndex;
@@ -53,6 +56,11 @@ public class UnassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        logger.info(() -> String.format(
+                "Executing unassign with SeniorIndex=%d, CaregiverIndex=%d",
+                seniorIndex, caregiverIndex));
+
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
@@ -60,7 +68,7 @@ public class UnassignCommand extends Command {
         CommandUtil.validateIndex(seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
         CommandUtil.validateIndex(caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
 
-
+        logger.fine("Validated indices successfully.");
         // Find senior by seniorIndex
         Senior senior = CommandUtil.findSeniorById(fullSeniorList, seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
 
@@ -70,6 +78,9 @@ public class UnassignCommand extends Command {
 
         // Check if assigned correctly
         if (!(senior.hasCaregiver() && senior.getCaregiver().isSamePerson(caregiver))) {
+            logger.warning(() -> String.format(
+                    "Unassign failed: Caregiver %s is not assigned to Senior %s",
+                    caregiver.getName(), senior.getName()));
             throw new CommandException(MESSAGE_NOT_ASSIGNED);
         }
 
@@ -79,6 +90,10 @@ public class UnassignCommand extends Command {
         model.setSenior(senior, updatedSenior);
         model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
         model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
+
+        logger.info(() -> String.format(
+                "Unassign successful: Senior=%s, Caregiver=%s",
+                senior.getName(), caregiver.getName()));
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS,
                 senior.getName(), caregiver.getName()));
