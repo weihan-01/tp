@@ -152,7 +152,7 @@ Examples:
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+  ![result for 'find command'](images/find-command.png)
 
 ### Filtering seniors by risk tag: `filter`
 
