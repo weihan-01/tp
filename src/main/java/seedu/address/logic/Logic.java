@@ -35,8 +35,14 @@ public interface Logic {
     /** Returns an unmodifiable view of the filtered list of seniors */
     ObservableList<Senior> getFilteredSeniorList();
 
+    /** Returns an unmodifiable view of the unfiltered list of seniors */
+    ObservableList<Senior> getUnfilteredSeniorList();
+
     /** Returns an unmodifiable view of the filtered list of seniors */
     ObservableList<Caregiver> getFilteredCaregiverList();
+
+    /** Returns an unmodifiable view of the unfiltered list of caregiver */
+    ObservableList<Caregiver> getUnfilteredCaregiverList();
 
     /**
      * Returns the user prefs' address book file path.

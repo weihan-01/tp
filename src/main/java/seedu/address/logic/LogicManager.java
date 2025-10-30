@@ -73,8 +73,18 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public ObservableList<Senior> getUnfilteredSeniorList() {
+        return model.getAllSeniorList();
+    }
+
+    @Override
     public ObservableList<Caregiver> getFilteredCaregiverList() {
         return model.getFilteredCaregiverList();
+    }
+
+    @Override
+    public ObservableList<Caregiver> getUnfilteredCaregiverList() {
+        return model.getAllCaregiverList();
     }
 
     @Override

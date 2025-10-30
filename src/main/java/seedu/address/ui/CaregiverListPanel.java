@@ -55,6 +55,8 @@ public class CaregiverListPanel extends UiPart<Region> {
         // keep a reference to the original list
         this.backingList = caregiverList;
 
+        ObservableList<Caregiver> originalAllCaregivers = logic.getUnfilteredCaregiverList();
+
         SortedList<Caregiver> sorted = getCaregiverSorted(caregiverList);
         var visibleList = new javafx.collections.transformation.FilteredList<>(backingList, c -> !isPinnedCaregiver(c));
         caregiverListView.setItems(visibleList);
@@ -63,12 +65,12 @@ public class CaregiverListPanel extends UiPart<Region> {
         caregiverList.addListener((ListChangeListener<Caregiver>) change -> caregiverListView.refresh());
         caregiverListView.setCellFactory(listView -> new CaregiverListViewCell(logic));
 
-        // Implement logic when senior list is empty, display message prompt
-        Label emptySeniorsListPlaceholder = createEmptyCaregiverPlaceholder();
+        // Implement logic when caregiver list is empty, display message prompt
+        Label emptyCaregiversListPlaceholder = createEmptyCaregiverPlaceholder();
         Runnable refreshPlaceholder = createRefreshPlaceholder(
-                backingList, emptySeniorsListPlaceholder, MESSAGE_NO_CAREGIVERS_PROMPT);
-        initializeSeniorPlaceholder(refreshPlaceholder, backingList);
-        caregiverListView.setPlaceholder(emptySeniorsListPlaceholder);
+                originalAllCaregivers, emptyCaregiversListPlaceholder, MESSAGE_NO_CAREGIVERS_PROMPT);
+        initializeCaregiverPlaceholder(refreshPlaceholder, originalAllCaregivers);
+        caregiverListView.setPlaceholder(emptyCaregiversListPlaceholder);
 
 
         seniorList.addListener((ListChangeListener<Senior>) c -> {
@@ -215,13 +217,13 @@ public class CaregiverListPanel extends UiPart<Region> {
     }
 
     /**
-     * Initializes the seniors placeholder, ensuring it stays synchronized with the backing list.
+     * Initializes the caregiver placeholder, ensuring it stays synchronized with the backing list.
      * The placeholder refreshes immediately and on any subsequent list modifications.
      *
      * @param refreshPlaceholder the Runnable responsible for updating the placeholder
      * @param backingList the ObservableList to monitor for changes
      */
-    private void initializeSeniorPlaceholder(Runnable refreshPlaceholder, ObservableList<Caregiver> backingList) {
+    private void initializeCaregiverPlaceholder(Runnable refreshPlaceholder, ObservableList<Caregiver> backingList) {
         refreshPlaceholder.run();
         backingList.addListener((ListChangeListener<? super Caregiver>) c -> refreshPlaceholder.run());
     }
