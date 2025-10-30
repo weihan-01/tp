@@ -64,12 +64,12 @@ public interface Logic {
     List<String> getAssignedSeniorNames(Caregiver caregiver);
 
     /**
-     * Returns senior index of given senior name.
+     * Returns list of all seniors.
      */
-    int getDisplayedIndexOfSeniorByName(String fullName);
+    ObservableList<Senior> getAllSeniorList();
 
     /**
-     * Returns caregiver index of given caregiver name.
+     * Returns list of all caregivers.
      */
-    int getDisplayedIndexOfCaregiverByName(String fullName);
+    ObservableList<Caregiver> getAllCaregiverList();
 }

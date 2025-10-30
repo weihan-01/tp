@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
+import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Senior;
 import seedu.address.model.person.Tag;
 
@@ -183,9 +184,12 @@ public class SeniorCard extends UiPart<Region> {
             assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
             return;
         } else {
-            for (String n : names) {
-                int idx = logic.getDisplayedIndexOfCaregiverByName(n);
-                String label = "C" + (idx >= 0 ? (idx) + " " : "—. ") + n;
+            List<Caregiver> allCaregivers = logic.getAllCaregiverList();
+            for (Caregiver c : allCaregivers) {
+                String n = c.getName().toString();
+                int i = c.getId();
+                String label = "C" + (i >= 0 ? (i) +
+                        " " : "—. ") + n;
                 assignedChips.getChildren().add(makeAssignedChip(label, false));
             }
         }
