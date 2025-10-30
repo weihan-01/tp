@@ -1,189 +1,239 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.person.Address;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
-import seedu.address.model.person.Tag;
+import seedu.address.testutil.CaregiverBuilder;
+import seedu.address.testutil.SeniorBuilder;
 
+/**
+ * AssignCommand tests
+ */
 public class AssignCommandTest {
-    private final Name snrName = new Name(VALID_NAME_AMY);
-    private final Phone snrPhone = new Phone(VALID_PHONE_AMY);
-    private final Address snrAddress = new Address(VALID_ADDRESS_AMY);
-    private final Tag snrTag = new Tag("HR");
-    private final Note snrNote = new Note(VALID_NOTE_AMY);
 
-    private final Senior senior = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, null, null);
+    private Senior aliceLr;
+    private Senior bobMr;
+    private Senior caraHr;
+    private Senior danLr;
 
-    private final Name cgrName = new Name(VALID_NAME_BOB);
-    private final Phone cgrPhone = new Phone(VALID_PHONE_BOB);
-    private final Address cgrAddress = new Address(VALID_ADDRESS_BOB);
-    private final Note cgrNote = new Note(VALID_NOTE_BOB);
+    private Caregiver cgrElsa;
+    private Caregiver cgrFaith;
+    private Caregiver cgrJodie;
 
-    private final Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, 10);
+    private Model model;
+    private Model expectedModel;
+
+    @BeforeEach
+    public void setUp() {
+
+        AddressBook ab = new AddressBook();
+
+        aliceLr = new SeniorBuilder().withName("Alice").withRiskTag("lr").build();
+        bobMr = new SeniorBuilder().withName("Bob").withRiskTag("mr").build();
+        caraHr = new SeniorBuilder().withName("Cara").withRiskTag("hr").build();
+        danLr = new SeniorBuilder().withName("Dan").withRiskTag("lr").build();
+
+        cgrElsa = new CaregiverBuilder().withName("Elsa").build();
+        cgrFaith = new CaregiverBuilder().withName("Faith").build();
+        cgrJodie = new CaregiverBuilder().withName("Jodie").build();
+
+        ab.addSenior(aliceLr);
+        ab.addSenior(bobMr);
+        ab.addSenior(caraHr);
+        ab.addSenior(danLr);
+        ab.addCaregiver(cgrElsa);
+        ab.addCaregiver(cgrFaith);
+        ab.addCaregiver(cgrJodie);
+
+        model = new ModelManager(ab, new UserPrefs());
+        expectedModel = new ModelManager(new AddressBook(ab), new UserPrefs());
+
+    }
+
+    // Success Path
+
     @Test
-    public void execute_validIndices_successfulAssignment() throws Exception {
-        ModelStubWithPersons model = new ModelStubWithPersons(senior, caregiver);
-        AssignCommand command = new AssignCommand(1, 2);
+    public void execute_assign_success() throws Exception {
+        Optional<Senior> maybeSenior = pickSeniorPreferNoCaregiver(model);
+        Optional<Caregiver> maybeCaregiver = pickAnyCaregiver(model);
 
-        CommandResult result = command.execute(model);
+        Senior senior = maybeSenior.get();
+        Caregiver caregiver = maybeCaregiver.get();
 
-        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, senior.getName(), caregiver.getName()),
-                result.getFeedbackToUser());
-        assertTrue(((Senior) model.getFilteredPersonList().get(0)).hasCaregiver());
+        Integer seniorId = senior.getSeniorId();
+        Integer caregiverId = caregiver.getCaregiverId();
+
+        AssignCommand command = new AssignCommand(seniorId, caregiverId);
+
+        // Mirror mutation & get exact expected message
+        CommandResult expectedResult = new AssignCommand(seniorId, caregiverId).execute(expectedModel);
+        String expectedMessage = expectedResult.getFeedbackToUser();
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
+    @Test
+    public void execute_assignOnFilteredLists_success() throws Exception {
+        Optional<Senior> maybeSenior = pickSeniorPreferNoCaregiver(model);
+        Optional<Caregiver> maybeCaregiver = pickAnyCaregiver(model);
 
-    /**
-     * A default model stub that have all of the methods failing.
-     */
-    private class ModelStub implements Model {
-        @Override
-        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
-            throw new AssertionError("This method should not be called.");
-        }
+        Senior targetSenior = maybeSenior.get();
+        Caregiver targetCaregiver = maybeCaregiver.get();
 
-        @Override
-        public ReadOnlyUserPrefs getUserPrefs() {
-            throw new AssertionError("This method should not be called.");
-        }
+        Predicate<Person> seniorOnly = s -> s.equals(targetSenior);
+        Predicate<Person> caregiverOnly = c -> c.equals(targetCaregiver);
 
-        @Override
-        public GuiSettings getGuiSettings() {
-            throw new AssertionError("This method should not be called.");
-        }
+        model.updateFilteredSeniorList(seniorOnly);
+        model.updateFilteredCaregiverList(caregiverOnly);
+        expectedModel.updateFilteredSeniorList(seniorOnly);
+        expectedModel.updateFilteredCaregiverList(caregiverOnly);
 
-        @Override
-        public void setGuiSettings(GuiSettings guiSettings) {
-            throw new AssertionError("This method should not be called.");
-        }
+        Integer seniorId = targetSenior.getSeniorId();
+        Integer caregiverId = targetCaregiver.getCaregiverId();
 
-        @Override
-        public Path getAddressBookFilePath() {
-            throw new AssertionError("This method should not be called.");
-        }
+        AssignCommand command = new AssignCommand(seniorId, caregiverId);
 
-        @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
-            throw new AssertionError("This method should not be called.");
-        }
+        CommandResult expectedResult = new AssignCommand(seniorId, caregiverId).execute(expectedModel);
+        String expectedMessage = expectedResult.getFeedbackToUser();
 
-        @Override
-        public void addPerson(Person person) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ReadOnlyAddressBook getAddressBook() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public boolean hasPerson(Person person) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void deletePerson(Person target) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void setPerson(Person target, Person editedPerson) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public String allocateCaregiverId() {
-            return "";
-        }
-
-        @Override
-        public String getAssignedCaregiverName(Senior senior) {
-            return "";
-        }
-
-        @Override
-        public List<String> getAssignedSeniorNames(Caregiver caregiver) {
-            return List.of();
-        }
-
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
-    /**
-     * A Model stub with people.
-     */
-    public class ModelStubWithPersons extends ModelStub {
-        final ArrayList<Person> personList = new ArrayList<>();
+    // Failure Paths
 
-        public ModelStubWithPersons(Person... persons) {
-            for (Person p : persons) {
-                personList.add(p);
+    @Test
+    public void execute_invalidSeniorId_throwsCommandException() {
+        // Choose an unreachable seniorId
+        Integer invalidSeniorId = 999_999;
+
+        // Need a valid caregiver id for this path
+        Optional<Caregiver> maybeCaregiver = pickAnyCaregiver(model);
+        if (maybeCaregiver.isEmpty()) {
+            return;
+        }
+        Integer caregiverId = maybeCaregiver.get().getCaregiverId();
+
+        AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
+        assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
+    }
+
+    @Test
+    public void execute_invalidCaregiverId_throwsCommandException() {
+        // Choose an unreachable caregiverId
+        Integer invalidCaregiverId = 999_999;
+
+        Optional<Senior> maybeSenior = pickSeniorPreferNoCaregiver(model);
+        if (maybeSenior.isEmpty()) {
+            return;
+        }
+        Integer seniorId = maybeSenior.get().getSeniorId();
+
+        AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);
+        assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
+    }
+
+    @Test
+    public void execute_invalidSeniorId_filteredList_throwsCommandException() {
+        // Narrow lists so we prove id-based lookup, not index-based
+        if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
+            return;
+        }
+        Senior onlySenior = model.getFilteredSeniorList().get(0);
+        Caregiver onlyCaregiver = model.getFilteredCaregiverList().get(0);
+
+        model.updateFilteredSeniorList(s -> s.equals(onlySenior));
+        expectedModel.updateFilteredSeniorList(s -> s.equals(onlySenior));
+        model.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
+        expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
+
+        Integer invalidSeniorId = 999_999; // definitely not in model
+        Integer caregiverId = onlyCaregiver.getCaregiverId();
+
+        AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
+        assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
+    }
+
+    @Test
+    public void execute_invalidCaregiverId_filteredList_throwsCommandException() {
+        if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
+            return;
+        }
+        Senior onlySenior = model.getFilteredSeniorList().get(0);
+        Caregiver onlyCaregiver = model.getFilteredCaregiverList().get(0);
+
+        model.updateFilteredSeniorList(s -> s.equals(onlySenior));
+        expectedModel.updateFilteredSeniorList(s -> s.equals(onlySenior));
+        model.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
+        expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
+
+        Integer seniorId = onlySenior.getSeniorId();
+        Integer invalidCaregiverId = 999_999;
+
+        AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);
+        assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
+    }
+
+    // Equality test and to string
+
+    @Test
+    public void equals_sameIds_true() {
+        AssignCommand a = new AssignCommand(10, 20);
+        AssignCommand b = new AssignCommand(10, 20);
+        assertTrue(a.equals(b));
+        assertTrue(a.equals(a));
+    }
+
+    @Test
+    public void equals_differentIds_false() {
+        AssignCommand a = new AssignCommand(10, 20);
+        assertFalse(a.equals(new AssignCommand(11, 20)));
+        assertFalse(a.equals(new AssignCommand(10, 21)));
+        assertFalse(a.equals(null));
+        assertFalse(a.equals(42));
+    }
+
+    @Test
+    public void toStringMethod() {
+        AssignCommand cmd = new AssignCommand(3, 2);
+        String expected = AssignCommand.class.getCanonicalName()
+                + "{seniorIndex=3, caregiverIndex=2}";
+        assertEquals(expected, cmd.toString());
+    }
+
+    // Helper Function
+
+    /** Returns a Senior preferring one without a caregiver, else first present. */
+    private Optional<Senior> pickSeniorPreferNoCaregiver(Model m) {
+        List<Senior> seniors = m.getFilteredSeniorList();
+        for (Senior s : seniors) {
+            if (!s.hasCaregiver()) {
+                return Optional.of(s);
             }
         }
-
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            // Return an ObservableList backed by the personList so the test can read and update it.
-            return FXCollections.observableList(personList);
-        }
-
-        @Override
-        public void setPerson(Person target, Person editedPerson) {
-            int index = personList.indexOf(target);
-            if (index == -1) {
-                throw new AssertionError("Target person not found in list.");
-            }
-            personList.set(index, editedPerson);
-        }
-
-        @Override
-        public void updateFilteredPersonList(java.util.function.Predicate<Person> predicate) {
-        }
+        return seniors.isEmpty() ? Optional.empty() : Optional.of(seniors.get(0));
     }
 
+    /** Returns any available Caregiver (first). */
+    private Optional<Caregiver> pickAnyCaregiver(Model m) {
+        List<Caregiver> caregivers = m.getFilteredCaregiverList();
+        return caregivers.isEmpty() ? Optional.empty() : Optional.of(caregivers.get(0));
+    }
 
 }

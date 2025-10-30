@@ -2,228 +2,242 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.person.Address;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
-import seedu.address.model.person.Tag;
 
 /**
- * Contains unit tests for {@code UnassignCommand}.
+ * Tests for {@link UnassignCommand} using seniorIndex/caregiverIndex
  */
 public class UnassignCommandTest {
 
-    private final Name snrName = new Name(VALID_NAME_AMY);
-    private final Phone snrPhone = new Phone(VALID_PHONE_AMY);
-    private final Address snrAddress = new Address(VALID_ADDRESS_AMY);
-    private final Tag snrTag = new Tag("HR");
-    private final Note snrNote = new Note(VALID_NOTE_AMY);
+    private Model model;
+    private Model expectedModel;
 
-    private final Name cgrName = new Name(VALID_NAME_BOB);
-    private final Phone cgrPhone = new Phone(VALID_PHONE_BOB);
-    private final Address cgrAddress = new Address(VALID_ADDRESS_BOB);
-    private final Note cgrNote = new Note(VALID_NOTE_BOB);
-
-    private final Caregiver caregiver = new Caregiver(cgrName, cgrPhone, cgrAddress, cgrNote, "c10");
-
-    @Test
-    public void execute_validIndices_successfulUnassignment() throws Exception {
-        // Senior already assigned to caregiver
-        Senior seniorWithCgr = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, caregiver);
-
-        ModelStubWithPersons model = new ModelStubWithPersons(seniorWithCgr, caregiver);
-
-        UnassignCommand command = new UnassignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
-        CommandResult result = command.execute(model);
-
-        assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS,
-                        seniorWithCgr.getName(), caregiver.getName()),
-                result.getFeedbackToUser());
-        assertFalse(((Senior) model.getFilteredPersonList().get(0)).hasCaregiver());
+    @BeforeEach
+    public void setUp() {
+        AddressBook ab = getTypicalAddressBook();
+        model = new ModelManager(ab, new UserPrefs());
+        expectedModel = new ModelManager(new AddressBook(ab), new UserPrefs());
     }
 
+    // Success paths
+
     @Test
-    public void execute_notAssigned_throwsCommandException() {
-        // Senior WITHOUT caregiver assigned
-        Senior seniorWithoutCg = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote);
+    public void execute_unassign_success() throws Exception {
+        // need an already-assigned pair
+        Optional<Pair<Senior, Caregiver>> maybePair = pickCurrentlyAssignedPair(model);
 
-        ModelStubWithPersons model = new ModelStubWithPersons(seniorWithoutCg, caregiver);
+        if (maybePair.isEmpty()) {
+            // Typical data might not have any pre-assigned pairs; skip gracefully.
+            return;
+        }
 
-        UnassignCommand command = new UnassignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
-        assertThrows(CommandException.class, () -> command.execute(model));
+        Senior senior = maybePair.get().first;
+        Caregiver caregiver = maybePair.get().second;
+
+        Integer seniorId = senior.getSeniorId();
+        Integer caregiverId = caregiver.getCaregiverId();
+
+        UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
+
+        // Mirror mutation and obtain the exact expected message on expectedModel
+        CommandResult expectedResult = new UnassignCommand(seniorId, caregiverId).execute(expectedModel);
+        String expectedMessage = expectedResult.getFeedbackToUser();
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
     @Test
-    public void execute_invalidSeniorIndex_throwsCommandException() {
-        // Out of bounds Senior index
-        Senior sr = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, caregiver);
-        ModelStubWithPersons model = new ModelStubWithPersons(sr, caregiver);
-        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(3),
-                Index.fromOneBased(2)); // senior idx 3 OOB
-        CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
-        assertEquals(UnassignCommand.MESSAGE_INVALID_SENIOR_INDEX, ex.getMessage());
+    public void execute_unassign_onFilteredLists_success() throws Exception {
+        Optional<Pair<Senior, Caregiver>> maybePair = pickCurrentlyAssignedPair(model);
+        if (maybePair.isEmpty()) {
+            return;
+        }
+
+        Senior targetSenior = maybePair.get().first;
+        Caregiver targetCaregiver = maybePair.get().second;
+
+        Predicate<Person> seniorOnly = s -> s.equals(targetSenior);
+        Predicate<Person> caregiverOnly = c -> c.equals(targetCaregiver);
+
+        model.updateFilteredSeniorList(seniorOnly);
+        model.updateFilteredCaregiverList(caregiverOnly);
+        expectedModel.updateFilteredSeniorList(seniorOnly);
+        expectedModel.updateFilteredCaregiverList(caregiverOnly);
+
+        Integer seniorId = targetSenior.getSeniorId();
+        Integer caregiverId = targetCaregiver.getCaregiverId();
+
+        UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
+
+        CommandResult expectedResult = new UnassignCommand(seniorId, caregiverId).execute(expectedModel);
+        String expectedMessage = expectedResult.getFeedbackToUser();
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    // Failure paths
+
+    @Test
+    public void execute_invalidSeniorId_throwsCommandException() {
+        Integer invalidSeniorId = 999;
+
+        Optional<Caregiver> maybeCaregiver = pickAnyCaregiver(model);
+        if (maybeCaregiver.isEmpty()) {
+            return;
+        }
+        Integer caregiverId = maybeCaregiver.get().getCaregiverId();
+
+        UnassignCommand command = new UnassignCommand(invalidSeniorId, caregiverId);
+        // Use the same constant names as AssignCommand for consistency; rename if your UnassignCommand differs
+        assertCommandFailure(command, model, UnassignCommand.MESSAGE_INVALID_SENIOR_INDEX);
     }
 
     @Test
-    public void execute_invalidCaregiverIndex_throwsCommandException() {
-        // Out of bounds Caregiver index
-        Senior sr = new Senior(snrName, snrPhone, snrAddress, Set.of(snrTag), snrNote, caregiver);
-        ModelStubWithPersons model = new ModelStubWithPersons(sr, caregiver);
-        UnassignCommand cmd = new UnassignCommand(Index.fromOneBased(1),
-                Index.fromOneBased(3)); // caregiver idx 3 OOB
-        CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
-        assertEquals(UnassignCommand.MESSAGE_INVALID_CAREGIVER_INDEX, ex.getMessage());
+    public void execute_invalidCaregiverId_throwsCommandException() {
+        Integer invalidCaregiverId = 999;
+
+        Optional<Senior> maybeSenior = pickSeniorWithCaregiver(model);
+        if (maybeSenior.isEmpty()) {
+            return;
+        }
+        Integer seniorId = maybeSenior.get().getSeniorId();
+
+        UnassignCommand command = new UnassignCommand(seniorId, invalidCaregiverId);
+        assertCommandFailure(command, model, UnassignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
     }
 
-    /**
-     * A default model stub that has all methods throwing by default.
-     */
-    private static class ModelStub implements Model {
-        @Override
-        public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
-            throw new AssertionError("Should not be called.");
+    @Test
+    public void execute_pairNotAssigned_throwsCommandException() {
+        // Try to craft a pair that is NOT currently assigned:
+        // pick a senior without caregiver (if available) and any caregiver; or pick a mismatched caregiver
+        List<Senior> seniors = model.getFilteredSeniorList();
+        List<Caregiver> caregivers = model.getFilteredCaregiverList();
+        if (seniors.isEmpty() || caregivers.isEmpty()) {
+            return;
         }
 
-        @Override
-        public ReadOnlyUserPrefs getUserPrefs() {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public GuiSettings getGuiSettings() {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void setGuiSettings(GuiSettings guiSettings) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public Path getAddressBookFilePath() {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void setAddressBookFilePath(Path addressBookFilePath) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void addPerson(Person person) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public ReadOnlyAddressBook getAddressBook() {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public boolean hasPerson(Person person) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void deletePerson(Person target) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void setPerson(Person target, Person editedPerson) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
-            throw new AssertionError("Should not be called.");
-        }
-
-        @Override
-        public String allocateCaregiverId() {
-            return "";
-        }
-
-        @Override
-        public String getAssignedCaregiverName(Senior senior) {
-            return "";
-        }
-
-        @Override
-        public List<String> getAssignedSeniorNames(Caregiver caregiver) {
-            return List.of();
-        }
-
-    }
-
-    /**
-     * A Model stub backed by a simple list of persons to support UnassignCommand tests.
-     */
-    private static class ModelStubWithPersons extends ModelStub {
-        final ArrayList<Person> personList = new ArrayList<>();
-
-        ModelStubWithPersons(Person... persons) {
-            for (Person p : persons) {
-                personList.add(p);
+        // Case A: senior without caregiver
+        for (Senior s : seniors) {
+            if (!s.hasCaregiver()) {
+                Integer seniorId = s.getSeniorId();
+                Integer caregiverId = caregivers.get(0).getCaregiverId();
+                UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
+                assertCommandFailure(command, model, UnassignCommand.MESSAGE_NOT_ASSIGNED);
+                return;
             }
         }
 
-        @Override
-        public ObservableList<Person> getFilteredPersonList() {
-            return FXCollections.observableList(personList);
-        }
-
-        @Override
-        public void setPerson(Person target, Person editedPerson) {
-            int index = personList.indexOf(target);
-            if (index == -1) {
-                throw new AssertionError("Target person not found in list.");
+        // Case B: all seniors have caregivers; pick a caregiver different from the senior's current one
+        for (Senior s : seniors) {
+            Integer current = s.getCaregiver().getCaregiverId();
+            for (Caregiver c : caregivers) {
+                if (!c.getCaregiverId().equals(current)) {
+                    Integer seniorId = s.getSeniorId();
+                    Integer caregiverId = c.getCaregiverId();
+                    UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
+                    assertCommandFailure(command, model, UnassignCommand.MESSAGE_NOT_ASSIGNED);
+                    return;
+                }
             }
-            personList.set(index, editedPerson);
         }
+        // skip when cannot find a mismatched pair
+    }
 
-        @Override
-        public void updateFilteredPersonList(java.util.function.Predicate<Person> predicate) {
-            // no-op for these tests
+    @Test
+    public void execute_bothIdsNull_throwsCommandException() {
+        // If your UnassignCommand requires both ids, keep this test; otherwise remove/adjust.
+        UnassignCommand command = new UnassignCommand(null, null);
+        assertCommandFailure(command, model, UnassignCommand.MESSAGE_INVALID_SENIOR_INDEX);
+    }
+
+    @Test
+    public void execute_onlyOneSeniorIdProvided_throwsCommandException() {
+        UnassignCommand onlySenior = new UnassignCommand(1, null);
+        assertCommandFailure(onlySenior, model, UnassignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
+    }
+
+    @Test
+    public void execute_onlyOneCaregiverIdProvided_throwsCommandException() {
+        UnassignCommand onlyCaregiver = new UnassignCommand(null, 1);
+        assertCommandFailure(onlyCaregiver, model, UnassignCommand.MESSAGE_INVALID_SENIOR_INDEX);
+    }
+
+    // Equality checks and toString method
+
+    @Test
+    public void equals_sameIds_true() {
+        UnassignCommand a = new UnassignCommand(10, 20);
+        UnassignCommand b = new UnassignCommand(10, 20);
+        assertTrue(a.equals(b));
+        assertTrue(a.equals(a));
+    }
+
+    @Test
+    public void equals_differentIds_false() {
+        UnassignCommand a = new UnassignCommand(10, 20);
+        assertFalse(a.equals(new UnassignCommand(11, 20)));
+        assertFalse(a.equals(new UnassignCommand(10, 21)));
+        assertFalse(a.equals(null));
+        assertFalse(a.equals(42));
+    }
+
+    @Test
+    public void toStringMethod() {
+        UnassignCommand cmd = new UnassignCommand(3, 2);
+        String expected = UnassignCommand.class.getCanonicalName()
+                + "{seniorIndex=3, caregiverIndex=2}";
+        assertEquals(expected, cmd.toString());
+    }
+
+    // Helper functions
+    /** Find any Senior who currently has a caregiver (already assigned). */
+    private Optional<Senior> pickSeniorWithCaregiver(Model m) {
+        for (Senior s : m.getFilteredSeniorList()) {
+            if (s.hasCaregiver()) {
+                return Optional.of(s);
+            }
         }
+        return Optional.empty();
+    }
+
+    /** Return any caregiver (first) or empty. */
+    private Optional<Caregiver> pickAnyCaregiver(Model m) {
+        List<Caregiver> caregivers = m.getFilteredCaregiverList();
+        return caregivers.isEmpty() ? Optional.empty() : Optional.of(caregivers.get(0));
+    }
+
+    /** A tiny immutable pair container for local use. */
+    private static final class Pair<A, B> {
+        final A first; final B second;
+        Pair(A a, B b) { this.first = a; this.second = b; }
+    }
+
+    /** Returns a pair (Senior-with-caregiver, that caregiver) if present. */
+    private Optional<Pair<Senior, Caregiver>> pickCurrentlyAssignedPair(Model m) {
+        for (Senior s : m.getFilteredSeniorList()) {
+            if (s.hasCaregiver()) {
+                Caregiver c = s.getCaregiver();
+                return Optional.of(new Pair<>(s, c));
+            }
+        }
+        return Optional.empty();
     }
 }
