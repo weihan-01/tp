@@ -259,10 +259,12 @@ Furthermore, certain edits can cause the Neighbourly to behave in unexpected way
 
 Edits information of a person
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
+Format: `edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
+`edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...
+`
 
-* Edits the senior/caregiver at the specified `INDEX`.
-* The index refers to the index number shown in the displayed senior/caregiver list.
+* Edits the senior/caregiver based on the specified seniorId or caregiverId.
+* The seniorId/caregiverId refers to the id number shown in the displayed senior/caregiver list.
 
 Examples: 
 * `edit s/1 n/John Tan p/91234567` Changes Senior at index 1 name to John Tan and phone to 91234567
@@ -321,7 +323,7 @@ _Details coming soon ..._
 | **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                |
 | **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                   |
 | **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                               |
-| **Edit**               | `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                                                                                                     |
+| **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                               |
 | **List**               | `list`                                                                                                                                                                                  |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
 | **Delete**             | `delete s/INDEX`<br> e.g., `delete s/3`                                                                                                                                                 |
