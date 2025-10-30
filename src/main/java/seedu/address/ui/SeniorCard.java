@@ -188,8 +188,8 @@ public class SeniorCard extends UiPart<Region> {
             for (Caregiver c : allCaregivers) {
                 String n = c.getName().toString();
                 int i = c.getId();
-                String label = "C" + (i >= 0 ? (i) +
-                        " " : "—. ") + n;
+                String label = "C" + (i >= 0 ? (i)
+                        + " " : "—. ") + n;
                 assignedChips.getChildren().add(makeAssignedChip(label, false));
             }
         }

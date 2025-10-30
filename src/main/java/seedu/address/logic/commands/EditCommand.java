@@ -31,8 +31,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
-    private static final String MESSAGE_DUPLICATE_PERSON = "This person " +
-            "already exists in the address book.";
+    private static final String MESSAGE_DUPLICATE_PERSON = "This person "
+            + "already exists in the address book.";
     private static final Logger log = LogsCenter.getLogger(EditCommand.class);
 
     private final int index;
@@ -56,14 +56,14 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        assert model.getFilteredSeniorList() != null :
-                "Filtered senior list must not be null";
-        assert model.getFilteredCaregiverList() != null :
-                "Filtered caregiver list must not be null";
-        assert model.getAllSeniorList() != null :
-                "All senior list must not be null";
-        assert model.getAllCaregiverList() != null :
-                "All caregiver list must not be null";
+        assert model.getFilteredSeniorList() != null
+                : "Filtered senior list must not be null";
+        assert model.getFilteredCaregiverList() != null
+                : "Filtered caregiver list must not be null";
+        assert model.getAllSeniorList() != null
+                : "All senior list must not be null";
+        assert model.getAllCaregiverList() != null
+                : "All caregiver list must not be null";
 
         if (isSenior) {
             List<Senior> lastShownList = model.getFilteredSeniorList();
@@ -123,10 +123,10 @@ public class EditCommand extends Command {
 
             Caregiver editedCaregiver = caregiverToEdit.edit(editPersonDescriptor);
 
-            assert editedCaregiver != null :
-                    "Edited caregiver must not be null";
-            assert editedCaregiver.getId() != null :
-                    "Edited caregiver must retain a non-null ID";
+            assert editedCaregiver != null
+                    : "Edited caregiver must not be null";
+            assert editedCaregiver.getId() != null
+                    : "Edited caregiver must retain a non-null ID";
             assert editedCaregiver.getId().equals(caregiverToEdit.getId())
                     : "Edit must not change the caregiver's ID";
 
