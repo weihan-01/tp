@@ -181,15 +181,22 @@ public class SeniorCard extends UiPart<Region> {
         }
 
         if (names == null || names.isEmpty()) {
-            assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
+            Label chip = makeAssignedChip("Unassigned", true);
+            assignedChips.getChildren().add(chip);
             return;
         }
+
         Caregiver found = null;
         String cgName = logic.getAssignedCaregiverName(senior);
         List<Caregiver> allCaregivers = logic.getAllCaregiverList();
 
         for (Caregiver c : allCaregivers) {
-            String full = (c.getName() == null) ? null : c.getName().fullName;
+
+            String full = null;
+            if (c.getName() != null) {
+                full = c.getName().fullName;
+            }
+
             if (cgName.equals(full)) {
                 found = c;
                 break;
@@ -199,9 +206,14 @@ public class SeniorCard extends UiPart<Region> {
         if (found != null) {
             Integer idx = found.getId();
             String n = found.getName().toString();
-            String label = "C" + (idx >= 0 ? (idx) +
-                    " " : "—. ") + n;
-            assignedChips.getChildren().add(makeAssignedChip(label, false));
+            String label;
+            if (idx >= 0) {
+                label = "S" + idx + " " + n;
+            } else {
+                label = "S— " + n;
+            }
+            Label chip = makeAssignedChip(label, false);
+            assignedChips.getChildren().add(chip);
 
         }
     }
