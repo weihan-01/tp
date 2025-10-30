@@ -186,6 +186,7 @@ The `Storage` component,
 Additionally, `JsonSerializableAddressBook` now serializes two separate collections:
 * `List<JsonAdaptedSenior`
 * `List<JsonAdaptedCaregiver`
+
 Each JSON adapter is responsible for validating fields and converting between the JSON representation
 and the model types (`Senior` / `Caregiver`). Only seniors maintain a risk tag, stored as a single-element 
 list of JsonAdaptedTag. Caregivers do not contain any tags.
@@ -567,42 +568,41 @@ Example Commands
 
 delete s/3
 
-**Use case 5: Assigning caregiver to senior: assign**
+**Use case 5: Assign a caregiver to a senior — `assign`**
 
 **MSS**
 
-1. User assigns caregiver to a senior using the command "assign"
-2. AddressBook reflects senior's allocation to caregiver
+1. User assigns a caregiver to a senior using `assign s/INDEX c/INDEX`.
+2. AddressBook validates the indices against the currently displayed Senior and Caregiver lists.
+3. AddressBook creates the assignment and updates the UI (caregiver chip appears on the Senior card; lists remain in their current order).
 
    Use case ends.
 
 **Extensions**
 
-* 1a. Invalid senior index
+* 1a. Missing/invalid parameters (e.g., `assign`, `assign s/1`, `assign c/2`, `assign s/ c/2`, `non-numeric index`)
 
-    * 2a1. AddressBook shows an error message. - “No such senior index exists. Please ensure the index matches a senior
-      from the database.”
+    * 1a1. AddressBook shows an error message. - "Invalid command format!"
 
       Use case resumes at step 1.
 
-* 1b. Invalid caregiver index
+* 1b. Senior index out of range for the current Senior list.
 
-    * 1b1. AddressBook shows an error message. - “No such caregiver index exists. Please ensure the index matches a
-      caregiver from the database.”
+    * 1b1. AddressBook shows an error message. - "No such senior index exists."
 
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
-* 1c. Missing senior index
+* 1c. Caregiver index out of range for the current Caregiver list.
 
-    * 1c1. AddressBook shows an error message. - “Senior index cannot be empty.”
+    * 1b1. AddressBook shows an error message. - "No such caregiver index exists."
 
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
-* 1d. Missing caregiver index
+* 1d. Caregiver already assigned to the selected senior.
 
-    * 1d1. AddressBook shows an error message. - “Caregiver index cannot be empty.”
+    * 1d1. AddressBook shows: Caregiver is already assigned to this senior.
 
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 Command Format
 
@@ -610,75 +610,145 @@ assign s/SENIOR_INDEX c/CAREGIVER_INDEX
 
 Example Commands
 
-assign s/1 c/3
+assign s/1 c/2
+assign s/3 c/1
 
-**Use case 6: Pin a contact (Caregiver or Senior): pin**
+**Use case 6: Unassign a caregiver from a senior — `unassign`**
 
 **MSS**
 
-1. User pins a contact using the command "pin n/NAME"
-2. AddressBook highlights the contact and move it to the top of the list. Any previously pinned contact is unpinned.
+1. User unassigns a caregiver from a senior using `unassign s/INDEX c/INDEX`.
+2. AddressBook validates the indices against the currently displayed Senior and Caregiver lists.
+3. AddressBook removes the assignment and updates the UI (caregiver chip disappears from the Senior card; lists remain in their current order).
 
    Use case ends.
 
 **Extensions**
 
-* 1a. Missing name (pin n/)
+* 1a. Missing/invalid parameters (e.g., unassign, unassign s/1, unassign c/2, unassign s/ c/2, non-numeric index).
 
-    * 1a1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
-
-      Use case resumes at step 1.
-
-* 1b. Wrong prefix used (e.g. pin /Yap Mei Ting)
-
-    * 1b1. AddressBook shows an error message. - "Invalid command format! pin n/NAME"
+    * 1a1. AddressBook shows an error message. - "Invalid command format!"
 
       Use case resumes at step 1.
 
-* 1c. Name not found in AddressBook
+* 1b. Senior index out of range for the current Senior list.
 
-    * 1c1. AddressBook shows an error message. - “No person found with the name: NAME”
+    * 1b1. AddressBook shows an error message. - "No such senior index exists."
 
       Use case resumes at step 1.
 
-* 1d. Target already pinned
+* 1c. Caregiver index out of range for the current Caregiver list.
 
-    * 1d1. AddressBook shows an error message. - “NAME is already the pinned person.”
+    * 1b1. AddressBook shows an error message. - "No such caregiver index exists."
+
+      Use case resumes at step 1.
+
+* 1d. Caregiver not assigned to the selected senior
+
+    * 1d1. AddressBook shows: Caregiver not assigned to the selected senior.
+
+      Use case resumes at step 1.
+
+Command Format
+
+unassign s/SENIOR_INDEX c/CAREGIVER_INDEX
+
+Example Commands
+
+unassign s/1 c/2
+unassign s/3 c/1
+
+**Use case 7: Pin a contact (Caregiver or Senior): pin**
+
+**MSS**
+
+1. User pins a contact by index using pin s/INDEX (for a Senior) or pin c/INDEX (for a Caregiver).
+2. AddressBook sets the selected contact as pinned and moves them to the top of their respective lists. Any previously pinned Senior (when pinning a Senior) and/or Caregiver (when pinning a Caregiver) is unpinned.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. Missing required prefix or non-numeric/empty ID (e.g., pin, pin s/, pin s/x)
+
+    * 1a1. AddressBook shows an error message. - "Invalid command format!"
+
+      Use case resumes at step 1.
+
+* 1b. Senior index out of range (e.g., pin s/999)
+
+    * 1b1. AddressBook shows an error message. - "No such senior index exists."
+
+      Use case resumes at step 1.
+
+* 1c. Caregiver index out of range (e.g., pin c/999)
+
+    * 1c1. AddressBook shows an error message. - "No such caregiver index exists."
+
+      Use case resumes at step 1.
+
+* 1d. Target already pinned (e.g., trying to pin the already pinned Senior or Caregiver)
+
+    * 1d1. AddressBook shows an error message. - “NAME is already pinned.”
 
       Use case ends.
 
 Command Format
 
-pin n/NAME
+pin s/INDEX
+pin c/INDEX
 
 Example Commands
 
-pin n/Yap Mei Ting
+pin s/1
+pin c/2
 
-**Use case 7: Unpin a contact (Caregiver or Senior): unpin**
+**Use case 8: Unpin a contact (Caregiver or Senior): unpin**
 
 **MSS**
 
-1. User unpins the currently pinned contact using the command "unpin"
-2. AddressBook remove the pinned highlighted contact and displays the list accordingly.
+1. User unpins using unpin (no argument), or a scoped variant: unpin s (Senior only), unpin c (Caregiver only), or unpin all.
+2. AddressBook remove the pinned highlighted contact(s) and displays the list accordingly.
 
    Use case ends.
 
 **Extensions**
 
-* 1a. No contact is currently pinned
+* 1a. Nothing pinned in requested scope
 
-    * 1a1. AddressBook shows an error message. - "No one is pinned."
+    * If `unpin` with no scope and nothing is pinned:
 
-      Use case resumes at step 1.
+        * 1a1. AddressBook shows an error message. - "No one is pinned."
+    
+          Use case resumes at step 1.
+    
+    * If `unpin s` with no Senior is pinned:
+
+        * 1a1. AddressBook shows an error message. - "No pinned senior."
+
+          Use case resumes at step 1.
+
+    * If `unpin c` with no Caregiver is pinned:
+
+        * 1a1. AddressBook shows an error message. - "No pinned caregiver."
+
+          Use case resumes at step 1.
 
 Command Format
 
 unpin
+unpin s
+unpin senior
+unpin c
+unpin caregiver
+unpin a
+unpin all
 
 Example Commands
 
 unpin
+unpin s
+unpin all
 
 ### Non-Functional Requirements
 
