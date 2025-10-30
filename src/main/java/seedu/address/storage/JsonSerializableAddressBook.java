@@ -125,7 +125,7 @@ class JsonSerializableAddressBook {
         // Create map of all caregivers to reference by ID
         java.util.Map<Integer, Caregiver> byKey = addressBook.getCaregiverList().stream()
             .collect(java.util.stream.Collectors.toMap(
-                    cg -> cg.getCaregiverId(),
+                    cg -> cg.getId(),
                     cg -> cg, (a, b) -> a // if duplicate keys, keep first
             ));
 

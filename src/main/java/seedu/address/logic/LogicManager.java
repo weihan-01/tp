@@ -112,7 +112,7 @@ public class LogicManager implements Logic {
             Senior s = visible.get(i);
             if (s != null && s.getName() != null
                     && fullName.equals(s.getName().fullName)) {
-                return s.getSeniorId();
+                return s.getId();
             }
         }
         return -1;
@@ -128,7 +128,7 @@ public class LogicManager implements Logic {
             Caregiver c = visible.get(i);
             if (c != null && c.getName() != null
                     && fullName.equals(c.getName().fullName)) {
-                return c.getCaregiverId();
+                return c.getId();
             }
         }
         return -1;

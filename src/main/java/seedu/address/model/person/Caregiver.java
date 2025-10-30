@@ -7,7 +7,7 @@ import seedu.address.logic.commands.EditPersonDescriptor;
 /**
  * Represents a Caregiver in the address book.
  */
-public class Caregiver extends Person<Caregiver> {
+public class Caregiver extends Person {
 
     // Caregiver data fields
     private final Integer caregiverId;
@@ -31,12 +31,7 @@ public class Caregiver extends Person<Caregiver> {
      * Immutable factory: return a new Caregiver with the given id.
      */
     public Caregiver withId(int id) {
-        return new Caregiver(getName(), getPhone(), getAddress(), getNote(), Integer.valueOf(id), isPinned());
-    }
-
-    /** Returns this caregiver's ID */
-    public Integer getCaregiverId() {
-        return caregiverId;
+        return new Caregiver(getName(), getPhone(), getAddress(), getNote(), Integer.valueOf(id), getPinned());
     }
 
     /**
@@ -44,7 +39,7 @@ public class Caregiver extends Person<Caregiver> {
      */
     @Override
     public Integer getId() {
-        return getCaregiverId();
+        return caregiverId;
     }
 
     /**
@@ -53,7 +48,7 @@ public class Caregiver extends Person<Caregiver> {
      * @return Caregiver if Caregiver is pinned
      */
     public Caregiver withPinned(boolean value) {
-        return new Caregiver(getName(), getPhone(), getAddress(), getNote(), getCaregiverId(), value);
+        return new Caregiver(getName(), getPhone(), getAddress(), getNote(), getId(), value);
     }
 
     /**
@@ -63,7 +58,7 @@ public class Caregiver extends Person<Caregiver> {
      */
     public Caregiver withNote(Note newNote) {
         return new Caregiver(getName(), getPhone(), getAddress(),
-                newNote, getCaregiverId(), isPinned());
+                newNote, getId(), getPinned());
     }
 
     /**
@@ -79,8 +74,8 @@ public class Caregiver extends Person<Caregiver> {
                 descriptor.getPhone().orElse(getPhone()),
                 descriptor.getAddress().orElse(getAddress()),
                 descriptor.getNote().orElse(getNote()),
-                getCaregiverId(),
-                descriptor.getPinned().orElse(isPinned())
+                getId(),
+                descriptor.getPinned().orElse(getPinned())
         );
     }
 

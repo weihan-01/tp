@@ -115,10 +115,10 @@ public class SeniorCard extends UiPart<Region> {
                 cardPane.widthProperty().subtract(pinIcon.fitWidthProperty()).subtract(8)
         );
         // show only if pinned
-        updatePinIcon(senior.isPinned());
+        updatePinIcon(senior.getPinned());
         // --- end pin icon ---
 
-        if (senior.isPinned()) {
+        if (senior.getPinned()) {
             if (!cardPane.getStyleClass().contains("pinned-bg")) {
                 cardPane.getStyleClass().add("pinned-bg");
             }
@@ -221,7 +221,7 @@ public class SeniorCard extends UiPart<Region> {
             tags.setManaged(true);
             tags.setVisible(true);
 
-            Label idChip = makeChip(String.format("S%06d", senior.getSeniorId()));
+            Label idChip = makeChip(String.format("S%06d", senior.getId()));
             idChip.getStyleClass().add("chip-senior");
             tags.getChildren().add(idChip);
 

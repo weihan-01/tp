@@ -51,8 +51,8 @@ class JsonAdaptedCaregiver {
         this.phone = source.getPhone().value;
         this.address = source.getAddress().value;
         this.note = source.getNote().value;
-        this.caregiverId = ((Caregiver) source).getCaregiverId();
-        this.pinned = source.isPinned();
+        this.caregiverId = ((Caregiver) source).getId();
+        this.pinned = source.getPinned();
     }
 
     /** Converts this JSON-friendly object back into the model's {@code Person} subtype. */

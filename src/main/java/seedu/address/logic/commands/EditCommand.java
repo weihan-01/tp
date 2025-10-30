@@ -70,7 +70,7 @@ public class EditCommand extends Command {
             if (editPersonDescriptor.getCaregiverId().isPresent()) {
                 Integer caregiverId = editPersonDescriptor.getCaregiverId().get();
                 Caregiver caregiver = model.getAllCaregiverList().stream()
-                        .filter(c -> caregiverId.equals(c.getCaregiverId()))
+                        .filter(c -> caregiverId.equals(c.getId()))
                         .findFirst()
                         .orElseThrow(() -> new CommandException("No caregiver found with ID " + caregiverId));
                 editPersonDescriptor.setCaregiver(caregiver);
@@ -112,14 +112,14 @@ public class EditCommand extends Command {
             }
 
             log.fine(() -> String.format("Edit caregiver: userIndex=%d (1-based)", index));
-            log.fine(() -> "Before edit: id=" + caregiverToEdit.getCaregiverId()
+            log.fine(() -> "Before edit: id=" + caregiverToEdit.getId()
                     + ", name=" + caregiverToEdit.getName());
 
             model.setCaregiver(caregiverToEdit, editedCaregiver);
 
-            log.info(() -> "Updated caregiver in model: id=" + editedCaregiver.getCaregiverId());
+            log.info(() -> "Updated caregiver in model: id=" + editedCaregiver.getId());
 
-            int targetId = caregiverToEdit.getCaregiverId();
+            int targetId = caregiverToEdit.getId();
             int rebound = 0;
             for (Senior s : model.getAllSeniorList()) {
                 if (s.getCaregiverId() != null && s.getCaregiverId().equals(targetId)) {

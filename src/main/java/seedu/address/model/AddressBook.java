@@ -69,7 +69,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     /** Returns caregiver with matching id. */
     public Caregiver getCaregiverWithId(Integer caregiverId) {
         for (Caregiver caregiver: caregivers) {
-            int cid = caregiver.getCaregiverId();
+            int cid = caregiver.getId();
             if (cid == caregiverId) {
                 return caregiver;
             }
@@ -82,7 +82,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         int seniorMax = 0;
         int caregiverMax = 0;
         for (Senior s : seniors) {
-            Integer sid = s.getSeniorId();
+            Integer sid = s.getId();
             if (sid < 0) {
                 throw new IllegalArgumentException("Senior ID must be a positive integer.");
             }
@@ -92,7 +92,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         for (Caregiver c : caregivers) {
-            int cid = c.getCaregiverId();
+            int cid = c.getId();
             if (cid < 0) {
                 throw new IllegalArgumentException("Caregiver ID must be a positive integer.");
             }

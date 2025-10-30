@@ -98,8 +98,8 @@ public class SeniorListPanel extends UiPart<Region> {
      */
     private static SortedList<Senior> getSeniorsSorted(ObservableList<Senior> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
-            boolean ap = a.isPinned();
-            boolean bp = b.isPinned();
+            boolean ap = a.getPinned();
+            boolean bp = b.getPinned();
 
             if (ap != bp) {
                 return ap ? -1 : 1;
@@ -139,7 +139,7 @@ public class SeniorListPanel extends UiPart<Region> {
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);
-            if (senior.isPinned()) {
+            if (senior.getPinned()) {
                 root.getStyleClass().add(PINNED_STYLE_CLASS);
             }
 
@@ -154,7 +154,7 @@ public class SeniorListPanel extends UiPart<Region> {
      */
     private void refreshPinnedHeader() {
         java.util.Optional<Senior> pinnedOpt =
-                backingList.stream().filter(Senior::isPinned).findFirst();
+                backingList.stream().filter(Senior::getPinned).findFirst();
 
         pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
 
@@ -170,7 +170,7 @@ public class SeniorListPanel extends UiPart<Region> {
      * @return {@code true} if the senior is pinned
      */
     private boolean isPinnedSenior(seedu.address.model.person.Senior s) {
-        return s.isPinned();
+        return s.getPinned();
     }
 
     /**

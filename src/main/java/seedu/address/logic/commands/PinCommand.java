@@ -67,17 +67,17 @@ public class PinCommand extends Command {
                 fullCaregiverList, caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
 
         // Already pinned? (use boolean flag)
-        if (senior != null && senior.isPinned()) {
+        if (senior != null && senior.getPinned()) {
             return new CommandResult(String.format(MESSAGE_ALREADY_PINNED, senior.getName()));
         }
-        if (caregiver != null && caregiver.isPinned()) {
+        if (caregiver != null && caregiver.getPinned()) {
             return new CommandResult(String.format(MESSAGE_ALREADY_PINNED, caregiver.getName()));
         }
 
         if (senior != null) {
             // unpin any existing senior
             for (Senior s : fullSeniorList) {
-                if (s.isPinned()) {
+                if (s.getPinned()) {
                     model.setSenior(s, s.withPinned(false));
                 }
             }
@@ -87,7 +87,7 @@ public class PinCommand extends Command {
         if (caregiver != null) {
             // unpin any existing caregiver
             for (Caregiver c : fullCaregiverList) {
-                if (c.isPinned()) {
+                if (c.getPinned()) {
                     model.setCaregiver(c, c.withPinned(false));
                 }
             }

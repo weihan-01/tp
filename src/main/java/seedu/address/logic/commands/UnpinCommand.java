@@ -61,7 +61,7 @@ public class UnpinCommand extends Command {
         // Unpin seniors if scope is BOTH or SENIOR
         if (scope != Scope.CAREGIVER) {
             for (Senior s : fullSeniorList) {
-                if (s.isPinned()) {
+                if (s.getPinned()) {
                     model.setSenior(s, s.withPinned(false));
                     count++;
                 }
@@ -71,7 +71,7 @@ public class UnpinCommand extends Command {
         // Unpin caregivers if scope is BOTH or CAREGIVER
         if (scope != Scope.SENIOR) {
             for (Caregiver c : fullCaregiverList) {
-                if (c.isPinned()) {
+                if (c.getPinned()) {
                     model.setCaregiver(c, c.withPinned(false));
                     count++;
                 }

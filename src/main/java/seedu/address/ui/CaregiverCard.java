@@ -106,10 +106,10 @@ public class CaregiverCard extends UiPart<Region> {
                 cardPane.widthProperty().subtract(pinIcon.fitWidthProperty()).subtract(8)
         );
         // show only if pinned
-        updatePinIcon(caregiver.isPinned());
+        updatePinIcon(caregiver.getPinned());
         // --- end pin icon ---
 
-        if (caregiver.isPinned()) {
+        if (caregiver.getPinned()) {
             if (!cardPane.getStyleClass().contains("pinned-bg")) {
                 cardPane.getStyleClass().add("pinned-bg");
             }
@@ -193,7 +193,7 @@ public class CaregiverCard extends UiPart<Region> {
         tags.setManaged(false);
         tags.setVisible(false);
 
-        Integer cgId = caregiver.getCaregiverId();
+        Integer cgId = caregiver.getId();
         if (cgId != null) {
             tags.setManaged(true);
             tags.setVisible(true);
