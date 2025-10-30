@@ -144,7 +144,7 @@ public class Senior extends Person<Senior> {
                 descriptor.getName().orElse(getName()),
                 descriptor.getPhone().orElse(getPhone()),
                 descriptor.getAddress().orElse(getAddress()),
-                descriptor.getRiskTags().orElse(getRiskTags()),
+                descriptor.getRiskTags().orElse(getRiskTag()),
                 descriptor.getNote().orElse(getNote()),
                 descriptor.getCaregiver().orElse(getCaregiver()),
                 getSeniorId(),

@@ -18,7 +18,7 @@ import java.util.Set;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * Parses input arguments and creates a new EditCommand object.
@@ -76,7 +76,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         // Tags
-        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setRiskTags);
+        if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
+            String tag = argMultimap.getValue(PREFIX_TAG).get();
+            editPersonDescriptor.setRiskTags(ParserUtil.parseTag(tag));
+        }
 
         // Caregiver ID (only for seniors)
         if (isSenior && argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
@@ -91,14 +94,13 @@ public class EditCommandParser implements Parser<EditCommand> {
         return new EditCommand(index, editPersonDescriptor, isSenior);
     }
 
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+    private Optional<Tag> parseTagsForEdit(String tag) throws ParseException {
+        assert tag != null;
 
-        if (tags.isEmpty()) {
+        if (tag.isEmpty()) {
             return Optional.empty();
         }
 
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        return Optional.of(ParserUtil.parseTag(tag));
     }
 }
