@@ -57,8 +57,8 @@ public class SampleDataUtil {
         SENIOR_LIM.setCaregiver(CAREGIVER_MEIHUI);
 
         return new Senior[]{
-                SENIOR_LIM, SENIOR_TAN, SENIOR_ONG, SENIOR_SITI,
-                SENIOR_PINNED, SENIOR_CHONG
+            SENIOR_LIM, SENIOR_TAN, SENIOR_ONG, SENIOR_SITI,
+            SENIOR_PINNED, SENIOR_CHONG
         };
     }
 
@@ -67,8 +67,8 @@ public class SampleDataUtil {
      */
     public static Caregiver[] getSampleCaregivers() {
         return new Caregiver[]{
-                CAREGIVER_TAN, CAREGIVER_MEIHUI,
-                CAREGIVER_PINNED, CAREGIVER_AMY
+            CAREGIVER_TAN, CAREGIVER_MEIHUI,
+            CAREGIVER_PINNED, CAREGIVER_AMY
         };
     }
 

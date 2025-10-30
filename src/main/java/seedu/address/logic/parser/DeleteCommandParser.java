@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.PinCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
