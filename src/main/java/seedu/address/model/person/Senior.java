@@ -8,7 +8,7 @@ import seedu.address.logic.commands.EditPersonDescriptor;
 /**
  * Represents an Elderly in the address book.
  */
-public class Senior extends Person<Senior> {
+public class Senior extends Person {
 
     // Senior data fields
     private final Integer seniorId;
@@ -40,7 +40,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withId(int id) {
         return new Senior(getName(), getPhone(), getAddress(), getRiskTag(),
-                getNote(), caregiver, Integer.valueOf(id), isPinned());
+                getNote(), caregiver, Integer.valueOf(id), getPinned());
     }
 
     /**
@@ -48,7 +48,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withCaregiver(Caregiver caregiver) {
         return new Senior(getName(), getPhone(), getAddress(), getRiskTag(),
-                getNote(), caregiver, getSeniorId(), isPinned());
+                getNote(), caregiver, getId(), getPinned());
     }
 
     /**
@@ -75,14 +75,7 @@ public class Senior extends Person<Senior> {
         if (caregiver == null) {
             return null;
         }
-        return caregiver.getCaregiverId();
-    }
-
-    /**
-     * Returns the ID assigned to this senior.
-     */
-    public Integer getSeniorId() {
-        return seniorId;
+        return caregiver.getId();
     }
 
     /**
@@ -90,7 +83,7 @@ public class Senior extends Person<Senior> {
      */
     @Override
     public Integer getId() {
-        return getSeniorId();
+        return seniorId;
     }
 
     /**
@@ -115,7 +108,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withPinned(boolean value) {
         return new Senior(getName(), getPhone(), getAddress(),
-                getRiskTag(), getNote(), getCaregiver(), getSeniorId(), value);
+                getRiskTag(), getNote(), getCaregiver(), getId(), value);
     }
 
     /**
@@ -125,7 +118,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withNote(Note newNote) {
         return new Senior(getName(), getPhone(), getAddress(),
-                getRiskTag(), newNote, getCaregiver(), getSeniorId(), isPinned());
+                getRiskTag(), newNote, getCaregiver(), getId(), getPinned());
     }
 
     /**
@@ -143,8 +136,8 @@ public class Senior extends Person<Senior> {
                 descriptor.getRiskTags().orElse(getRiskTag()),
                 descriptor.getNote().orElse(getNote()),
                 descriptor.getCaregiver().orElse(getCaregiver()),
-                getSeniorId(),
-                descriptor.getPinned().orElse(isPinned())
+                getId(),
+                descriptor.getPinned().orElse(getPinned())
         );
     }
 

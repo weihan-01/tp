@@ -11,10 +11,8 @@ import seedu.address.logic.commands.EditPersonDescriptor;
  * Represents an abstract Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  *
- * This class uses a self-referential generic pattern so that subclasses (e.g. Senior, Caregiver)
- * can return their own type when edited, without needing explicit casting.
  */
-public abstract class Person<T extends Person<T>> {
+public abstract class Person {
 
     // General identity fields
     private final Name name;
@@ -23,7 +21,7 @@ public abstract class Person<T extends Person<T>> {
     // General data fields
     private final Address address;
     private final Note note;
-    private final boolean pinned;
+    private final boolean isPinned;
 
     /**
      * Initializes Person fields with all required person attributes.
@@ -33,15 +31,15 @@ public abstract class Person<T extends Person<T>> {
      * @param phone Phone number of the person
      * @param address Address of the person's home
      * @param note Additional notes for the person
-     * @param pinned Whether the person is pinned
+     * @param isPinned Whether the person is pinned
      */
-    public Person(Name name, Phone phone, Address address, Note note, boolean pinned) {
+    public Person(Name name, Phone phone, Address address, Note note, boolean isPinned) {
         requireAllNonNull(name, phone, address);
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.note = note;
-        this.pinned = pinned;
+        this.isPinned = isPinned;
     }
 
     public Name getName() {
@@ -60,15 +58,15 @@ public abstract class Person<T extends Person<T>> {
         return note;
     }
 
-    public boolean isPinned() {
-        return pinned;
+    public boolean getPinned() {
+        return isPinned;
     }
 
     /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
      */
-    public boolean isSamePerson(Person<?> otherPerson) {
+    public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
@@ -87,11 +85,11 @@ public abstract class Person<T extends Person<T>> {
             return true;
         }
 
-        if (!(other instanceof Person<?>)) {
+        if (!(other instanceof Person)) {
             return false;
         }
 
-        Person<?> otherPerson = (Person<?>) other;
+        Person otherPerson = (Person) other;
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address)
@@ -102,7 +100,7 @@ public abstract class Person<T extends Person<T>> {
      * Creates a new edited copy of this person using the provided descriptor.
      * Implemented differently in subclasses (Senior, Caregiver).
      */
-    public abstract T edit(EditPersonDescriptor descriptor);
+    public abstract Person edit(EditPersonDescriptor descriptor);
 
     /**
      * Returns the Id of the Person.

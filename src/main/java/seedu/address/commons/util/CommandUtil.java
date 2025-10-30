@@ -58,7 +58,7 @@ public class CommandUtil {
             List<Senior> seniors,
             Integer seniorId
     ) {
-        return findFirstByIdOrNull(seniors, seniorId, Senior::getSeniorId);
+        return findFirstByIdOrNull(seniors, seniorId, Senior::getId);
     }
 
     /**
@@ -72,7 +72,7 @@ public class CommandUtil {
             List<Caregiver> caregiver,
             Integer caregiverId
     ) {
-        return findFirstByIdOrNull(caregiver, caregiverId, Caregiver::getCaregiverId);
+        return findFirstByIdOrNull(caregiver, caregiverId, Caregiver::getId);
     }
 
     /**

@@ -102,8 +102,8 @@ public class CaregiverListPanel extends UiPart<Region> {
      */
     private static SortedList<Caregiver> getCaregiverSorted(ObservableList<Caregiver> personList) {
         Comparator<Person> byPinnedThenName = (a, b) -> {
-            boolean ap = a.isPinned();
-            boolean bp = b.isPinned();
+            boolean ap = a.getPinned();
+            boolean bp = b.getPinned();
 
             if (ap != bp) {
                 return ap ? -1 : 1;
@@ -148,7 +148,7 @@ public class CaregiverListPanel extends UiPart<Region> {
             Region root = card.getRoot(); // UiPart<Region> root of the card
 
             root.getStyleClass().remove(PINNED_STYLE_CLASS);
-            if (caregiver.isPinned()) {
+            if (caregiver.getPinned()) {
                 root.getStyleClass().add(PINNED_STYLE_CLASS);
             }
 
@@ -163,7 +163,7 @@ public class CaregiverListPanel extends UiPart<Region> {
      */
     private void refreshPinnedHeader() {
         java.util.Optional<Caregiver> pinnedOpt =
-                backingList.stream().filter(Caregiver::isPinned).findFirst();
+                backingList.stream().filter(Caregiver::getPinned).findFirst();
 
         pinnedHeaderItems.setAll(pinnedOpt.map(java.util.List::of).orElse(java.util.List.of()));
 
@@ -179,7 +179,7 @@ public class CaregiverListPanel extends UiPart<Region> {
      * @return {@code true} if the caregiver is pinned
      */
     private boolean isPinnedCaregiver(seedu.address.model.person.Caregiver c) {
-        return c.isPinned();
+        return c.getPinned();
     }
 
     /**

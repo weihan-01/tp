@@ -57,9 +57,9 @@ class JsonAdaptedSenior {
         this.address = source.getAddress().value;
         this.note = source.getNote().value;
         this.riskTag = source.getRiskTag().tagName;
-        this.seniorId = source.getSeniorId();
+        this.seniorId = source.getId();
         this.caregiverId = source.getCaregiverId();
-        this.pinned = source.isPinned();
+        this.pinned = source.getPinned();
     }
 
     /** Returns the caregiver ID provided, */
