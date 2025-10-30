@@ -32,7 +32,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 public class AssignCommandTest {
     private final Name snrName = new Name(VALID_NAME_AMY);

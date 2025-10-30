@@ -12,7 +12,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -126,19 +126,19 @@ public class ParserUtil {
      * Normalizes a risk tag into the canonical alphanumeric code used as a Tag value: HR | MR | LR.
      * Accepts case-insensitive inputs: "High Risk"/"HR", "Medium Risk"/"MR", "Low Risk"/"LR".
      */
-    public static String parseRiskTagToCode(String raw) throws ParseException {
+    public static Tag parseRiskTag(String raw) throws ParseException {
         requireNonNull(raw);
         String s = raw.trim().toLowerCase(Locale.ROOT).replaceAll("\\s+", " ");
         switch (s) {
         case "high risk":
         case "hr":
-            return "HR";
+            return new Tag("HR");
         case "medium risk":
         case "mr":
-            return "MR";
+            return new Tag("MR");
         case "low risk":
         case "lr":
-            return "LR";
+            return new Tag("LR");
         default:
             throw new ParseException(
                     "Invalid risk tag. "
@@ -146,16 +146,4 @@ public class ParserUtil {
                     + "`Medium Risk` or `MR`, or `Low Risk` or `LR`.");
         }
     }
-
-
-    /**
-     * Builds a single-element {@code Set<Tag>} from a risk input (stored as HR/MR/LR Tag).
-     */
-    public static Set<Tag> parseRiskTagAsTagSet(String raw) throws ParseException {
-        String code = parseRiskTagToCode(raw); // HR | MR | LR
-        Set<String> one = new HashSet<>();
-        one.add(code);
-        return parseTags(one);
-    }
-
 }

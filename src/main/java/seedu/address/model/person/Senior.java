@@ -8,7 +8,6 @@ import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.commands.EditPersonDescriptor;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents an Elderly in the address book.
@@ -17,7 +16,7 @@ public class Senior extends Person<Senior> {
 
     // Senior data fields
     private final Integer seniorId;
-    private final Set<Tag> riskTags = new HashSet<>();
+    private final Tag riskTag;
     private Caregiver caregiver;
 
     /**
@@ -25,17 +24,17 @@ public class Senior extends Person<Senior> {
      * @param name Name of the senior
      * @param phone Phone number of the senior
      * @param address Address of the senior's home
-     * @param riskTags Risk status of the senior i.e. High Risk, Medium Risk or Low Risk
+     * @param riskTag Risk status of the senior i.e. High Risk, Medium Risk or Low Risk
      * @param note Additional caregiving notes for the senior
      * @param caregiver Caregiver assigned to the senior
      * @param seniorId ID of the senior assigned by AddressBook
      * @param pinned boolean variable for if senior is pinned
      */
-    public Senior(Name name, Phone phone, Address address, Set<Tag> riskTags,
+    public Senior(Name name, Phone phone, Address address, Tag riskTag,
                   Note note, Caregiver caregiver, Integer seniorId, boolean pinned) {
         super(name, phone, address, note, pinned);
-        requireAllNonNull(riskTags);
-        this.riskTags.addAll(riskTags);
+        requireAllNonNull(riskTag);
+        this.riskTag = (riskTag);
         this.caregiver = caregiver;
         this.seniorId = seniorId;
     }
@@ -44,7 +43,7 @@ public class Senior extends Person<Senior> {
      * Immutable factory: return a new Senior with the given id.
      */
     public Senior withId(int id) {
-        return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
+        return new Senior(getName(), getPhone(), getAddress(), getRiskTag(),
                 getNote(), caregiver, Integer.valueOf(id), isPinned());
     }
 
@@ -52,7 +51,7 @@ public class Senior extends Person<Senior> {
      * Immutable factory: return a new Senior with the given caregiver.
      */
     public Senior withCaregiver(Caregiver caregiver) {
-        return new Senior(getName(), getPhone(), getAddress(), new HashSet<>(riskTags),
+        return new Senior(getName(), getPhone(), getAddress(), getRiskTag(),
                 getNote(), caregiver, getSeniorId(), isPinned());
     }
 
@@ -60,8 +59,8 @@ public class Senior extends Person<Senior> {
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Tag> getRiskTags() {
-        return Collections.unmodifiableSet(riskTags);
+    public Tag getRiskTag() {
+        return riskTag;
     }
 
     /**
@@ -120,7 +119,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withPinned(boolean value) {
         return new Senior(getName(), getPhone(), getAddress(),
-                getRiskTags(), getNote(), getCaregiver(), getSeniorId(), value);
+                getRiskTag(), getNote(), getCaregiver(), getSeniorId(), value);
     }
 
     /**
@@ -130,7 +129,7 @@ public class Senior extends Person<Senior> {
      */
     public Senior withNote(Note newNote) {
         return new Senior(getName(), getPhone(), getAddress(),
-                getRiskTags(), newNote, getCaregiver(), getSeniorId(), isPinned());
+                getRiskTag(), newNote, getCaregiver(), getSeniorId(), isPinned());
     }
 
     /**
@@ -156,7 +155,7 @@ public class Senior extends Person<Senior> {
     @Override
     public String toString() {
         return new ToStringBuilder(super.toString())
-                .add("riskTags", riskTags)
+                .add("riskTags", riskTag)
                 .add("caregiver", caregiver != null ? caregiver.getName() : "No caregiver")
                 .add("seniorId", seniorId)
                 .toString();
