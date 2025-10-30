@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import seedu.address.commons.core.LogsCenter;
+import java.util.logging.Logger;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -31,6 +33,7 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
     private final boolean isSenior; // true if editing a Senior, false if editing a Caregiver
 
+    private static final Logger log = LogsCenter.getLogger(EditCommand.class);
     /**
      * Creates an EditCommand to edit the person at the specified index.
      *
@@ -52,11 +55,12 @@ public class EditCommand extends Command {
         if (isSenior) {
             List<Senior> lastShownList = model.getFilteredSeniorList();
 
-            if (index < 0 || index >= lastShownList.size()) {
+            int zeroBasedIndex = index - 1;
+            if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
                 throw new CommandException(MESSAGE_INVALID_INDEX);
             }
 
-            Senior seniorToEdit = lastShownList.get(index);
+            Senior seniorToEdit = lastShownList.get(zeroBasedIndex);
 
             // Resolve caregiver ID to object if present
             if (editPersonDescriptor.getCaregiverId().isPresent()) {
@@ -86,11 +90,12 @@ public class EditCommand extends Command {
 
         } else {
             List<Caregiver> lastShownList = model.getFilteredCaregiverList();
-            if (index < 0 || index >= lastShownList.size()) {
+            int zeroBasedIndex = index - 1;
+            if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
                 throw new CommandException(MESSAGE_INVALID_INDEX);
             }
 
-            Caregiver caregiverToEdit = lastShownList.get(index);
+            Caregiver caregiverToEdit = lastShownList.get(zeroBasedIndex);
 
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(MESSAGE_NOT_EDITED);
@@ -102,8 +107,27 @@ public class EditCommand extends Command {
                 throw new CommandException("This caregiver already exists in the address book.");
             }
 
+            log.fine(() -> String.format("Edit caregiver: userIndex=%d (1-based)", index));
+            log.fine(() -> "Before edit: id=" + caregiverToEdit.getCaregiverId() + ", name=" + caregiverToEdit.getName());
+
             model.setCaregiver(caregiverToEdit, editedCaregiver);
+
+            log.info(() -> "Updated caregiver in model: id=" + editedCaregiver.getCaregiverId());
+
+            int targetId = caregiverToEdit.getCaregiverId();
+            int rebound = 0;
+            for (Senior s : model.getAllSeniorList()) {
+                if (s.getCaregiverId() != null && s.getCaregiverId().equals(targetId)) {
+                    Senior updated = s.withCaregiver(editedCaregiver);
+                    model.setSenior(s, updated);
+                    rebound++;
+                }
+            }
+
+            log.info("Rebound " + rebound + " seniors to caregiverId=" + targetId);
+
             model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
+            model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
             return new CommandResult(
                     String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.format(editedCaregiver)));

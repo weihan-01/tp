@@ -30,6 +30,10 @@ public class EditCommandParser implements Parser<EditCommand> {
                 PREFIX_SENIOR, PREFIX_CAREGIVER,
                 PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_NOTE, PREFIX_TAG);
 
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+
         boolean isSenior;
         int index;
 
@@ -38,10 +42,23 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException("Cannot edit both senior and caregiver at the same time.");
         } else if (argMultimap.getValue(PREFIX_SENIOR).isPresent()) {
             isSenior = true;
+            String raw = argMultimap.getValue(PREFIX_SENIOR).get().trim();
+            String[] parts = raw.split("\\s+", 2);
+            if (parts.length > 1) {
+                // there is invalid input after the index, e.g., "edit s/1 asd"
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
         } else if (argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
+
             isSenior = false;
-            index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_CAREGIVER).get());
+            String raw = argMultimap.getValue(PREFIX_CAREGIVER).get().trim();
+            String[] parts = raw.split("\\s+", 2);
+            if (parts.length > 1) {
+                // there is invalid input after the index, e.g., "edit c/1 asd"
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            }
+            index = ParserUtil.parseIndex(parts[0]);
         } else {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
