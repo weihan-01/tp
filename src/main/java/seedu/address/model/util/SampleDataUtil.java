@@ -1,9 +1,5 @@
 package seedu.address.model.util;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Address;
@@ -31,12 +27,27 @@ public class SampleDataUtil {
     private static final Senior SENIOR_SITI = new Senior(new Name("Siti Nurhaliza"), new Phone("93330011"),
             new Address("Blk 20 Toa Payoh Lor 7 #09-10"),
             new Tag("HR"), new Note("Fall risk"), null, 4, false);
+
     private static final Caregiver CAREGIVER_TAN = new Caregiver(new Name("John Tan"), new Phone("90000001"),
             new Address("Blk 10 Jurong West St 65 #07-21"),
             new Note("Experienced with dementia care"), 1, false);
     private static final Caregiver CAREGIVER_MEIHUI = new Caregiver(new Name("Mei Hui"), new Phone("90000002"),
             new Address("Blk 620 Punggol Field Walk #08-23"),
             new Note("Bilingual (EN/MS)"), 2, false);
+    private static final Senior SENIOR_CHONG = new Senior(new Name("Chong Wei Ming"), new Phone("93211211"),
+            new Address("Blk 70 Bukit Batok West Ave 8 #03-11"),
+            new Tag("LR"), new Note("Mild arthritis"), null, 6, false);
+    private static final Caregiver CAREGIVER_AMY = new Caregiver(new Name("Amy Wong"), new Phone("90000003"),
+            new Address("Blk 18 Bishan St 13 #09-22"),
+            new Note("Part-time caregiver"), 4, false);
+
+    //pinned caregiver and senior
+    private static final Senior SENIOR_PINNED = new Senior(new Name("Ali Hassan"), new Phone("95551234"),
+            new Address("Blk 45 Yishun Ave 11 #10-33"),
+            new Tag("MR"), new Note("Recently discharged from hospital"), null, 5, true);
+    private static final Caregiver CAREGIVER_PINNED = new Caregiver(new Name("Grace Lee"), new Phone("90009999"),
+            new Address("Blk 50 Pasir Ris Dr 3 #12-44"),
+            new Note("Pinned caregiver"), 3, true);
 
     /**
      * Sample seniors with REQUIRED risk tags (HR/MR/LR).
@@ -44,8 +55,10 @@ public class SampleDataUtil {
     public static Senior[] getSampleSeniors() {
         SENIOR_ONG.setCaregiver(CAREGIVER_TAN);
         SENIOR_LIM.setCaregiver(CAREGIVER_MEIHUI);
+
         return new Senior[]{
-            SENIOR_LIM, SENIOR_TAN, SENIOR_ONG, SENIOR_SITI
+                SENIOR_LIM, SENIOR_TAN, SENIOR_ONG, SENIOR_SITI,
+                SENIOR_PINNED, SENIOR_CHONG
         };
     }
 
@@ -54,7 +67,8 @@ public class SampleDataUtil {
      */
     public static Caregiver[] getSampleCaregivers() {
         return new Caregiver[]{
-            CAREGIVER_TAN, CAREGIVER_MEIHUI
+                CAREGIVER_TAN, CAREGIVER_MEIHUI,
+                CAREGIVER_PINNED, CAREGIVER_AMY
         };
     }
 
@@ -73,12 +87,5 @@ public class SampleDataUtil {
         ab.recomputeSeqFromData();
 
         return ab;
-    }
-
-    /**
-     * Returns a Tag set from strings (used for risk tags: HR/MR/LR).
-     */
-    public static Set<Tag> getTagSet(String... strings) {
-        return Arrays.stream(strings).map(Tag::new).collect(Collectors.toSet());
     }
 }
