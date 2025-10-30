@@ -34,13 +34,24 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
+        var seniorVals = argMultimap.getAllValues(PREFIX_SENIOR);
+        var caregiverVals = argMultimap.getAllValues(PREFIX_CAREGIVER);
+
+        // Cannot specify both person types
+        if (!seniorVals.isEmpty() && !caregiverVals.isEmpty()) {
+            throw new ParseException("Cannot edit both senior and caregiver at the same time.");
+        }
+
         boolean isSenior;
         int index;
 
-        // Check which type is being edited
-        if (argMultimap.getValue(PREFIX_SENIOR).isPresent() && argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
-            throw new ParseException("Cannot edit both senior and caregiver at the same time.");
-        } else if (argMultimap.getValue(PREFIX_SENIOR).isPresent()) {
+        if (argMultimap.getValue(PREFIX_SENIOR).isPresent()) {
+
+            if (seniorVals.size() > 1) {
+                throw new ParseException("Specify exactly one senior ID " +
+                        "(use only one s/<INDEX>).");
+            }
+
             isSenior = true;
             String raw = argMultimap.getValue(PREFIX_SENIOR).get().trim();
             String[] parts = raw.split("\\s+", 2);
@@ -50,6 +61,11 @@ public class EditCommandParser implements Parser<EditCommand> {
             }
             index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SENIOR).get());
         } else if (argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
+
+            if (caregiverVals.size() > 1) {
+                throw new ParseException("Specify exactly one caregiver ID " +
+                        "(use only one c/<INDEX>).");
+            }
 
             isSenior = false;
             String raw = argMultimap.getValue(PREFIX_CAREGIVER).get().trim();
