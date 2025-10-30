@@ -208,9 +208,9 @@ public class SeniorCard extends UiPart<Region> {
             String n = found.getName().toString();
             String label;
             if (idx >= 0) {
-                label = "S" + idx + " " + n;
+                label = "C" + idx + " " + n;
             } else {
-                label = "S— " + n;
+                label = "C— " + n;
             }
             Label chip = makeAssignedChip(label, false);
             assignedChips.getChildren().add(chip);

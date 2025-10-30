@@ -149,6 +149,8 @@ public class CaregiverCard extends UiPart<Region> {
     private void renderAssignedRow() {
         assignedRow.setManaged(false);
         assignedRow.setVisible(false);
+        assignedChips.getChildren().clear();
+
         if (logic == null) {
             return;
         }
