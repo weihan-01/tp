@@ -48,11 +48,24 @@ public class DeleteCommand extends Command {
     public DeleteCommand(Integer seniorIndex, Integer caregiverIndex) {
         this.seniorIndex = seniorIndex;
         this.caregiverIndex = caregiverIndex;
+
+        assert (seniorIndex == null || seniorIndex >= 0)
+                : "Senior index must be non-negative or null";
+        assert (caregiverIndex == null || caregiverIndex >= 0)
+                : "Caregiver index must be non-negative or null";
+        assert (seniorIndex != null || caregiverIndex != null)
+                : "At least one of seniorIndex or caregiverIndex should be provided";
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        assert model.getAllSeniorList() != null
+                : "Senior list in model should not be null";
+        assert model.getAllCaregiverList() != null
+                : "Caregiver list in model should not be null";
+
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
@@ -63,6 +76,11 @@ public class DeleteCommand extends Command {
         // Find caregiver by caregiverId
         Caregiver caregiver = CommandUtil.validateOptionalCaregiverId(
                 fullCaregiverList, caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
+
+        assert (senior == null || fullSeniorList.contains(senior))
+                : "Senior found must exist in the model senior list";
+        assert (caregiver == null || fullCaregiverList.contains(caregiver))
+                : "Caregiver found must exist in the model caregiver list";
 
         // If deleting a caregiver, clear references from seniors
         if (senior != null) {

@@ -84,8 +84,20 @@ public class UnassignCommand extends Command {
             throw new CommandException(MESSAGE_NOT_ASSIGNED);
         }
 
+        assert senior.getCaregiver() != null
+                : "Senior must have a caregiver before unassigning";
+
+        assert senior.getCaregiver().isSamePerson(caregiver)
+                : "Senior's caregiver must match the caregiver to unassign";
+
         // Build updated senior with caregiver removed
         Senior updatedSenior = createSeniorWithoutCaregiver(senior);
+
+        assert !updatedSenior.hasCaregiver()
+                : "Updated senior should not have a caregiver";
+
+        assert updatedSenior.getId().equals(senior.getId())
+                : "Unassign must not change the senior's ID";
 
         model.setSenior(senior, updatedSenior);
         model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
