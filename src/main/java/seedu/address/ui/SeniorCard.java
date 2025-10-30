@@ -175,11 +175,20 @@ public class SeniorCard extends UiPart<Region> {
         assignedRow.setVisible(true);
         assignedChips.getChildren().clear();
 
+        if (logic == null) {
+            return;
+        }
+
         if (names == null || names.isEmpty()) {
             assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
             return;
+        } else {
+            for (String n : names) {
+                int idx = logic.getDisplayedIndexOfCaregiverByName(n);
+                String label = "C" + (idx >= 0 ? (idx) + " " : "—. ") + n;
+                assignedChips.getChildren().add(makeAssignedChip(label, false));
+            }
         }
-        names.forEach(n -> assignedChips.getChildren().add(makeAssignedChip(n, false)));
     }
 
     /**
