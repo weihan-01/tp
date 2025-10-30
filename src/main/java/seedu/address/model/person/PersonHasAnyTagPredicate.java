@@ -1,11 +1,7 @@
 package seedu.address.model.person;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Returns true if the Person has ANY of the target tags (case-insensitive).
@@ -33,7 +29,8 @@ public class PersonHasAnyTagPredicate implements Predicate<Person> {
         }
         Tag personTags = ((Senior) person).getRiskTag();
         // Build a lowercased set of the person's tag names
-        String personTagLower = personTags.getTagName().toLowerCase(Locale.ROOT); // if Tag has getter, use t.getTagName()
+        String personTagLower = personTags.getTagName()
+                .toLowerCase(Locale.ROOT); // if Tag has getter, use t.getTagName()
 
         return targetTagLower.equals(personTagLower);
     }

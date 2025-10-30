@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import java.util.Optional;
-import java.util.Set;
 
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Caregiver;
