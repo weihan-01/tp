@@ -48,8 +48,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_SENIOR).isPresent()) {
 
             if (seniorVals.size() > 1) {
-                throw new ParseException("Specify exactly one senior ID " +
-                        "(use only one s/<INDEX>).");
+                throw new ParseException("Specify exactly one senior ID "
+                        + "(use only one s/<INDEX>).");
             }
 
             isSenior = true;
@@ -63,8 +63,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         } else if (argMultimap.getValue(PREFIX_CAREGIVER).isPresent()) {
 
             if (caregiverVals.size() > 1) {
-                throw new ParseException("Specify exactly one caregiver ID " +
-                        "(use only one c/<INDEX>).");
+                throw new ParseException("Specify exactly one caregiver ID "
+                        + "(use only one c/<INDEX>).");
             }
 
             isSenior = false;
