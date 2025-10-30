@@ -64,6 +64,11 @@ public class SeniorListPanel extends UiPart<Region> {
         seniorList.addListener((ListChangeListener<Senior>) change -> seniorListView.refresh());
         seniorListView.setCellFactory(listView -> new SeniorListViewCell(logic));
 
+        caregiverList.addListener((ListChangeListener<Caregiver>) c -> {
+            // caregivers changed seniors “assigned caregiver” chip may change
+            seniorListView.refresh();
+            pinnedHeaderList.refresh();
+        });
 
         // Implement logic when senior list is empty, display message prompt
         Label emptySeniorsListPlaceholder = createEmptySeniorsPlaceholder();
