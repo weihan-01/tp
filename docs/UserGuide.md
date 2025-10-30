@@ -221,7 +221,7 @@ Format: `delete c/INDEX or s/INDEX`
 
 * Deletes the senior/caregiver at the specified `INDEX`.
 * The index refers to the index number shown in the displayed senior/caregiver list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* The index **must be a positive integer** 1, 2, 3, …
 
 Examples:
 * `delete c/2` deletes the caregiver at index 2.
@@ -326,6 +326,6 @@ _Details coming soon ..._
 | **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                               |
 | **List**               | `list`                                                                                                                                                                                  |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
-| **Delete**             | `delete s/INDEX`<br> e.g., `delete s/3`                                                                                                                                                 |
+| **Delete**             | `delete s/<seniorId>`or `delete c/<caregiverId>` <br> e.g., `delete s/3`                                                                                                                |
 | **Clear**              | `clear`                                                                                                                                                                                 |
 | **Help**               | `help`                                                                                                                                                                                  |
