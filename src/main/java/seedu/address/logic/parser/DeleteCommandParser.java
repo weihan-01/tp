@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import java.util.stream.Stream;
 
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.PinCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -27,7 +28,7 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-        // ✅ New: Check for multiple occurrences
+        // Check for multiple occurrences: reject duplicates like "delete s/1 s/2" or "delete c/1 c/2"
         if (argMultimap.getAllValues(PREFIX_SENIOR).size() > 1
                 || argMultimap.getAllValues(PREFIX_CAREGIVER).size() > 1) {
             throw new ParseException(MESSAGE_MULTIPLE_PREFIXES);
