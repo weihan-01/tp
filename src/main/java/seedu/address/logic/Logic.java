@@ -62,4 +62,14 @@ public interface Logic {
      * Returns the names of the Caregiver's assigned seniors.
      */
     List<String> getAssignedSeniorNames(Caregiver caregiver);
+
+    /**
+     * Returns senior index of given senior name.
+     */
+    int getDisplayedIndexOfSeniorByName(String fullName);
+
+    /**
+     * Returns caregiver index of given caregiver name.
+     */
+    int getDisplayedIndexOfCaregiverByName(String fullName);
 }

@@ -159,8 +159,12 @@ public class CaregiverCard extends UiPart<Region> {
         if (names == null || names.isEmpty()) {
             assignedChips.getChildren().setAll(makeAssignedChip("Unassigned", true));
         } else {
-            assignedChips.getChildren().setAll(
-                    names.stream().map(n -> makeAssignedChip(n, false)).toList());
+            for (String n : names) {
+                int idx = logic.getDisplayedIndexOfSeniorByName(n); // returns -1 if not visible
+                String label = "S" + (idx >= 0 ? (idx) +
+                        " " : "—. ") + n; // 1-based index if visible
+                assignedChips.getChildren().add(makeAssignedChip(label, false));
+            }
         }
     }
 
