@@ -183,15 +183,26 @@ public class SeniorCard extends UiPart<Region> {
         if (names == null || names.isEmpty()) {
             assignedChips.getChildren().add(makeAssignedChip("Unassigned", true));
             return;
-        } else {
-            List<Caregiver> allCaregivers = logic.getAllCaregiverList();
-            for (Caregiver c : allCaregivers) {
-                String n = c.getName().toString();
-                int i = c.getId();
-                String label = "C" + (i >= 0 ? (i)
-                        + " " : "—. ") + n;
-                assignedChips.getChildren().add(makeAssignedChip(label, false));
+        }
+        Caregiver found = null;
+        String cgName = logic.getAssignedCaregiverName(senior);
+        List<Caregiver> allCaregivers = logic.getAllCaregiverList();
+
+        for (Caregiver c : allCaregivers) {
+            String full = (c.getName() == null) ? null : c.getName().fullName;
+            if (cgName.equals(full)) {
+                found = c;
+                break;
             }
+        }
+
+        if (found != null) {
+            Integer idx = found.getId();
+            String n = found.getName().toString();
+            String label = "C" + (idx >= 0 ? (idx) +
+                    " " : "—. ") + n;
+            assignedChips.getChildren().add(makeAssignedChip(label, false));
+
         }
     }
 
