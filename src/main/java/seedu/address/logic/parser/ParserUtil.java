@@ -27,8 +27,24 @@ public class ParserUtil {
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Integer parseIndex(String stringIndex) throws ParseException {
-        String trimmedIndex = stringIndex.trim();
-        return Integer.parseInt(trimmedIndex);
+        //String trimmedIndex = stringIndex.trim();
+        //return Integer.parseInt(trimmedIndex);
+        if (stringIndex == null) {
+            throw new ParseException("Index is required.");
+        }
+        String trimmed = stringIndex.trim();
+
+        // only digits allowed (no spaces, signs, or letters)
+        if (!trimmed.matches("\\d+")) {
+            throw new ParseException(MESSAGE_INVALID_INDEX);
+        }
+
+        try {
+            return Integer.parseInt(trimmed);
+        } catch (NumberFormatException e) {
+            // handles very large numbers outside int range
+            throw new ParseException("Index is too large.");
+        }
     }
 
     /**
