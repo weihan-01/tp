@@ -20,9 +20,6 @@ class JsonAdaptedSenior {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
-    /** Discriminator: "SENIOR", "CAREGIVER", or "PERSON". */
-    private final String role;
-
     private final String name;
     private final String phone;
     private final String address;
@@ -35,8 +32,7 @@ class JsonAdaptedSenior {
 
     /** Constructs from JSON. */
     @JsonCreator
-    public JsonAdaptedSenior(@JsonProperty("role") String role,
-                             @JsonProperty("name") String name,
+    public JsonAdaptedSenior(@JsonProperty("name") String name,
                              @JsonProperty("phone") String phone,
                              @JsonProperty("address") String address,
                              @JsonProperty("note") String note,
@@ -44,7 +40,6 @@ class JsonAdaptedSenior {
                              @JsonProperty("seniorId") Integer seniorId,
                              @JsonProperty("caregiverId") Integer caregiverId,
                              @JsonProperty("pinned") Boolean pinned) {
-        this.role = role;
         this.name = name;
         this.phone = phone;
         this.address = address;
@@ -62,7 +57,6 @@ class JsonAdaptedSenior {
         this.address = source.getAddress().value;
         this.note = source.getNote().value;
         this.riskTag = source.getRiskTag().tagName;
-        this.role = "SENIOR";
         this.seniorId = source.getSeniorId();
         this.caregiverId = source.getCaregiverId();
         this.pinned = source.isPinned();
@@ -114,7 +108,6 @@ class JsonAdaptedSenior {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("role", role)
                 .add("name", name)
                 .add("phone", phone)
                 .add("address", address)

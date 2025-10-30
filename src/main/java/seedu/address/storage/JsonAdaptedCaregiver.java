@@ -19,9 +19,6 @@ class JsonAdaptedCaregiver {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
 
-    /** Discriminator: "SENIOR", "CAREGIVER", or "PERSON". */
-    private final String role;
-
     private final String name;
     private final String phone;
     private final String address;
@@ -40,7 +37,6 @@ class JsonAdaptedCaregiver {
                                 @JsonProperty("note") String note,
                                 @JsonProperty("caregiverId") Integer caregiverId,
                                 @JsonProperty("pinned") Boolean pinned) {
-        this.role = role;
         this.name = name;
         this.phone = phone;
         this.address = address;
@@ -55,7 +51,6 @@ class JsonAdaptedCaregiver {
         this.phone = source.getPhone().value;
         this.address = source.getAddress().value;
         this.note = source.getNote().value;
-        this.role = "CAREGIVER";
         this.caregiverId = ((Caregiver) source).getCaregiverId();
         this.pinned = source.isPinned();
     }
@@ -99,7 +94,6 @@ class JsonAdaptedCaregiver {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("role", role)
                 .add("name", name)
                 .add("phone", phone)
                 .add("address", address)
