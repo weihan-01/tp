@@ -163,11 +163,9 @@ The `Model` component,
 
 <box type="info" seamless>
 
-**Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which
-`Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person`
-needing their own `Tag` objects.<br>
+**Note:** An alternative (arguably, a more OOP) model is given below. 
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="800" />
 
 </box>
 
@@ -186,6 +184,13 @@ The `Storage` component,
   the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects
   that belong to the `Model`)
+
+Additionally, `JsonSerializableAddressBook` now serializes two separate collections:
+* `List<JsonAdaptedSenior`
+* `List<JsonAdaptedCaregiver`
+Each JSON adapter is responsible for validating fields and converting between the JSON representation
+and the model types (`Senior` / `Caregiver`). Only seniors maintain a risk tag, stored as a single-element 
+list of JsonAdaptedTag. Caregivers do not contain any tags.
 
 ### Common classes
 

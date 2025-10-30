@@ -162,5 +162,4 @@ public interface Model {
      * Returns the names of the Caregiver's assigned seniors.
      */
     List<String> getAssignedSeniorNames(Caregiver caregiver);
-
 }

@@ -146,20 +146,4 @@ public class ParserUtil {
                     + "`Medium Risk` or `MR`, or `Low Risk` or `LR`.");
         }
     }
-
-    /**
-     * Parses Caregiver ID: must be digits only; returns Integer.
-     */
-    public static Integer parseCaregiverId(String raw) throws ParseException {
-        requireNonNull(raw);
-        String s = raw.trim();
-        if (!s.matches("\\d+")) {
-            throw new ParseException("Caregiver ID must be numeric.");
-        }
-        try {
-            return Integer.valueOf(s);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Caregiver ID is out of range.");
-        }
-    }
 }

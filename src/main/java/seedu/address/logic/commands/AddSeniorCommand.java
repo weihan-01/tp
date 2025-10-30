@@ -32,7 +32,7 @@ public class AddSeniorCommand extends Command {
             + PREFIX_ADDRESS + "ADDRESS "
             + "[" + PREFIX_NOTE + "NOTES] "
             + "[" + PREFIX_CID + "CAREGIVER_ID]\n"
-            + "Valid risk tags: High Risk, Medium Risk, Low Risk\n"
+            + "Valid risk tags: High Risk, Medium Risk, Low Risk, hr, mr, lr\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Lim Ah Kow "
             + PREFIX_TAG + "High Risk "
@@ -56,6 +56,7 @@ public class AddSeniorCommand extends Command {
         this.toAdd = senior;
         this.caregiverId = caregiverId;
     }
+
 
     @Override
     public CommandResult execute(Model model) throws CommandException {

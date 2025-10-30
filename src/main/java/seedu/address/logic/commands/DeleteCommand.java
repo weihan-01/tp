@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -19,9 +20,10 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person identified by the index number used in the displayed person list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + ": Deletes the caregiver/senior identified by the index number used"
+            + " in the displayed caregiver/senior list.\n"
+            + "Parameters: s/INDEX or c/INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " c/1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
     public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
@@ -51,28 +53,12 @@ public class DeleteCommand extends Command {
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
         // Find senior by seniorId
-        Senior senior = fullSeniorList.stream()
-                .filter(s -> {
-                    Integer seniorId = s.getSeniorId();
-                    return seniorId != null && (seniorId.equals(seniorIndex));
-                })
-                .findFirst()
-                .orElse(null);
-        if (seniorIndex != null && senior == null) {
-            throw new CommandException(MESSAGE_INVALID_SENIOR_INDEX);
-        }
+        Senior senior = CommandUtil.validateOptionalSeniorId(
+                fullSeniorList, seniorIndex, MESSAGE_INVALID_SENIOR_INDEX);
 
         // Find caregiver by caregiverId
-        Caregiver caregiver = fullCaregiverList.stream()
-                .filter(c -> {
-                    Integer caregiverId = c.getCaregiverId();
-                    return caregiverId != null && (caregiverId.equals(caregiverIndex));
-                })
-                .findFirst()
-                .orElse(null);
-        if (caregiverIndex != null && caregiver == null) {
-            throw new CommandException(MESSAGE_INVALID_CAREGIVER_INDEX);
-        }
+        Caregiver caregiver = CommandUtil.validateOptionalCaregiverId(
+                fullCaregiverList, caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
 
         // If deleting a caregiver, clear references from seniors
         if (senior != null) {
@@ -84,7 +70,6 @@ public class DeleteCommand extends Command {
                     .forEach(s -> s.setCaregiver(null));
             model.deleteCaregiver(caregiver);
         }
-
 
         if (senior != null && caregiver == null) {
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(senior)));
