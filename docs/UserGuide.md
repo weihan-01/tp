@@ -317,18 +317,18 @@ _Details coming soon ..._
 
 ## Command summary
 
-| Action                 | Format, Examples                                                                                                                                                                        |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Action                 | Format, Examples                                                                                                                                                                   |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Add Senior**         | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
-| **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                |
-| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                   |
-| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                               |
-| **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                               |
-| **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                 |
-| **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` or `pin s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)     |
-| **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                |
-| **List**               | `list`                                                                                                                                                                                  |
-| **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
-| **Delete**             | `delete s/<seniorId>` or `delete c/<caregiverId>` <br> e.g., `delete s/3`                                                                                                               |
-| **Clear**              | `clear`                                                                                                                                                                                 |
-| **Help**               | `help`                                                                                                                                                                                  |
+| **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`           |
+| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                              |
+| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                          |
+| **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                          |
+| **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                            |
+| **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)     |
+| **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                           |
+| **List**               | `list`                                                                                                                                                                             |
+| **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                         |
+| **Delete**             | `delete s/<seniorId>` or `delete c/<caregiverId>` <br> e.g., `delete s/3`                                                                                                          |
+| **Clear**              | `clear`                                                                                                                                                                            |
+| **Help**               | `help`                                                                                                                                                                             |
