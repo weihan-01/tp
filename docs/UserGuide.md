@@ -325,6 +325,8 @@ _Details coming soon ..._
 | **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                               |
 | **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]`<br> e.g., `edit c/2 n/Jane Lim`                               |
 | **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                 |
+| **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` or `pin s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)     |
+| **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                |
 | **List**               | `list`                                                                                                                                                                                  |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
 | **Delete**             | `delete s/<seniorId>` or `delete c/<caregiverId>` <br> e.g., `delete s/3`                                                                                                               |
