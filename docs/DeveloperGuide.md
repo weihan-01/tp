@@ -610,8 +610,8 @@ assign s/SENIOR_INDEX c/CAREGIVER_INDEX
 
 Example Commands
 
-assign s/1 c/2
-assign s/3 c/1
+* assign s/1 c/2
+* assign s/3 c/1
 
 **Use case 6: Unassign a caregiver from a senior — `unassign`**
 
@@ -655,8 +655,8 @@ unassign s/SENIOR_INDEX c/CAREGIVER_INDEX
 
 Example Commands
 
-unassign s/1 c/2
-unassign s/3 c/1
+* unassign s/1 c/2
+* unassign s/3 c/1
 
 **Use case 7: Pin a contact (Caregiver or Senior): pin**
 
@@ -695,13 +695,13 @@ unassign s/3 c/1
 
 Command Format
 
-pin s/INDEX
-pin c/INDEX
+* pin s/INDEX 
+* pin c/INDEX
 
 Example Commands
 
-pin s/1
-pin c/2
+* pin s/1 
+* pin c/2
 
 **Use case 8: Unpin a contact (Caregiver or Senior): unpin**
 
@@ -736,19 +736,17 @@ pin c/2
 
 Command Format
 
-unpin
-unpin s
-unpin senior
-unpin c
-unpin caregiver
-unpin a
-unpin all
+* unpin 
+* unpin s | senior 
+* unpin c | caregiver 
+* unpin a | all
 
 Example Commands
 
-unpin
-unpin s
-unpin all
+* unpin
+* unpin s
+* unpin caregiver
+* unpin all
 
 ### Non-Functional Requirements
 
