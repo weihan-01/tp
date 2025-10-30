@@ -3,8 +3,6 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.commands.FilterCommand.MESSAGE_NO_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import seedu.address.logic.commands.FilterCommand;
