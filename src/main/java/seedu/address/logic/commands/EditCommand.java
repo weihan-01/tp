@@ -25,12 +25,14 @@ public class EditCommand extends Command {
             + "Format: edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
             + "        edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
             + "Examples:\n"
-            + "  edit s/1 n/John Tan p/91234567\n"
-            + "  edit c/2 n/Jane Lim";
+            + "  " + COMMAND_WORD + " s/1 n/John Tan p/91234567\n"
+            + "  " + COMMAND_WORD + " c/2 n/Jane Lim";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
+    private static final String MESSAGE_DUPLICATE_PERSON = "This person " +
+            "already exists in the address book.";
     private static final Logger log = LogsCenter.getLogger(EditCommand.class);
 
     private final int index;
@@ -81,7 +83,7 @@ public class EditCommand extends Command {
             Senior editedSenior = seniorToEdit.edit(editPersonDescriptor);
 
             if (!seniorToEdit.isSamePerson(editedSenior) && model.hasPerson(editedSenior)) {
-                throw new CommandException("This senior already exists in the address book.");
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
 
             model.setSenior(seniorToEdit, editedSenior);
@@ -106,7 +108,7 @@ public class EditCommand extends Command {
             Caregiver editedCaregiver = caregiverToEdit.edit(editPersonDescriptor);
 
             if (!caregiverToEdit.isSamePerson(editedCaregiver) && model.hasPerson(editedCaregiver)) {
-                throw new CommandException("This caregiver already exists in the address book.");
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
 
             log.fine(() -> String.format("Edit caregiver: userIndex=%d (1-based)", index));
