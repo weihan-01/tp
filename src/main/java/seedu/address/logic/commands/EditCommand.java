@@ -3,9 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
-import java.util.logging.Logger;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -28,12 +28,11 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
+    private static final Logger log = LogsCenter.getLogger(EditCommand.class);
 
     private final int index;
     private final EditPersonDescriptor editPersonDescriptor;
     private final boolean isSenior; // true if editing a Senior, false if editing a Caregiver
-
-    private static final Logger log = LogsCenter.getLogger(EditCommand.class);
     /**
      * Creates an EditCommand to edit the person at the specified index.
      *
@@ -108,7 +107,8 @@ public class EditCommand extends Command {
             }
 
             log.fine(() -> String.format("Edit caregiver: userIndex=%d (1-based)", index));
-            log.fine(() -> "Before edit: id=" + caregiverToEdit.getCaregiverId() + ", name=" + caregiverToEdit.getName());
+            log.fine(() -> "Before edit: id=" + caregiverToEdit.getCaregiverId()
+                    + ", name=" + caregiverToEdit.getName());
 
             model.setCaregiver(caregiverToEdit, editedCaregiver);
 
