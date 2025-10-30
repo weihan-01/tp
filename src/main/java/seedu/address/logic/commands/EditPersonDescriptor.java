@@ -8,7 +8,7 @@ import seedu.address.model.person.Caregiver;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.person.Tag;
 
 /**
  * Stores the details to edit a person.
@@ -21,7 +21,7 @@ public class EditPersonDescriptor {
     private Phone phone;
     private Address address;
     private Note note;
-    private Set<Tag> riskTags; // Senior only
+    private Tag riskTag; // Senior only
     private Caregiver caregiver; // actual Caregiver object, set in EditCommand
     private Integer caregiverId; // temporary ID parsed from input
     private Boolean pinned;
@@ -34,7 +34,7 @@ public class EditPersonDescriptor {
                 || phone != null
                 || address != null
                 || note != null
-                || riskTags != null
+                || riskTag != null
                 || caregiver != null
                 || caregiverId != null
                 || pinned != null;
@@ -72,12 +72,12 @@ public class EditPersonDescriptor {
         this.note = note;
     }
 
-    public Optional<Set<Tag>> getRiskTags() {
-        return Optional.ofNullable(riskTags);
+    public Optional<Tag> getRiskTags() {
+        return Optional.ofNullable(riskTag);
     }
 
-    public void setRiskTags(Set<Tag> riskTags) {
-        this.riskTags = riskTags;
+    public void setRiskTags(Tag riskTag) {
+        this.riskTag = riskTag;
     }
 
     public Optional<Caregiver> getCaregiver() {
