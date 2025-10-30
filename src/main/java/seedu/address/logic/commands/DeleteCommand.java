@@ -20,7 +20,8 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the caregiver/senior identified by the index number used in the displayed caregiver/senior list.\n"
+            + ": Deletes the caregiver/senior identified by the index number used"
+            + " in the displayed caregiver/senior list.\n"
             + "Parameters: s/INDEX or c/INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " c/1";
 
