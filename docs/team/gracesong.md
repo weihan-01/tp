@@ -1,7 +1,8 @@
 ---
   layout: default.md
-    title: "Grace's Project Portfolio Page"
+  title: "Grace's Project Portfolio Page"
 ---
+
 
 ### Project: Neighbourly
 
