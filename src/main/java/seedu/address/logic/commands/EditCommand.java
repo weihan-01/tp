@@ -37,7 +37,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
-    private static final String MESSAGE_DUPLICATE_PERSON = "This phone number "
+    public static final String MESSAGE_DUPLICATE_PERSON = "This phone number "
             + "is already used by another person. Please amend your entry.";
     private static final Logger log = LogsCenter.getLogger(EditCommand.class);
 
