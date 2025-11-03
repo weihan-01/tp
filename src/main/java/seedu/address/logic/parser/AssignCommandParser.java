@@ -13,8 +13,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class AssignCommandParser implements Parser<AssignCommand> {
 
-    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index cannot be empty.";
-    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index cannot be empty.";
+    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index must be single-value, numeric and must not be empty.";
+    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index must be single-value, numeric and must not be empty.";
 
     /**
      * Parses the given {@code String} of arguments in the context of the AssignCommand
