@@ -56,14 +56,17 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add-cgr n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `add-cgr n/NAME`, `NAME` is a parameter which can be used as `add-cgr n/John Doe`.
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [a/ADDRESS]` can be used as `n/John Doe a/Blk 620 Punggol Field Walk #08-23` or as `n/John Doe`.
 
-[//]: # (* Items with `…`​ after them can be used multiple times including zero times.<br>)
-
-[//]: # (  e.g. `[t/TAG]…​` can be used as ` ` &#40;i.e. 0 times&#41;, `t/friend`, `t/friend t/family` etc.)
+* **Character restrictions:** The slash `/` is **reserved** for prefixes (e.g., `n/`, `p/`, `a/`, `nt/`) and must **not** appear inside any field value.  
+  Examples (not allowed → use instead):
+    * `nt/Take 1/2 tablet` → `nt/Take ½ tablet` or `nt/Take 1-2 tablets`
+    * `a/Blk 123/125 ...` → `a/Blk 123–125 ...` or `a/Blk 123, 125 ...`
+* **Name formatting:** Names must **not** contain a period (`.`).  
+  Example: use `John Tan Jr` instead of `John Tan Jr.`
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -90,6 +93,14 @@ Creates a new senior record in the system. In order to ensure seniors receive th
 
 Format: `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]`
 
+<box type="warning" seamless>
+
+**Input constraints**
+* Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
+* Names must **not** contain `.` (use `Jr` instead of `Jr.`).
+
+</box>
+
 <box type="tip" seamless>
 
 
@@ -106,6 +117,14 @@ Examples:
 Creates a new caregiver record in the system. Each caregiver needs to maintain a phone number so caregiving organisations can reach out to ensure the senior they are assigned to has been contacted.
 
 Format: `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]`
+
+<box type="warning" seamless>
+
+**Input constraints**
+* Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
+* Names must **not** contain `.` (use `Jr` instead of `Jr.`).
+
+</box>
 
 Examples:
 * `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`
@@ -219,7 +238,7 @@ Deletes the specified senior/caregiver from the address book.
 
 [Warning] Deleting a person will permanently remove their contact from the system. 
 
-Format: `delete c/INDEX or s/INDEX`
+Format: `delete c/CAREGOVER_INDEX or s/SENIOR_INDEX`
 
 * Deletes the senior/caregiver at the specified `INDEX`.
 * The index refers to the index number shown in the displayed senior/caregiver list.
@@ -264,6 +283,14 @@ Edits information of a person
 Format: `edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
 `edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...
 `
+
+<box type="warning" seamless>
+
+**Input constraints**
+* Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
+* Names must **not** contain `.` (use `Jr` instead of `Jr.`).
+
+</box>
 
 * Edits the senior/caregiver based on the specified seniorId or caregiverId.
 * The seniorId/caregiverId refers to the id number shown in the displayed senior/caregiver list.
