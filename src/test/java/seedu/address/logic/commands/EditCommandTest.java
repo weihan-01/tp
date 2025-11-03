@@ -46,7 +46,9 @@ public class EditCommandTest {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedSenior).build();
         EditCommand editCommand = new EditCommand(ID_ONE_PERSON, descriptor, true);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, "Senior", Messages.formatSenior(editedSenior));
+        String expectedMessage = String.format(
+                EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                "Senior", Messages.formatSenior(editedSenior));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setSenior(model.getFilteredSeniorList().get(0), editedSenior);
@@ -68,9 +70,11 @@ public class EditCommandTest {
                 .withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB)
                 .build();
-        EditCommand editCommand = new EditCommand(ID_ONE_PERSON, descriptor, false);
+        EditCommand editCommand = new EditCommand(
+                ID_ONE_PERSON, descriptor, false);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.formatCaregiver(editedCaregiver));
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                "Caregiver", Messages.formatCaregiver(editedCaregiver));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setCaregiver(lastCaregiver, editedCaregiver);
@@ -80,10 +84,12 @@ public class EditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_failure() {
-        EditCommand editCommand = new EditCommand(ID_ONE_PERSON, new EditPersonDescriptor(), false);
+        EditCommand editCommand = new EditCommand(
+                ID_ONE_PERSON, new EditPersonDescriptor(), false);
         Caregiver editedCaregiver = model.getCaregiverWithId(ID_ONE_PERSON);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.formatCaregiver(editedCaregiver));
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                "Caregiver", Messages.formatCaregiver(editedCaregiver));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
 

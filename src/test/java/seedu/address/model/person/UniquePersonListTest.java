@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.testutil.CaregiverBuilder;
 import seedu.address.testutil.SeniorBuilder;
 
 public class UniquePersonListTest {
@@ -166,7 +165,7 @@ public class UniquePersonListTest {
     @Test
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, ()
-            -> uniqueSeniorList.asUnmodifiableObservableList().remove(0));
+                -> uniqueSeniorList.asUnmodifiableObservableList().remove(0));
     }
 
     @Test

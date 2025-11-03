@@ -29,27 +29,26 @@ public class DeleteCommandTest {
 
     private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
-/*    @Test
+    @Test
     public void execute_validIndexUnfilteredList_success() {
-        Person personToDelete = model.getFilteredPersonList().get(ID_ONE_PERSON.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(ID_ONE_PERSON);
-
+        Caregiver caregiverToDelete = model.getCaregiverWithId(ID_ONE_PERSON);
+        DeleteCommand deleteCommand = new DeleteCommand(null, ID_ONE_PERSON);
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
-                Messages.format(personToDelete));
+                Messages.formatCaregiver(caregiverToDelete));
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
+        expectedModel.deleteCaregiver(caregiverToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
-    }*/
+    }
 
-    /*    @Test
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+        Integer outOfBoundIndex = model.getAllSeniorList().size() + 1;
+        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex, null);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-    }*/
+        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_SENIOR_INDEX);
+    }
 
     @Test
     public void execute_validSeniorIndex_success() {
@@ -159,7 +158,9 @@ public class DeleteCommandTest {
         Integer seniorTargetIndex = ID_ONE_PERSON;
         Integer caregiverTargetIndex = null;
         DeleteCommand deleteCommand = new DeleteCommand(seniorTargetIndex, caregiverTargetIndex);
-        String expected = DeleteCommand.class.getCanonicalName() + "{seniorIndex=" + seniorTargetIndex + ", caregiverIndex=" + caregiverTargetIndex + "}";
+        String expected = DeleteCommand.class.getCanonicalName()
+                + "{seniorIndex=" + seniorTargetIndex
+                + ", caregiverIndex=" + caregiverTargetIndex + "}";
         assertEquals(expected, deleteCommand.toString());
     }
 

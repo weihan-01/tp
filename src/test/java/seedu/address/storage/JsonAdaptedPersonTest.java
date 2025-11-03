@@ -76,7 +76,9 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_invalidRiskTagForSenior_throwsIllegalValueException() {
         JsonAdaptedSenior senior =
-                new JsonAdaptedSenior(VALID_NAME, VALID_PHONE, VALID_ADDRESS, VALID_NOTE, INVALID_RISK, VALID_ID, VALID_ID, VALID_PIN);
+                new JsonAdaptedSenior(
+                        VALID_NAME, VALID_PHONE, VALID_ADDRESS,
+                        VALID_NOTE, INVALID_RISK, VALID_ID, VALID_ID, VALID_PIN);
         assertThrows(IllegalValueException.class, senior::toModelType);
     }
 

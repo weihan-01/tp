@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.ID_ONE_PERSON;
 
@@ -15,6 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
@@ -24,6 +27,10 @@ import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.PersonHasAnyTagPredicate;
+import seedu.address.model.person.Senior;
+import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.SeniorBuilder;
 
 public class AddressBookParserTest {
 
@@ -38,18 +45,18 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " s/" + ID_ONE_PERSON);
+                DeleteCommand.COMMAND_WORD + " " + PREFIX_SENIOR + ID_ONE_PERSON);
         assertEquals(new DeleteCommand(ID_ONE_PERSON, null), command);
     }
 
-//    @Test
-//    public void parseCommand_edit() throws Exception {
-//        Person person = new SeniorBuilder().build();
-//        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-//        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-//                + ID_ONE_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
-//        assertEquals(new EditCommand(ID_ONE_PERSON, descriptor), command);
-//    }
+    @Test
+    public void parseCommand_edit() throws Exception {
+        Senior senior = new SeniorBuilder().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(senior).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + PREFIX_SENIOR + ID_ONE_PERSON + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+        assertEquals(new EditCommand(ID_ONE_PERSON, descriptor, true), command);
+    }
 
     @Test
     public void parseCommand_exit() throws Exception {
@@ -105,7 +112,7 @@ public class AddressBookParserTest {
         assertEquals(expected, command);
     }
 
-
+    @Test
     public void parseCommand_unassign_returnsUnassignCommand() throws Exception {
         AddressBookParser parser = new AddressBookParser();
         assertEquals(UnassignCommand.class,

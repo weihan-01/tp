@@ -26,6 +26,9 @@ public class EditPersonDescriptor {
     private Integer caregiverId; // temporary ID parsed from input
     private Boolean pinned;
 
+    /**
+     * Stores the descriptions to edit of the Person
+     */
     public EditPersonDescriptor() {
         this.name = null;
         this.phone = null;
@@ -37,6 +40,11 @@ public class EditPersonDescriptor {
         this.pinned = null;
     }
 
+    /**
+     * Uses an existing descriptor to store the descriptions to edit
+     *
+     * @param descriptor Existing descriptor with descriptions to edit
+     */
     public EditPersonDescriptor(EditPersonDescriptor descriptor) {
         this.name = descriptor.name;
         this.phone = descriptor.phone;
@@ -128,9 +136,18 @@ public class EditPersonDescriptor {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         EditPersonDescriptor that = (EditPersonDescriptor) o;
-        return Objects.equals(name, that.name) && Objects.equals(phone, that.phone) && Objects.equals(address, that.address) && Objects.equals(note, that.note) && Objects.equals(riskTag, that.riskTag) && Objects.equals(caregiver, that.caregiver) && Objects.equals(caregiverId, that.caregiverId) && Objects.equals(pinned, that.pinned);
+        return Objects.equals(name, that.name)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(address, that.address)
+                && Objects.equals(note, that.note)
+                && Objects.equals(riskTag, that.riskTag)
+                && Objects.equals(caregiver, that.caregiver)
+                && Objects.equals(caregiverId, that.caregiverId)
+                && Objects.equals(pinned, that.pinned);
     }
 
     @Override

@@ -65,7 +65,7 @@ public class UnassignCommandTest {
     }
 
     @Test
-    public void execute_unassign_onFilteredLists_success() throws Exception {
+    public void execute_unassignOnFilteredLists_success() throws Exception {
         Optional<Pair<Senior, Caregiver>> maybePair = pickCurrentlyAssignedPair(model);
         if (maybePair.isEmpty()) {
             return;
@@ -208,7 +208,10 @@ public class UnassignCommandTest {
     }
 
     // Helper functions
-    /** Find any Senior who currently has a caregiver (already assigned). */
+
+    /**
+     * Find any Senior who currently has a caregiver (already assigned).
+     */
     private Optional<Senior> pickSeniorWithCaregiver(Model m) {
         for (Senior s : m.getFilteredSeniorList()) {
             if (s.hasCaregiver()) {
@@ -218,19 +221,30 @@ public class UnassignCommandTest {
         return Optional.empty();
     }
 
-    /** Return any caregiver (first) or empty. */
+    /**
+     * Return any caregiver (first) or empty.
+     */
     private Optional<Caregiver> pickAnyCaregiver(Model m) {
         List<Caregiver> caregivers = m.getFilteredCaregiverList();
         return caregivers.isEmpty() ? Optional.empty() : Optional.of(caregivers.get(0));
     }
 
-    /** A tiny immutable pair container for local use. */
+    /**
+     * A tiny immutable pair container for local use.
+     */
     private static final class Pair<A, B> {
-        final A first; final B second;
-        Pair(A a, B b) { this.first = a; this.second = b; }
+        final A first;
+        final B second;
+
+        Pair(A a, B b) {
+            this.first = a;
+            this.second = b;
+        }
     }
 
-    /** Returns a pair (Senior-with-caregiver, that caregiver) if present. */
+    /**
+     * Returns a pair (Senior-with-caregiver, that caregiver) if present.
+     */
     private Optional<Pair<Senior, Caregiver>> pickCurrentlyAssignedPair(Model m) {
         for (Senior s : m.getFilteredSeniorList()) {
             if (s.hasCaregiver()) {

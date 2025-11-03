@@ -3,9 +3,6 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 
 public class ElderlyTest {
@@ -40,7 +37,7 @@ public class ElderlyTest {
                 new Address("No Address"),
                 null,
                 new Note("No note"),
-                null,1,
+                null, 1,
                 false
         ));
     }

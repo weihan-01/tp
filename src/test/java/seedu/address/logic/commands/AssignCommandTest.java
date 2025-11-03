@@ -150,7 +150,7 @@ public class AssignCommandTest {
     }
 
     @Test
-    public void execute_invalidSeniorId_filteredList_throwsCommandException() {
+    public void execute_invalidSeniorIdFromFilteredList_throwsCommandException() {
         // Narrow lists so we prove id-based lookup, not index-based
         if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
             return;
@@ -171,7 +171,7 @@ public class AssignCommandTest {
     }
 
     @Test
-    public void execute_invalidCaregiverId_filteredList_throwsCommandException() {
+    public void execute_invalidCaregiverIdFromFilteredList_throwsCommandException() {
         if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
             return;
         }
@@ -219,7 +219,9 @@ public class AssignCommandTest {
 
     // Helper Function
 
-    /** Returns a Senior preferring one without a caregiver, else first present. */
+    /**
+     * Returns a Senior preferring one without a caregiver, else first present.
+     */
     private Optional<Senior> pickSeniorPreferNoCaregiver(Model m) {
         List<Senior> seniors = m.getFilteredSeniorList();
         for (Senior s : seniors) {
@@ -230,7 +232,9 @@ public class AssignCommandTest {
         return seniors.isEmpty() ? Optional.empty() : Optional.of(seniors.get(0));
     }
 
-    /** Returns any available Caregiver (first). */
+    /**
+     * Returns any available Caregiver (first).
+     */
     private Optional<Caregiver> pickAnyCaregiver(Model m) {
         List<Caregiver> caregivers = m.getFilteredCaregiverList();
         return caregivers.isEmpty() ? Optional.empty() : Optional.of(caregivers.get(0));
