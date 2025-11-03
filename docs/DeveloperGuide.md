@@ -145,7 +145,7 @@ How the parsing works:
 **API** : [
 `Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="800" />
 
 
 The `Model` component,
@@ -361,45 +361,45 @@ community.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​            | I want to …​                                         | So that I can…​                                             |
-|----------|--------------------|------------------------------------------------------|-------------------------------------------------------------|
-| `* * *`  | new user           | view the user guide easily                           | learn more about the product as and when I need             |
-| `* * *`  | busy user          | search for a senior by name                          | instantly retrieve their details during field visits        |
-| `* * *`  | time-pressed user  | flag urgent seniors                                  | immediately identify high-priority cases during my work     |
-| `* * *`  | messy user         | tag seniors with flexible labels                     | find them later even if my notes are scattered              |
-| `* * *`  | long-time user     | see elderly who are not assigned any caregiver       | immediately identify high-priority cases during my work     |
-| `* * *`  | messy user         | tag caregivers with flexible labels                  | find them later even if my notes are scattered              |
-| `* * *`  | new user           | add a new senior with minimal fields                 |                                                             |
-| `* * *`  | user               | delete a senior                                      | remove entries that I no longer need                        |
-| `* *`    | new user           | see sample data when I first open the app            | quickly understand how the system looks when populated      |
-| `* *`    | long-time user     | archive seniors who no longer need support           | keep my records tidy without losing history                 |
-| `* *`    | sharing user       | generate a PDF report of all or specific seniors     | print / share information with others                       |
-| `* *`    | messy user         | view recently modified seniors                       | quickly return to what I was last working on                |
-| `* *`    | long-time user     | update caregivers who may no longer be in the org    | flag out elderly who may not have a caregiver currently     |
-| `* *`    | curious user       | see insights of number of elderly, caregivers, vols  | share these statistics for recruitment                      |
-| `* *`    | meticulous user    | perform batch delete of seniors or caregivers by tag | keep my records tidy                                        |
-| `* *`    | meticulous user    | add comprehensive senior particulars                 | remember more details about these elderly                   |
-| `* *`    | returning user     | edit a senior’s details                              | keep records up to date                                     |
-| `* *`    | outreach associate | mark a senior as “visited today”                     | log my field work                                           |
-| `* *`    | long-time user     | pin important seniors                                | always find them at the top of the list                     |
-| `* *`    | long-time user     | undo the last action                                 | quickly recover from mistakes                               |
-| `* *`    | long-time user     | redo an undone action                                | restore my intended changes                                 |
-| `* *`    | long-time user     | generate a summary report of seniors by tag          | have a quick overview of all the information                |
-| `* *`    | long-time user     | mark a caregiver as “inactive”                       | know they are no longer available                           |
-| `* *`    | long-time user     | customize tag colors                                 | visually distinguish categories to my preference            |
-| `* *`    | long-time user     | be warned when adding a duplicate senior             | don’t accidentally create two records                       |
-| `* *`    | long-time user     | import seniors from a CSV file                       | migrate data quickly                                        |
-| `* *`    | meticulous user    | write some notes on each senior                      | key in certain details that the tags do not consider        |
-| `* *`    | long-time user     | sort the seniors by various tags or attributes       | arrange my address book in my personal preferred state      |
-| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                   |
-| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                   |
-| `*`      | poor eyesight user | enlarge font on GUI                                  | see the letters and words properly                          |
-| `*`      | quirky user        | change font on GUI                                   | change the font to my liking                                |
-| `*`      | quirky user        | hidden easter eggs                                   | find weird things put in the app by the dev                 |
-| `*`      | blind user         | text to speech                                       | talk to command instead of typing                           |
-| `*`      | new user           | light mode                                           | see more clearly the text                                   |
-| `*`      | forgetful user     | set reminders for follow-ups or scheduled visits     | no senior is unintentionally overlooked in our care efforts |                    |                                                      |                                                         |
-| `* `     | busy user          | view volunteer availability & match with seniors     | optimize resources and reduce scheduling conflicts          |                    |                                                      |                                                             |
+| Priority | As a …​            | I want to …​                                         | So that I can…​                                                    |
+|----------|--------------------|------------------------------------------------------|--------------------------------------------------------------------|
+| `* * *`  | new user           | view the user guide easily                           | learn more about the product as and when I need                    |
+| `* * *`  | busy user          | search for a senior by name                          | instantly retrieve their details during field visits               |
+| `* * *`  | time-pressed user  | flag urgent seniors                                  | immediately identify high-priority cases during my work            |
+| `* * *`  | messy user         | tag seniors with flexible labels                     | find them later even if my notes are scattered                     |
+| `* * *`  | long-time user     | see elderly who are not assigned any caregiver       | immediately identify high-priority cases during my work            |
+| `* * *`  | messy user         | tag caregivers with flexible labels                  | find them later even if my notes are scattered                     |
+| `* * *`  | new user           | add a new senior with minimal fields                 |                                                                    |
+| `* * *`  | user               | delete a senior                                      | remove entries that I no longer need                               |
+| `* *`    | new user           | see sample data when I first open the app            | quickly understand how the system looks when populated             |
+| `* *`    | long-time user     | archive seniors who no longer need support           | keep my records tidy without losing history                        |
+| `* *`    | sharing user       | generate a PDF report of all or specific seniors     | print / share information with others                              |
+| `* *`    | messy user         | view recently modified seniors                       | quickly return to what I was last working on                       |
+| `* *`    | long-time user     | update caregivers who may no longer be in the org    | flag out elderly who may not have a caregiver currently            |
+| `* *`    | curious user       | see insights of number of elderly, caregivers, vols  | share these statistics for recruitment                             |
+| `* *`    | meticulous user    | perform batch delete of seniors or caregivers by tag | keep my records tidy                                               |
+| `* *`    | meticulous user    | add comprehensive senior particulars                 | remember more details about these elderly                          |
+| `* *`    | returning user     | edit a senior’s details                              | keep records up to date                                            |
+| `* *`    | outreach associate | mark a senior as “visited today”                     | log my field work                                                  |
+| `* *`    | long-time user     | pin important seniors                                | always find them at the top of the list                            |
+| `* *`    | long-time user     | undo the last action                                 | quickly recover from mistakes                                      |
+| `* *`    | long-time user     | redo an undone action                                | restore my intended changes                                        |
+| `* *`    | long-time user     | generate a summary report of seniors by tag          | have a quick overview of all the information                       |
+| `* *`    | long-time user     | mark a caregiver as “inactive”                       | know they are no longer available                                  |
+| `* *`    | long-time user     | customize tag colors                                 | visually distinguish categories to my preference                   |
+| `* *`    | long-time user     | be warned when adding a duplicate senior             | don’t accidentally create two records                              |
+| `* *`    | long-time user     | import seniors from a CSV file                       | migrate data quickly                                               |
+| `* *`    | meticulous user    | write some notes on each senior                      | key in certain details that the tags do not consider               |
+| `* *`    | long-time user     | sort the seniors by various tags or attributes       | arrange my address book in my personal preferred state             |
+| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                          |
+| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                          |
+| `*`      | poor eyesight user | enlarge font on GUI                                  | see the letters and words properly                                 |
+| `*`      | quirky user        | change font on GUI                                   | change the font to my liking                                       |
+| `*`      | quirky user        | hidden easter eggs                                   | find weird things put in the app by the dev                        |
+| `*`      | blind user         | text to speech                                       | talk to command instead of typing                                  |
+| `*`      | new user           | light mode                                           | see more clearly the text                                          |
+| `*`      | forgetful user     | set reminders for follow-ups or scheduled visits     | ensure no senior is unintentionally overlooked in our care efforts |                    |                                                      |                                                         |
+| `* `     | busy user          | view volunteer availability & match with seniors     | optimize resources and reduce scheduling conflicts                 |                    |                                                      |                                                             |
 
 *{More to be added}*
 
@@ -764,6 +764,7 @@ Example Commands
    for, resolutions 1280x720 and higher, and for screen scales 150%.
 10. Everything should be packaged into a JAR file.
 11. The final product should not exceed 100MB and documents should not exceed 15MB/file.
+12. The total number of caregivers and seniors historically and presently tracked by the system should not exceed 2^31 - 1.
 
 ### Glossary
 
@@ -817,30 +818,179 @@ testers are expected to do more *exploratory* testing.
     1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a senior
+
+1. Adding a minimal senior
+    1. Prerequisites: None.
+    2. Test case: `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45`<br>
+       Expected: New senior appears at the end of the Senior list with risk “High Risk”. Status shows “New senior added”. Data is saved to addressbook.json.
+
+2. Adding with notes and caregiver id
+    1. Prerequisites: At least one caregiver exists with ID shown in the Caregiver list (e.g., `C000001`).
+    2. Test case: `add-snr n/Tan Wei Ming t/LR p/94567123 a/Blk 832 Punggol East #06-77 nt/Has dementia c/1`<br>
+       Expected: Senior added; assigned caregiver chip shows the caregiver’s name. Data saved.
+
+3. Invalid/edge cases
+    - `add-snr n/ t/HR p/91234567 a/Somewhere` → Expected: “Names should only contain alphanumeric characters and spaces, and it should not be blank”
+    - `add-snr n/John t/hello p/91234567 a/Somewhere` → Expected: “Invalid risk tag...”
+    - `add-snr n/John t/HR p/12 a/Somewhere` → Expected: “Phone numbers should only contain numbers, and it should be between 3-15 digits long.”
+    - `add-snr n/John t/HR p/91234567 a/` → Expected: “Senior address cannot be empty.”
+    - `add-snr n/John t/HR p/91234567 a/Somewhere c/999` (non-existent caregiver) → Expected: “No caregiver exists with ID C000999”
+
+### Adding a caregiver
+
+1. Adding a minimal caregiver
+    1. Prerequisites: None.
+    2. Test case: `add-cgr n/Mei Ling p/98765432`<br>
+       Expected: New caregiver appears in the Caregiver list. Address defaults (if your app sets a default). Data saved.
+
+2. Adding with optional fields
+    1. Prerequisites: None.
+    2. Test case: `add-cgr n/Aaron Bings p/91224567 a/Blk 450 Clementi West Street 2 #10-10 nt/Has experience with dementia caregiving`<br>
+       Expected: Caregiver created with address and notes. Data saved.
+
+3. Invalid/edge cases
+    - `add-cgr n/ p/98765432` → Expected: “Names should only contain alphanumeric characters and spaces, and it should not be blank”
+    - `add-snr n/John t/HR p/12 a/Somewhere` → Expected: “Phone numbers should only contain numbers, and it should be between 3-15 digits long.”
+
+### Assign caregiver to senior
+
+1. Happy path
+    1. Prerequisites: Senior with index `S000001` and Caregiver with index `C000001` exist; both unassigned.
+    2. Test case: `assign s/1 c/1`<br>
+       Expected: Senior's card shows a caregiver chip with the caregiver’s name. Caregiver’s card lists the senior. Status shows success. Data saved.
+
+2. Already assigned
+   1. Test case: Run the same `assign s/1 c/1` command again.<br>
+       Expected: Message indicating already assigned: "This caregiver is already assigned to this senior"
+
+3. Invalid/edge cases
+    - `assign s/999 c/1` (out of range senior) → Expected: “No such senior index exists.”
+    - `assign s/1 c/999` (out of range caregiver) → Expected: “No such caregiver index exists.”
+    - `assign s/ c/1` → Expected: “Senior index cannot be empty.”
+    - `assign s/1 c/` → Expected: “Caregiver index cannot be empty.”
+    - `assign` → Expected: “Invalid command format!”
+
+### Unassign caregiver from senior
+
+1. Happy path
+    1. Prerequisites: Senior with index `S000001` currently assigned to Caregiver with index `C000001`.
+    2. Test case: `unassign s/1 c/1`<br>
+       Expected: Caregiver chip disappears from Senior; caregiver card’s assigned list updates. Status shows success. Data saved.
+
+2. Not currently assigned
+    1. Test case: Run the same `unassign s/1 c/1` command again.<br>
+       Expected: Message indicating not currently assigned: "This caregiver is not currently assigned to this senior"
+
+3. Invalid/edge cases
+    - `unassign s/999 c/1` (out of range senior) → Expected: "No such senior index exists."
+    - `unassign s/1 c/999` (out of range caregiver) → Expected: “No such caregiver index exists.”
+    - `unassign s/ c/1` → Expected: “Senior index cannot be empty.”
+    - `unassign s/1 c/` → Expected: “Caregiver index cannot be empty.”
+    - `unassign` → Expected: “Invalid command format!”
+
+### Pin contact
+
+1. Pin a senior
+    1. Prerequisites: Senior with index `S000001` currently exists.
+    2. Test case: `pin s/1`<br>
+       Expected:
+       - Senior shows a pin icon at top-right; card gets pinned styling.
+       - Senior appears in the pinned header and disappears from the main list.
+       - If another senior was pinned, it’s unpinned automatically.
+       - Data persists (restart app → still pinned).
+
+2. Pin a caregiver
+    1. Prerequisites: Caregiver with index `C000001` currently exists.
+    2. Test case: `pin c/1`<br>
+       Expected:
+        - Caregiver shows a pin icon at top-right; card gets pinned styling.
+        - Caregiver appears in the pinned header and disappears from the main list.
+        - If another caregiver was pinned, it’s unpinned automatically.
+        - Data persists (restart app → still pinned).
+
+3. Invalid/edge cases
+    - `pin s/999` → Expected: “No such senior index exists.”
+    - `pin c/999` → Expected: “No such caregiver index exists.”
+    - Pinning an already pinned person → Expected: “<Name> is already pinned.”
+
+### Unpin contact
+
+1. Unpin all
+    1. Prerequisites: Have a pinned senior and/or caregiver.
+    2. Test case: `unpin`<br>
+       Expected: All pinned contacts become unpinned. Pinned header disappears; cards lose pinned styling and icon. Data saved.
+
+2. Scoped unpin
+    1. Prerequisites: Have a pinned senior and/or caregiver.
+    2. Test cases:
+        - `unpin s` / `unpin senior` → Unpins only the senior if any is pinned.
+        - `unpin c` / `unpin caregiver` → Unpins only the caregiver if any is pinned.<br>
+       Expected: Only the requested scope changes.
+
+3. Nothing pinned
+    1. Prerequisites: No one is pinned.
+    2. Test cases: Run unpin commands when nothing is pinned.<br>
+       Expected:
+        - `unpin` → “No one is pinned.” 
+        - `unpin s` → “No pinned senior.” 
+        - `unpin c` → “No pinned caregiver.”
+
+### Filter seniors by risk tag
+
+1. Happy path
+    1. Test case: `filter t/hr`<br>
+       Expected: Senior list shows only seniors tagged “High Risk”. Status bar shows the number listed.
+
+2. Other tags and case
+    1. Test cases: `filter t/MR`, `filter t/LR`<br>
+       Expected: Correct subsets shown.
+
+3. Invalid tag
+    1. Test case: `filter t/hello`<br>
+       Expected: Error message indicating allowed tags are lr, mr, hr.
+
+4. Clearing filter
+    1. Test case: `list`<br>
+       Expected: Full Senior list restored.
+
+### Editing a person
+
+1. Edit a senior
+    1. Prerequisites: A senior `S000001` exists.
+    2. Test case: `edit s/1 n/John Tan p/91234567`<br>
+       Expected: Name and phone updated on the card and in storage.
+
+2. Edit a caregiver
+    1. Prerequisites: A caregiver `C000001` exists.
+    2. Test case: `edit c/2 n/Jane Lim`<br>
+       Expected: Name updated.
+
+3. Invalid/edge cases
+    - `edit s/999 n/X` (missing/invalid ID) → Expected: "The person index provided is invalid."
+    - Duplicate detection → Expected: “This person already exists in the address book.”
 
 ### Deleting a person
 
-1. Deleting a person while all persons are being shown
+1. Deleting a senior by ID
 
-    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    1. Prerequisites: Multiple seniors exist.
 
-    1. Test case: `delete 1`<br>
-       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
-       Timestamp in the status bar is updated.
+    2. Test case: `delete s/1`<br>
+       Expected: The senior with ID S000001 is deleted; status shows details.
 
-    1. Test case: `delete 0`<br>
-       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+2. Deleting a caregiver by ID
 
-    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-       Expected: Similar to previous.
+    1. Prerequisites: Multiple caregivers exist.
 
-1. _{ more test cases …​ }_
+    2. Test case: `delete c/1`<br>
+       Expected: The caregiver with ID C000001 is deleted; status shows details.
+3. Invalid/edge cases
+    - `delete s/0` → Expected: “No such senior index exists.”
+    - `delete`, `delete 1` → Expected: “Invalid command format!”
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
     1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_

@@ -20,7 +20,7 @@ Class Address
 Class Note
 
 Class Senior
-Class RiskTags
+Class RiskTag
 
 Class Caregiver
 
@@ -61,7 +61,7 @@ Address -[hidden]right-> Note
 
 
 Senior -up-|> Person
-Senior *--> "1" RiskTags
+Senior *--> "1" RiskTag
     Senior "n" -right-> "1" Caregiver
 
 Caregiver -up-|> Person
