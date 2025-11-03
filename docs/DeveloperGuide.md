@@ -511,6 +511,8 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
    Use case ends.
 
+**Extensions**
+
 * 2a. Invalid phone
 
     * 2a1. Neighbourly shows an error message. - “Phone number must be 8 digits.”
