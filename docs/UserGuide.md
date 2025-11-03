@@ -148,6 +148,15 @@ Format: `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX`
 Examples:
 * `unassign s/3 c/1`
 
+<box type="info" seamless>
+
+**Why require both `s/` and `c/` for `unassign`?**  
+Even though each Senior can have **at most one** Caregiver, we keep the explicit
+`unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` to (1) prevent accidental removals
+by acting as a deliberate confirmation step, and (2) stay consistent with the `assign` command.
+
+</box>
+
 ### Listing all persons : `list`
 
 Shows a list of all persons in the address book.

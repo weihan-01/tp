@@ -1016,3 +1016,54 @@ testers are expected to do more *exploratory* testing.
 1. Dealing with missing/corrupted data files
 
     1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Effort**
+
+### Scope and difficulty
+Neighbourly extends AB3 from a single-entity address book to a two-entity system with a cross-entity assignment (Caregiver↔Senior), pinning with a dedicated header row, and risk-aware chips. Supporting two lists that mutate independently (filtering, assigning, pinning, editing) required non-trivial UI state management and careful model invariants:
+- **Dual Unique Lists & Invariants**: We introduced UniquePersonList<Senior> and UniquePersonList<Caregiver> with dedicated index spaces and validation. Maintaining referential integrity (a Senior can have at most one Caregiver; caregivers can have zero or more seniors) added checks and error paths not present in AB3.
+- **Assignment Flow & UI Refresh**: The assign/unassign commands update both model and two UI panels. We added event listeners and minimal refresh semantics to keep rendering performant while avoiding stale chips.
+- **Pinning Design**: Pinning one entry per list while preserving selection/keyboard behavior required a separate pinned header ListView and a filtered main list, plus style classes and a top-right pin icon overlay (absolute-positioned within the card).
+- **Persistence Changes**: We extended JSON adapters (JsonAdaptedSenior/Caregiver) and guarded optional fields (e.g., Note) with stricter validators (e.g., non-blank address, forbidden /). These changes had to remain backward compatible with existing data files.
+
+### Key challenges
+- State synchronization across lists: Keeping pinned header, main list, and cross-entity chips consistent after assign/unassign/pin/unpin/edit demanded a clear event contract in Logic and careful UI refresh boundaries to avoid flicker and quadratic updates.
+- Error messaging specificity: General AB3 messages were insufficient once we introduced dual indices. We reviewed parser flows to surface prefix-specific errors without breaking existing tests.
+- Styling without FXML churn: The pin icon and pinned background had to be layered without exploding FXML complexity; we used a managed-false ImageView with binding and a single style class so the card’s selection blue remained visible.
+
+### Effort relative to AB3
+- While AB3 handles one entity list, we manage two concurrent lists with cross-links, effectively doubling the surface area for commands, parsers, messages, and tests.
+- Commands like assign/unassign/pin/unpin require coordinated updates across multiple UI components and persisted state, which AB3 does not cover.
+- Our validation and formatting (risk tags to human-readable chips; ID chips per entity) introduce additional domain logic and UI polish.
+
+### What took the most time
+
+- Parser clarity for dual-index commands (clear messages, correct prefix validation, guard against ambiguous inputs).
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+Team size: 5
+
+<box type="warning" seamless>
+
+Planned fixes to known limitations. Per module guidelines, items in this section are **immune from PE bug reporting for v1.6**.
+
+</box>
+
+1. **Broaden `filter` beyond risk tags to include Notes keywords**
+    -  **Current:** `filter t/hr|mr|lr` filters only by risk tag.
+    - **Plan:** Allow keyword filtering in the **Notes** field, e.g., `filter nt/diabetes`.  
+      Keep existing `t/` behavior unchanged. Matching is case-insensitive and finds substrings.
+    - **Why:** Lets users quickly find seniors by conditions or context written in notes.
+
+
+2. **Recycle deleted IDs so new entries fill the gaps**
+    - **Problem (today):** IDs only ever increase. If you delete `3` from `1,2,3,4`, the next added person becomes `5` (leaving a hole at `3`), and numbers grow forever.
+    - **Plan (simple):** Reuse freed IDs. When you delete an entry, we put its ID into a small “free list”. When you add the next entry, we pick the **smallest available** ID from that list. If the list is empty, we use the next number as usual.
+    - **What users see:** Nothing changes in commands or UI. You’ll just notice that after deleting `3`, the next added person can be `3` again.
+    - **Why:** Keeps IDs short and avoids hitting large numbers over time.
+    - **Notes:** We’ll keep separate free lists for Seniors and Caregivers and save them with the data so reuse works across restarts.
