@@ -25,6 +25,8 @@ public class Messages {
     public static final String MESSAGE_NO_SENIORS_PROMPT = "No seniors in AddressBook. Use add-snr to add a senior!";
     public static final String MESSAGE_NO_CAREGIVERS_PROMPT =
             "No caregivers in AddressBook. Use add-cgr command to add a caregiver!";
+    public static final String MESSAGE_EMPTY_ADDRESS =
+            "Address is required for seniors and cannot be blank.";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

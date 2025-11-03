@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_ADDRESS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CID;
@@ -48,8 +49,9 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
 
+        // Check for empty address
         if (address.toString().trim().isEmpty()) {
-            throw new ParseException("Address is required for seniors and cannot be blank.");
+            throw new ParseException(MESSAGE_EMPTY_ADDRESS);
         }
 
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));

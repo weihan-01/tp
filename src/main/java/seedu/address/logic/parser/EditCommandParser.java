@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_ADDRESS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
@@ -101,9 +102,12 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             String address = argMultimap.getValue(PREFIX_ADDRESS).get();
             var addr = ParserUtil.parseAddress(address);
+
+            // Check for empty address for seniors
             if (isSenior && addr.toString().trim().isEmpty()) {
-                throw new ParseException("Address is required for seniors and cannot be blank.");
+                throw new ParseException(MESSAGE_EMPTY_ADDRESS);
             }
+
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(address));
         }
 
