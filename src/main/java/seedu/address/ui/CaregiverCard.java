@@ -181,6 +181,7 @@ public class CaregiverCard extends UiPart<Region> {
 
             for (Senior s: assigned) {
                 String n = s.getName().toString();
+                if (n.length() > 15) n = n.substring(0, 15) + "...";
                 int idx = s.getId();
                 String label;
 

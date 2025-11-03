@@ -1,8 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
+import static seedu.address.logic.parser.CliSyntax.*;
 
 import java.util.stream.Stream;
 
@@ -14,8 +13,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class AssignCommandParser implements Parser<AssignCommand> {
 
-    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index cannot be empty.";
-    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index cannot be empty.";
+    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index must be single-value, numeric and must not be empty.";
+    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index must be single-value, numeric and must not be empty.";
 
     /**
      * Parses the given {@code String} of arguments in the context of the AssignCommand
@@ -40,6 +39,10 @@ public class AssignCommandParser implements Parser<AssignCommand> {
         if (argMultimap.getValue(PREFIX_CAREGIVER).get().trim().isEmpty()) {
             throw new ParseException(MESSAGE_MISSING_CAREGIVER_INDEX);
         }
+
+        // Check no duplicate prefixes
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_CAREGIVER, PREFIX_SENIOR);
 
         Integer seniorIndex;
         Integer caregiverIndex;

@@ -42,8 +42,8 @@ public class AddSeniorCommand extends Command {
             + PREFIX_CID + "1";
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
-    public static final String MESSAGE_DUPLICATE_SENIOR = "Person "
-            + "with the same name already exists. Please amend your entry.";
+    public static final String MESSAGE_DUPLICATE_SENIOR = "This "
+            + "phone number is already used by another person. Please amend your entry.";
     public static final String MESSAGE_NO_SUCH_CAREGIVER = "No caregiver exists with ID C%06d";
 
     private final Senior toAdd;
@@ -63,7 +63,11 @@ public class AddSeniorCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
+        /*if (model.hasPerson(toAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
+        }*/
+
+        if (model.hasPhone(toAdd.getPhone())) {
             throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
         }
 
@@ -82,6 +86,8 @@ public class AddSeniorCommand extends Command {
             toAddFinal = toAdd.withId(seniorId).withCaregiver(caregiver);
             model.addSenior(toAddFinal);
         }
+        model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAddFinal)));
     }
