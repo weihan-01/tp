@@ -294,8 +294,8 @@ Furthermore, certain edits can cause the Neighbourly to behave in unexpected way
 
 Edits information of a person
 
-Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
-`edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...
+Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]...` or
+`edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...
 `
 
 <box type="warning" seamless>
@@ -362,7 +362,7 @@ Examples:
 | **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                   |
 | **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                      |
 | **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                                  |
-| **Edit**               | `edit s/SENIOR_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]`<br> e.g., `edit c/2 n/Jane Lim`                          |
+| **Edit**               | `edit s/SENIOR_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]` or `edit c/CAREGIVER_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]`<br> e.g., `edit c/2 n/Jane Lim`                |
 | **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                    |
 | **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)                                                  |
 | **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                   |

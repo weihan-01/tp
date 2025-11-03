@@ -900,8 +900,8 @@ testers are expected to do more *exploratory* testing.
 3. Invalid/edge cases
     - `unassign s/999 c/1` (out of range senior) → Expected: "No such senior index exists."
     - `unassign s/1 c/999` (out of range caregiver) → Expected: “No such caregiver index exists.”
-    - `unassign s/ c/1` → Expected: “Senior index cannot be empty.”
-    - `unassign s/1 c/` → Expected: “Caregiver index cannot be empty.”
+    - `unassign s/ c/1` → Expected: “Senior index must be single-value, numeric and must not be empty.”
+    - `unassign s/1 c/` → Expected: “Caregiver index must be single-value, numeric and must not be empty.”
     - `unassign` → Expected: “Invalid command format!”
 
 ### Pin contact
