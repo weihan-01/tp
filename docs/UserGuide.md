@@ -91,7 +91,13 @@ Format: `help`
 
 ### Adding a senior: `add-snr`
 
-Creates a new senior record in the system. In order to ensure seniors receive the care they require, each senior needs to maintain a phone and address contact as well as a risk tag. Each senior can also have additional medical notes and a caregiver assigned to them.
+Creates a new senior record in the system. 
+In order to ensure seniors receive the care they require, 
+each senior needs to maintain a phone and address contact as well as a risk tag. 
+Each senior can also have additional medical notes and a caregiver assigned to them.
+A senior may only be registered in a single role (i.e. either as a senior or a caregiver, not both).
+Senior records are uniquely identified by the phone number field.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_INDEX]`
 
@@ -100,6 +106,7 @@ Format: `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_IND
 **Input constraints**
 * Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
 * Names must **not** contain `.` (use `Jr` instead of `Jr.`).
+* Each phone number must be unique - duplicates are not allowed.
 
 </box>
 
@@ -116,7 +123,12 @@ Examples:
 
 ### Adding a caregiver: `add-cgr`
 
-Creates a new caregiver record in the system. Each caregiver needs to maintain a phone number so caregiving organisations can reach out to ensure the senior they are assigned to has been contacted.
+Creates a new caregiver record in the system. 
+Each caregiver needs to maintain a phone number so caregiving organisations can 
+reach out to ensure the senior they are assigned to has been contacted.
+A caregiver may only be registered in a single role (i.e. either as a senior or a caregiver, not both). 
+Caregiver records are uniquely identified by the phone number field.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]`
 
@@ -125,7 +137,7 @@ Format: `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]`
 **Input constraints**
 * Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
 * Names must **not** contain `.` (use `Jr` instead of `Jr.`).
-* A caregiver cannot simultaneously hold a senior record; each individual must be registered in only one role.
+* Each phone number must be unique - duplicates are not allowed.
 
 </box>
 
@@ -136,6 +148,7 @@ Examples:
 ### Assigning a caregiver: `assign`
 
 Assign a caregiver to a senior from the system.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `assign s/SENIOR_INDEX c/CAREGIVER_INDEX`
 
@@ -145,6 +158,7 @@ Examples:
 ### Unassigning a caregiver: `unassign`
 
 Unassign a caregiver from a senior in the system.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX`
 
@@ -205,6 +219,7 @@ Examples:
 ### Pin a person by their index: `pin`
 
 Pins maximum one senior and/ or one caregiver at the top of the respective panel display.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX`
 
@@ -227,6 +242,7 @@ Examples:
 
 Unpin a senior, a caregiver or both.
 Changes will be reflected on the display panel.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: 
 `unpin [KEYWORD]` or `unpin`
@@ -247,6 +263,7 @@ Examples:
 ### Deleting a person : `delete`
 
 Deletes the specified senior/caregiver from the address book.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 [Warning] Deleting a person will permanently remove their contact from the system. 
 
@@ -292,7 +309,8 @@ Furthermore, certain edits can cause the Neighbourly to behave in unexpected way
 
 ### Editing a person :
 
-Edits information of a person
+Edits information of a person.
+Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
 Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]...` or
 `edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...
@@ -306,37 +324,13 @@ Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE].
 
 </box>
 
-* Edits the senior/caregiver based on the specified seniorId or caregiverId.
+* Edits the senior/caregiver based on the specified senior or caregiver index. 
 * The SENIOR_INDEX/CAREGIVER_INDEX refers to the index number shown in the displayed senior/caregiver list.
+* At least one of the optional fields must be provided.
 
 Examples: 
 * `edit s/1 n/John Tan p/91234567` Changes Senior with index SENIOR_INDEX 1 name to John Tan and phone to 91234567
 * `edit c/2 n/Jane Lim` Changes Caregiver with CAREGIVER_INDEX 2 name to Jane Lim
-
-[//]: # (Edits an existing person in the address book.)
-
-[//]: # ()
-[//]: # (Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`)
-
-[//]: # ()
-[//]: # (* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​)
-
-[//]: # (* At least one of the optional fields must be provided.)
-
-[//]: # (* Existing values will be updated to the input values.)
-
-[//]: # (* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.)
-
-[//]: # (* You can remove all the person’s tags by typing `t/` without)
-
-[//]: # (    specifying any tags after it.)
-
-[//]: # ()
-[//]: # (Examples:)
-
-[//]: # (*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.)
-
-[//]: # (*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -368,6 +362,6 @@ Examples:
 | **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                   |
 | **List**               | `list`                                                                                                                                                                                     |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                 |
-| **Delete**             | `delete s/SENIOR_INDEX` or `delete c/CAREGIVER_INDEX` or `delete s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `delete s/3` or `delete c/3` `delete s/3 c/3`                                |
+| **Delete**             | `delete s/SENIOR_INDEX` or `delete c/CAREGIVER_INDEX` or `delete s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `delete s/3` or `delete c/3` or `delete s/3 c/3`                             |
 | **Clear**              | `clear`                                                                                                                                                                                    |
 | **Help**               | `help`                                                                                                                                                                                     |
