@@ -361,45 +361,45 @@ community.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​            | I want to …​                                         | So that I can…​                                                    |
-|----------|--------------------|------------------------------------------------------|--------------------------------------------------------------------|
-| `* * *`  | new user           | view the user guide easily                           | learn more about the product as and when I need                    |
-| `* * *`  | busy user          | search for a senior by name                          | instantly retrieve their details during field visits               |
-| `* * *`  | time-pressed user  | flag urgent seniors                                  | immediately identify high-priority cases during my work            |
-| `* * *`  | messy user         | tag seniors with flexible labels                     | find them later even if my notes are scattered                     |
-| `* * *`  | long-time user     | see elderly who are not assigned any caregiver       | immediately identify high-priority cases during my work            |
-| `* * *`  | messy user         | tag caregivers with flexible labels                  | find them later even if my notes are scattered                     |
-| `* * *`  | new user           | add a new senior with minimal fields                 |                                                                    |
-| `* * *`  | user               | delete a senior                                      | remove entries that I no longer need                               |
-| `* *`    | new user           | see sample data when I first open the app            | quickly understand how the system looks when populated             |
-| `* *`    | long-time user     | archive seniors who no longer need support           | keep my records tidy without losing history                        |
-| `* *`    | sharing user       | generate a PDF report of all or specific seniors     | print / share information with others                              |
-| `* *`    | messy user         | view recently modified seniors                       | quickly return to what I was last working on                       |
-| `* *`    | long-time user     | update caregivers who may no longer be in the org    | flag out elderly who may not have a caregiver currently            |
-| `* *`    | curious user       | see insights of number of elderly, caregivers, vols  | share these statistics for recruitment                             |
-| `* *`    | meticulous user    | perform batch delete of seniors or caregivers by tag | keep my records tidy                                               |
-| `* *`    | meticulous user    | add comprehensive senior particulars                 | remember more details about these elderly                          |
-| `* *`    | returning user     | edit a senior’s details                              | keep records up to date                                            |
-| `* *`    | outreach associate | mark a senior as “visited today”                     | log my field work                                                  |
-| `* *`    | long-time user     | pin important seniors                                | always find them at the top of the list                            |
-| `* *`    | long-time user     | undo the last action                                 | quickly recover from mistakes                                      |
-| `* *`    | long-time user     | redo an undone action                                | restore my intended changes                                        |
-| `* *`    | long-time user     | generate a summary report of seniors by tag          | have a quick overview of all the information                       |
-| `* *`    | long-time user     | mark a caregiver as “inactive”                       | know they are no longer available                                  |
-| `* *`    | long-time user     | customize tag colors                                 | visually distinguish categories to my preference                   |
-| `* *`    | long-time user     | be warned when adding a duplicate senior             | don’t accidentally create two records                              |
-| `* *`    | long-time user     | import seniors from a CSV file                       | migrate data quickly                                               |
-| `* *`    | meticulous user    | write some notes on each senior                      | key in certain details that the tags do not consider               |
-| `* *`    | long-time user     | sort the seniors by various tags or attributes       | arrange my address book in my personal preferred state             |
-| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                          |
-| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                          |
-| `*`      | poor eyesight user | enlarge font on GUI                                  | see the letters and words properly                                 |
-| `*`      | quirky user        | change font on GUI                                   | change the font to my liking                                       |
-| `*`      | quirky user        | hidden easter eggs                                   | find weird things put in the app by the dev                        |
-| `*`      | blind user         | text to speech                                       | talk to command instead of typing                                  |
-| `*`      | new user           | light mode                                           | see more clearly the text                                          |
-| `*`      | forgetful user     | set reminders for follow-ups or scheduled visits     | ensure no senior is unintentionally overlooked in our care efforts |                    |                                                      |                                                         |
-| `* `     | busy user          | view volunteer availability & match with seniors     | optimize resources and reduce scheduling conflicts                 |                    |                                                      |                                                             |
+| Priority | As a …​            | I want to …​                                         | So that I can…​                                                     |
+|----------|--------------------|------------------------------------------------------|---------------------------------------------------------------------|
+| `* * *`  | new user           | view the user guide easily                           | learn more about the product as and when I need                     |
+| `* * *`  | busy user          | search for a senior by name                          | instantly retrieve their details during field visits                |
+| `* * *`  | time-pressed user  | flag urgent seniors                                  | immediately identify high-priority cases during my work             |
+| `* * *`  | new user           | add a new senior with minimal fields                 |                                                                     |
+| `* * *`  | user               | delete a senior                                      | remove entries that I no longer need                                |
+| `* *`    | messy user         | tag caregivers with flexible labels                  | find them later even if my notes are scattered                      |
+| `* *`    | messy user         | tag seniors with flexible labels                     | find them later even if my notes are scattered                      |
+| `* *`    | long-time user     | see elderly who are not assigned any caregiver       | immediately identify high-priority cases during my work             |
+| `* *`    | new user           | see sample data when I first open the app            | quickly understand how the system looks when populated              |
+| `* *`    | long-time user     | archive seniors who no longer need support           | keep my records tidy without losing history                         |
+| `* *`    | sharing user       | generate a PDF report of all or specific seniors     | print / share information with others                               |
+| `* *`    | messy user         | view recently modified seniors                       | quickly return to what I was last working on                        |
+| `* *`    | long-time user     | update caregivers who may no longer be in the org    | flag out elderly who may not have a caregiver currently             |
+| `* *`    | curious user       | see insights of number of elderly, caregivers, vols  | share these statistics for recruitment                              |
+| `* *`    | meticulous user    | perform batch delete of seniors or caregivers by tag | keep my records tidy                                                |
+| `* *`    | meticulous user    | add comprehensive senior particulars                 | remember more details about these elderly                           |
+| `* *`    | returning user     | edit a senior’s details                              | keep records up to date                                             |
+| `* *`    | outreach associate | mark a senior as “visited today”                     | log my field work                                                   |
+| `* *`    | long-time user     | pin important seniors                                | always find them at the top of the list                             |
+| `* *`    | long-time user     | undo the last action                                 | quickly recover from mistakes                                       |
+| `* *`    | long-time user     | redo an undone action                                | restore my intended changes                                         |
+| `* *`    | long-time user     | generate a summary report of seniors by tag          | have a quick overview of all the information                        |
+| `* *`    | long-time user     | mark a caregiver as “inactive”                       | know they are no longer available                                   |
+| `* *`    | long-time user     | customize tag colors                                 | visually distinguish categories to my preference                    |
+| `* *`    | long-time user     | be warned when adding a duplicate senior             | don’t accidentally create two records                               |
+| `* *`    | long-time user     | import seniors from a CSV file                       | migrate data quickly                                                |
+| `* *`    | meticulous user    | write some notes on each senior                      | key in certain details that the tags do not consider                |
+| `* *`    | long-time user     | sort the seniors by various tags or attributes       | arrange my address book in my personal preferred state              |
+| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                           |
+| `* *`    | organised user     | search & filter seniors by medical, language, etc.   | plan outreach activities more effectively                           |
+| `*`      | poor eyesight user | enlarge font on GUI                                  | see the letters and words properly                                  |
+| `*`      | quirky user        | change font on GUI                                   | change the font to my liking                                        |
+| `*`      | quirky user        | hidden easter eggs                                   | find weird things put in the app by the dev                         |
+| `*`      | blind user         | text to speech                                       | talk to command instead of typing                                   |
+| `*`      | new user           | light mode                                           | see more clearly the text                                           |
+| `*`      | forgetful user     | set reminders for follow-ups or scheduled visits     | ensure no senior is unintentionally overlooked in our care efforts  |                    |                                                      |                                                         |
+| `* `     | busy user          | view volunteer availability & match with seniors     | optimize resources and reduce scheduling conflicts                  |                    |                                                      |                                                             |
 
 *{More to be added}*
 
@@ -434,7 +434,7 @@ help
 
 **MSS**
 
-1. User creates a new senior record in system with the command "add-snr"
+1. User creates a new senior record in system
 2. User need to minimally key in name, risk tag, phone, and address for "add-snr" command
 3. User can optionally key in notes and caregiver id for "add-snr" command
 4. New senior record is added
@@ -504,7 +504,7 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
 **MSS**
 
-1. User creates a new caregiver record in system with the command "add-cgr"
+1. User creates a new caregiver record in system
 2. User need to minimally key in name and phone for "add-cgr" command
 3. User can optionally key in notes and address for "add-cgr" command
 4. New caregiver record is added
