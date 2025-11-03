@@ -91,7 +91,7 @@ Format: `help`
 
 Creates a new senior record in the system. In order to ensure seniors receive the care they require, each senior needs to maintain a phone and address contact as well as a risk tag. Each senior can also have additional medical notes and a caregiver assigned to them.
 
-Format: `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]`
+Format: `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_INDEX]`
 
 <box type="warning" seamless>
 
@@ -215,11 +215,9 @@ Unpin a senior, a caregiver or both.
 Changes will be reflected on the display panel.
 
 Format: 
-`unpin s` or `unpin senior` - Unpins the senior
-`unpin c` or `unpin caregiver` - Unpins the caregiver
-`unpin` or `unpin a` or `unpin all` - Unpins person(s)
+`unpin [KEYWORD]` or `unpin`
 
-* Only the letters 's', 'c', 'a', 'senior', 'caregiver', 'all' are allowed after unpin.
+* Only the keywords 's', 'c', 'a', 'senior', 'caregiver', 'all' are allowed after unpin.
 Inputs are not case-sensitive. 
 * Any other characters or strings following unpin will trigger an error. 
 * If no senior or caregiver is currently pinned, issuing any unpin command will result in an error.
@@ -238,15 +236,15 @@ Deletes the specified senior/caregiver from the address book.
 
 [Warning] Deleting a person will permanently remove their contact from the system. 
 
-Format: `delete c/CAREGOVER_INDEX or s/SENIOR_INDEX`
+Format: `delete c/CAREGIVER_INDEX or s/SENIOR_INDEX`
 
-* Deletes the senior/caregiver at the specified `INDEX`.
-* The index refers to the index number shown in the displayed senior/caregiver list.
-* The index **must be a positive integer** 1, 2, 3, …
+* Deletes the senior/caregiver with the specified `CAREGIVER_INDEX` or `SENIOR_INDEX`.
+* The `CAREGIVER_INDEX` or `SENIOR_INDEX` refers to the index number shown in the displayed senior/caregiver list.
+* The `CAREGIVER_INDEX` or `SENIOR_INDEX` **must be a positive integer** 1, 2, 3, …
 
 Examples:
-* `delete c/2` deletes the caregiver at index 2.
-* `delete s/2` deletes the senior at index 2.
+* `delete c/2` deletes the caregiver with caregiver index 2.
+* `delete s/2` deletes the senior with senior index 2.
 
 ### Clearing all entries : `clear`
 
@@ -280,8 +278,8 @@ Furthermore, certain edits can cause the Neighbourly to behave in unexpected way
 
 Edits information of a person
 
-Format: `edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
-`edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...
+Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
+`edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...
 `
 
 <box type="warning" seamless>
@@ -293,11 +291,11 @@ Format: `edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
 </box>
 
 * Edits the senior/caregiver based on the specified seniorId or caregiverId.
-* The seniorId/caregiverId refers to the id number shown in the displayed senior/caregiver list.
+* The SENIOR_INDEX/CAREGIVER_INDEX refers to the index number shown in the displayed senior/caregiver list.
 
 Examples: 
-* `edit s/1 n/John Tan p/91234567` Changes Senior at index 1 name to John Tan and phone to 91234567
-* `edit c/2 n/Jane Lim` Changes Caregiver at index 2 name to Jane Lim
+* `edit s/1 n/John Tan p/91234567` Changes Senior with index SENIOR_INDEX 1 name to John Tan and phone to 91234567
+* `edit c/2 n/Jane Lim` Changes Caregiver with CAREGIVER_INDEX 2 name to Jane Lim
 
 [//]: # (Edits an existing person in the address book.)
 
@@ -342,18 +340,18 @@ Examples:
 
 ## Command summary
 
-| Action                 | Format, Examples                                                                                                                                                                        |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Add Senior**         | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_ID]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
-| **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                |
-| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                   |
-| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                               |
-| **Edit**               | `edit s/SENIOR_ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_ID [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]`<br> e.g., `edit c/2 n/Jane Lim`                             |
-| **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                 |
-| **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)                                               |
-| **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                |
-| **List**               | `list`                                                                                                                                                                                  |
-| **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                              |
-| **Delete**             | `delete s/<seniorId>` or `delete c/<caregiverId>` <br> e.g., `delete s/3`                                                                                                               |
-| **Clear**              | `clear`                                                                                                                                                                                 |
-| **Help**               | `help`                                                                                                                                                                                  |
+| Action                 | Format, Examples                                                                                                                                                                           |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add Senior**         | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_INDEX]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
+| **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                   |
+| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                      |
+| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                                  |
+| **Edit**               | `edit s/SENIOR_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]` or `edit c/CAREGIVER_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]`<br> e.g., `edit c/2 n/Jane Lim`                          |
+| **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                    |
+| **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)                                                  |
+| **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                   |
+| **List**               | `list`                                                                                                                                                                                     |
+| **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                 |
+| **Delete**             | `delete s/SENIOR_INDEX` or `delete c/CAREGIVER_INDEX` <br> e.g., `delete s/3`                                                                                                              |
+| **Clear**              | `clear`                                                                                                                                                                                    |
+| **Help**               | `help`                                                                                                                                                                                     |

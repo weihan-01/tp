@@ -494,7 +494,7 @@ help
 
 Command Format
 
-add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [n/NOTES] [c/CAREGIVER_ID]
+add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [n/NOTES] [c/CAREGIVER_INDEX]
 
 Example Commands
 
@@ -510,6 +510,8 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 4. New caregiver record is added
 
    Use case ends.
+
+**Extensions**
 
 * 2a. Invalid phone
 
@@ -590,7 +592,7 @@ Example Commands
 
 **MSS**
 
-1. User assigns a caregiver to a senior using `assign s/INDEX c/INDEX`.
+1. User assigns a caregiver to a senior using `assign s/SENIOR_INDEX c/CAREGIVER_INDEX`.
 2. Neighbourly validates the indices against the currently displayed Senior and Caregiver lists.
 3. Neighbourly creates the assignment and updates the UI (caregiver chip appears on the Senior card; lists remain in their current order).
 
@@ -635,7 +637,7 @@ Example Commands
 
 **MSS**
 
-1. User unassigns a caregiver from a senior using `unassign s/INDEX c/INDEX`.
+1. User unassigns a caregiver from a senior using `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX`.
 2. Neighbourly validates the indices against the currently displayed Senior and Caregiver lists.
 3. Neighbourly removes the assignment and updates the UI (caregiver chip disappears from the Senior card; lists remain in their current order).
 
@@ -680,7 +682,7 @@ Example Commands
 
 **MSS**
 
-1. User pins a contact by index using pin s/INDEX (for a Senior) or pin c/INDEX (for a Caregiver).
+1. User pins a contact by index using pin s/SENIOR_INDEX (for a Senior) or pin c/CAREGIVER_INDEX (for a Caregiver).
 2. Neighbourly sets the selected contact as pinned and moves them to the top of their respective lists. Any previously pinned Senior (when pinning a Senior) and/or Caregiver (when pinning a Caregiver) is unpinned.
 
    Use case ends.
@@ -713,8 +715,8 @@ Example Commands
 
 Command Format
 
-* pin s/INDEX 
-* pin c/INDEX
+* pin s/SENIOR_INDEX 
+* pin c/CAREGIVER_INDEX
 
 Example Commands
 
