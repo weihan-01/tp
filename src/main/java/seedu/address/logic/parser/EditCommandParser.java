@@ -34,6 +34,10 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
+        // Check no duplicate prefixes
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_NOTE, PREFIX_TAG);
+
         var seniorVals = argMultimap.getAllValues(PREFIX_SENIOR);
         var caregiverVals = argMultimap.getAllValues(PREFIX_CAREGIVER);
 
