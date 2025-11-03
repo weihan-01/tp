@@ -35,7 +35,7 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 
    * `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving` : Adds a caregiver contact named `Mei Hui` to the address book.
 
-   * `delete s/1` : Deletes the senior at index 1.
+   * `delete s/1` : Deletes the senior at index 1.<sup>1</sup>
 
    * `assign s/3 c/1`: Assigns the senior at index 3 to the caregiver at index 1 in the current list.
 
@@ -45,7 +45,9 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 
    * `exit` : Exits the app.
 
-1. Refer to the [Features](#features) below for details of each command.
+1. Refer to the [Features](#features) below for details of each command.  
+  
+<sup>1</sup> In this context, senior at index 1 or caregiver at index 1 refers to the number that is displayed on the screen right below their names, e.g. S000001, but the S and leading zeroes do not need to be typed, only 1.
 
 --------------------------------------------------------------------------------------------------------------------
 
