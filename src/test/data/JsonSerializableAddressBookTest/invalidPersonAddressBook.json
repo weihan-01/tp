@@ -1,7 +1,11 @@
 {
-  "persons": [ {
-    "name": "Hans Muster",
-    "phone": "91",
-    "address": "4th street"
-  } ]
+  "seniors": [
+    {
+      "name": "Hans Muster",
+      "phone": "91",
+      "address": "4th street"
+    }
+  ],
+  "seniorSeq": 1,
+  "caregiverSeq": 0
 }

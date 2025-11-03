@@ -45,8 +45,8 @@ public class CaregiverBuilder {
         phone = caregiverToCopy.getPhone();
         address = caregiverToCopy.getAddress();
         note = caregiverToCopy.getNote();
-        caregiverId = caregiverToCopy.getCaregiverId();
-        isPinned = caregiverToCopy.isPinned();
+        caregiverId = caregiverToCopy.getId();
+        isPinned = caregiverToCopy.getPinned();
     }
 
     /**

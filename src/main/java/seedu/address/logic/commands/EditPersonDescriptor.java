@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import seedu.address.model.person.Address;
@@ -24,6 +25,36 @@ public class EditPersonDescriptor {
     private Caregiver caregiver; // actual Caregiver object, set in EditCommand
     private Integer caregiverId; // temporary ID parsed from input
     private Boolean pinned;
+
+    /**
+     * Stores the descriptions to edit of the Person
+     */
+    public EditPersonDescriptor() {
+        this.name = null;
+        this.phone = null;
+        this.address = null;
+        this.note = null;
+        this.riskTag = null;
+        this.caregiver = null;
+        this.caregiverId = null;
+        this.pinned = null;
+    }
+
+    /**
+     * Uses an existing descriptor to store the descriptions to edit
+     *
+     * @param descriptor Existing descriptor with descriptions to edit
+     */
+    public EditPersonDescriptor(EditPersonDescriptor descriptor) {
+        this.name = descriptor.name;
+        this.phone = descriptor.phone;
+        this.address = descriptor.address;
+        this.note = descriptor.note;
+        this.riskTag = descriptor.riskTag;
+        this.caregiver = descriptor.caregiver;
+        this.caregiverId = descriptor.caregiverId;
+        this.pinned = descriptor.pinned;
+    }
 
     /**
      * Returns true if at least one field is edited.
@@ -101,5 +132,26 @@ public class EditPersonDescriptor {
 
     public void setPinned(Boolean pinned) {
         this.pinned = pinned;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EditPersonDescriptor that = (EditPersonDescriptor) o;
+        return Objects.equals(name, that.name)
+                && Objects.equals(phone, that.phone)
+                && Objects.equals(address, that.address)
+                && Objects.equals(note, that.note)
+                && Objects.equals(riskTag, that.riskTag)
+                && Objects.equals(caregiver, that.caregiver)
+                && Objects.equals(caregiverId, that.caregiverId)
+                && Objects.equals(pinned, that.pinned);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phone, address, note, riskTag, caregiver, caregiverId, pinned);
     }
 }

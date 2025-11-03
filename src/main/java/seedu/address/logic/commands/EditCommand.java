@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.CommandUtil;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -43,12 +44,13 @@ public class EditCommand extends Command {
     private final int index;
     private final EditPersonDescriptor editPersonDescriptor;
     private final boolean isSenior; // true if editing a Senior, false if editing a Caregiver
+
     /**
      * Creates an EditCommand to edit the person at the specified index.
      *
-     * @param index index of the person in the filtered list to edit
+     * @param index                index of the person in the filtered list to edit
      * @param editPersonDescriptor details to edit the person with
-     * @param isSenior whether the person is a Senior (true) or a Caregiver (false)
+     * @param isSenior             whether the person is a Senior (true) or a Caregiver (false)
      */
     public EditCommand(int index, EditPersonDescriptor editPersonDescriptor, boolean isSenior) {
         requireNonNull(editPersonDescriptor);
@@ -71,7 +73,6 @@ public class EditCommand extends Command {
                 : "All caregiver list must not be null";
 
         if (isSenior) {
-            //List<Senior> lastShownList = model.getFilteredSeniorList();
             List<Senior> fullSeniorList = model.getAllSeniorList();
 
             CommandUtil.validateIndex(index, MESSAGE_INVALID_SENIOR_INDEX);
@@ -79,14 +80,6 @@ public class EditCommand extends Command {
             // Find senior by seniorIndex
             Senior seniorToEdit = CommandUtil.findSeniorById(
                     fullSeniorList, index, MESSAGE_INVALID_SENIOR_INDEX);
-
-
-/*            int zeroBasedIndex = index - 1;
-            if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
-                throw new CommandException(MESSAGE_INVALID_INDEX);
-            }
-
-            Senior seniorToEdit = lastShownList.get(zeroBasedIndex);*/
 
             // Resolve caregiver ID to object if present
             if (editPersonDescriptor.getCaregiverId().isPresent()) {
@@ -134,8 +127,6 @@ public class EditCommand extends Command {
                     String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Senior", Messages.formatSenior(editedSenior)));
 
         } else {
-            //List<Caregiver> lastShownList = model.getFilteredCaregiverList();
-
             List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
             CommandUtil.validateIndex(index, MESSAGE_INVALID_CAREGIVER_INDEX);
@@ -143,13 +134,6 @@ public class EditCommand extends Command {
             // Find senior by seniorIndex
             Caregiver caregiverToEdit = CommandUtil.findCaregiverById(
                     fullCaregiverList, index, MESSAGE_INVALID_CAREGIVER_INDEX);
-
-            /*int zeroBasedIndex = index - 1;
-            if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
-                throw new CommandException(MESSAGE_INVALID_INDEX);
-            }
-
-            Caregiver caregiverToEdit = lastShownList.get(zeroBasedIndex);*/
 
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(MESSAGE_NOT_EDITED);
@@ -222,5 +206,13 @@ public class EditCommand extends Command {
                 && index == ((EditCommand) other).index
                 && editPersonDescriptor.equals(((EditCommand) other).editPersonDescriptor)
                 && isSenior == ((EditCommand) other).isSenior;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("index", index)
+                .add("editPersonDescriptor", editPersonDescriptor)
+                .toString();
     }
 }

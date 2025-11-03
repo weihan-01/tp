@@ -14,14 +14,15 @@ public class CaregiverTest {
                 new Phone("91234567"),
                 new Address("123 Toa Payoh Lorong 3"),
                 new Note("Loves to dance"),
-                1
+                1,
+                true
         );
 
         assertEquals("Voon Shu Ting", caregiver.getName().fullName);
         assertEquals("91234567", caregiver.getPhone().value);
         assertEquals("123 Toa Payoh Lorong 3", caregiver.getAddress().value);
         assertEquals("Loves to dance", caregiver.getNote().value);
-        assertEquals(1, caregiver.getCaregiverId());
+        assertEquals(1, caregiver.getId());
     }
 
     @Test
@@ -31,7 +32,8 @@ public class CaregiverTest {
                 new Phone("91234567"),
                 new Address("123 Toa Payoh Lorong 3"),
                 new Note("Loves to dance"),
-                null
+                null,
+                false
         ));
     }
 }

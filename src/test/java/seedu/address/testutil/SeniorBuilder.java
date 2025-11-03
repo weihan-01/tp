@@ -1,10 +1,12 @@
 package seedu.address.testutil;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import seedu.address.model.person.*;
-import seedu.address.model.util.SampleDataUtil;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Note;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Senior;
+import seedu.address.model.person.Tag;
 
 /**
  * A utility class to help with building Senior objects.
@@ -58,11 +60,11 @@ public class SeniorBuilder {
         phone = seniorToCopy.getPhone();
         address = seniorToCopy.getAddress();
         //riskTags = new HashSet<>(seniorToCopy.getRiskTags());
-        riskTag  = seniorToCopy.getRiskTag();
+        riskTag = seniorToCopy.getRiskTag();
         note = seniorToCopy.getNote();
-        caregiver  = seniorToCopy.getCaregiver();
-        seniorId = seniorToCopy.getSeniorId();
-        isPinned = seniorToCopy.isPinned();
+        caregiver = seniorToCopy.getCaregiver();
+        seniorId = seniorToCopy.getId();
+        isPinned = seniorToCopy.getPinned();
     }
 
     /**
@@ -121,7 +123,6 @@ public class SeniorBuilder {
         this.caregiver = caregiver;
         return this;
     }
-
 
 
     public Senior build() {

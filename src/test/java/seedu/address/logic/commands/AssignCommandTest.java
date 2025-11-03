@@ -77,8 +77,8 @@ public class AssignCommandTest {
         Senior senior = maybeSenior.get();
         Caregiver caregiver = maybeCaregiver.get();
 
-        Integer seniorId = senior.getSeniorId();
-        Integer caregiverId = caregiver.getCaregiverId();
+        Integer seniorId = senior.getId();
+        Integer caregiverId = caregiver.getId();
 
         AssignCommand command = new AssignCommand(seniorId, caregiverId);
 
@@ -105,8 +105,8 @@ public class AssignCommandTest {
         expectedModel.updateFilteredSeniorList(seniorOnly);
         expectedModel.updateFilteredCaregiverList(caregiverOnly);
 
-        Integer seniorId = targetSenior.getSeniorId();
-        Integer caregiverId = targetCaregiver.getCaregiverId();
+        Integer seniorId = targetSenior.getId();
+        Integer caregiverId = targetCaregiver.getId();
 
         AssignCommand command = new AssignCommand(seniorId, caregiverId);
 
@@ -128,7 +128,7 @@ public class AssignCommandTest {
         if (maybeCaregiver.isEmpty()) {
             return;
         }
-        Integer caregiverId = maybeCaregiver.get().getCaregiverId();
+        Integer caregiverId = maybeCaregiver.get().getId();
 
         AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
@@ -143,14 +143,14 @@ public class AssignCommandTest {
         if (maybeSenior.isEmpty()) {
             return;
         }
-        Integer seniorId = maybeSenior.get().getSeniorId();
+        Integer seniorId = maybeSenior.get().getId();
 
         AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
     }
 
     @Test
-    public void execute_invalidSeniorId_filteredList_throwsCommandException() {
+    public void execute_invalidSeniorIdFromFilteredList_throwsCommandException() {
         // Narrow lists so we prove id-based lookup, not index-based
         if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
             return;
@@ -164,14 +164,14 @@ public class AssignCommandTest {
         expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
 
         Integer invalidSeniorId = 999_999; // definitely not in model
-        Integer caregiverId = onlyCaregiver.getCaregiverId();
+        Integer caregiverId = onlyCaregiver.getId();
 
         AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
     }
 
     @Test
-    public void execute_invalidCaregiverId_filteredList_throwsCommandException() {
+    public void execute_invalidCaregiverIdFromFilteredList_throwsCommandException() {
         if (model.getFilteredSeniorList().isEmpty() || model.getFilteredCaregiverList().isEmpty()) {
             return;
         }
@@ -183,7 +183,7 @@ public class AssignCommandTest {
         model.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
         expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
 
-        Integer seniorId = onlySenior.getSeniorId();
+        Integer seniorId = onlySenior.getId();
         Integer invalidCaregiverId = 999_999;
 
         AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);
@@ -219,7 +219,9 @@ public class AssignCommandTest {
 
     // Helper Function
 
-    /** Returns a Senior preferring one without a caregiver, else first present. */
+    /**
+     * Returns a Senior preferring one without a caregiver, else first present.
+     */
     private Optional<Senior> pickSeniorPreferNoCaregiver(Model m) {
         List<Senior> seniors = m.getFilteredSeniorList();
         for (Senior s : seniors) {
@@ -230,7 +232,9 @@ public class AssignCommandTest {
         return seniors.isEmpty() ? Optional.empty() : Optional.of(seniors.get(0));
     }
 
-    /** Returns any available Caregiver (first). */
+    /**
+     * Returns any available Caregiver (first).
+     */
     private Optional<Caregiver> pickAnyCaregiver(Model m) {
         List<Caregiver> caregivers = m.getFilteredCaregiverList();
         return caregivers.isEmpty() ? Optional.empty() : Optional.of(caregivers.get(0));

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
+import java.util.Objects;
 
 import seedu.address.commons.util.CommandUtil;
 import seedu.address.commons.util.ToStringBuilder;
@@ -43,30 +44,17 @@ public class DeleteCommand extends Command {
      * <p>
      * The command will delete exactly the person whose id matches {@code seniorIndex} and {@code caregiverIndex}.
      *
-     * @param seniorIndex the id of the senior to pin;
+     * @param seniorIndex    the id of the senior to pin;
      * @param caregiverIndex the id of the caregiver to pin;
      */
     public DeleteCommand(Integer seniorIndex, Integer caregiverIndex) {
         this.seniorIndex = seniorIndex;
         this.caregiverIndex = caregiverIndex;
-
-        assert (seniorIndex == null || seniorIndex >= 0)
-                : "Senior index must be non-negative or null";
-        assert (caregiverIndex == null || caregiverIndex >= 0)
-                : "Caregiver index must be non-negative or null";
-        assert (seniorIndex != null || caregiverIndex != null)
-                : "At least one of seniorIndex or caregiverIndex should be provided";
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-
-        assert model.getAllSeniorList() != null
-                : "Senior list in model should not be null";
-        assert model.getAllCaregiverList() != null
-                : "Caregiver list in model should not be null";
-
         List<Senior> fullSeniorList = model.getAllSeniorList();
         List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
 
@@ -77,11 +65,6 @@ public class DeleteCommand extends Command {
         // Find caregiver by caregiverId
         Caregiver caregiver = CommandUtil.validateOptionalCaregiverId(
                 fullCaregiverList, caregiverIndex, MESSAGE_INVALID_CAREGIVER_INDEX);
-
-        assert (senior == null || fullSeniorList.contains(senior))
-                : "Senior found must exist in the model senior list";
-        assert (caregiver == null || fullCaregiverList.contains(caregiver))
-                : "Caregiver found must exist in the model caregiver list";
 
         // If deleting a caregiver, clear references from seniors
         if (senior != null) {
@@ -122,8 +105,9 @@ public class DeleteCommand extends Command {
         }
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
-        return seniorIndex.equals(otherDeleteCommand.seniorIndex)
-                && caregiverIndex.equals(otherDeleteCommand.caregiverIndex);
+        // Use Objects.equals to handle possible null indices safely
+        return Objects.equals(seniorIndex, otherDeleteCommand.seniorIndex)
+                && Objects.equals(caregiverIndex, otherDeleteCommand.caregiverIndex);
     }
 
     @Override
