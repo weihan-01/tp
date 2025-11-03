@@ -900,8 +900,8 @@ testers are expected to do more *exploratory* testing.
 3. Invalid/edge cases
     - `unassign s/999 c/1` (out of range senior) → Expected: "No such senior index exists."
     - `unassign s/1 c/999` (out of range caregiver) → Expected: “No such caregiver index exists.”
-    - `unassign s/ c/1` → Expected: “Senior index cannot be empty.”
-    - `unassign s/1 c/` → Expected: “Caregiver index cannot be empty.”
+    - `unassign s/ c/1` → Expected: “Senior index must be single-value, numeric and must not be empty.”
+    - `unassign s/1 c/` → Expected: “Caregiver index must be single-value, numeric and must not be empty.”
     - `unassign` → Expected: “Invalid command format!”
 
 ### Pin contact
@@ -1074,3 +1074,9 @@ Planned fixes to known limitations. Per module guidelines, items in this section
     - **Why change**: Users treat “Pin” like a favourite/shortcut. During focused searches you often still want instant access to your pinned contacts. Keeping pins visible improves recall and reduces navigation friction. 
     - **Proposed enhancement**: Show a small, separate Pinned header that is populated from the full model (not the filtered results), so pinned items are always visible.
     - **Benefits**: Faster access to favourites during searches.
+
+5. **Include generated index in `add` success messages**
+    - **Problem**: After `add-cgr` / `add-snr`, the success message shows the person’s details but not the system-assigned index. Users must run find or scroll to discover the index before running index-based commands (`delete`, `edit`, `assign`, `unassign`).
+    - **Change**: Append the newly generated index to the success message returned by the add commands.
+    - **Why**: Removes an unnecessary lookup step, speeds up follow-up actions, and reduces user error.
+    - **Scope / Impact**: Update message formatting only; storage format and ID generation remain unchanged.
