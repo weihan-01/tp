@@ -162,12 +162,6 @@ The `Model` component,
 
 <box type="info" seamless>
 
-**Note:** An alternative (arguably, a more OOP) model is given below. 
-
-<puml src="diagrams/BetterModelClassDiagram.puml" width="800" />
-
-</box>
-
 ### Storage component
 
 **API** : [
