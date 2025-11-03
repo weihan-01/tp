@@ -806,8 +806,6 @@ recorded as a case note.
 * **Visit**: An in-person check-in with a senior, typically conducted at the senior’s home and recorded as a case note.
 * **Human-Editable File**: The plain-text JSON file format used for storing data, viewable and editable without special
   tools.
-* **Private contact detail**: Sensitive information (e.g., phone, address) that should not be shared with unauthorized
-  users.
 * **PDPA (Personal Data Protection Act)**: Singapore’s law governing the collection, use, and protection of personal
   data.
 
@@ -1067,3 +1065,10 @@ Planned fixes to known limitations. Per module guidelines, items in this section
     - **What users see:** Nothing changes in commands or UI. You’ll just notice that after deleting `3`, the next added person can be `3` again.
     - **Why:** Keeps IDs short and avoids hitting large numbers over time.
     - **Notes:** We’ll keep separate free lists for Seniors and Caregivers and save them with the data so reuse works across restarts.
+
+
+3. **Graceful handling of corrupted / manually-edited `addressbook.json`**
+    - **Problem**: If users manually edit the data file (e.g., negative seniorId, malformed fields, missing required values), the app can crash or behave inconsistently.
+    - **Planned change:**
+      - Validate each record during load; collect errors per record instead of aborting the whole file.
+      - Policy: load all valid records, skip invalid ones, and show a clear summary (e.g., “Skipped 2 invalid records: seniorId must be ≥ 1; missing name. See logs for details.”).
