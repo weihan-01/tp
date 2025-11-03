@@ -36,10 +36,10 @@ public class AddSeniorCommand extends Command {
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "Lim Ah Kow "
             + PREFIX_TAG + "High Risk "
-            + PREFIX_PHONE + "91234567  "
+            + PREFIX_PHONE + "91234567 "
             + PREFIX_ADDRESS + "Blk 123 Bedok North Rd #02-45 "
             + PREFIX_NOTE + "Has dementia "
-            + PREFIX_CID + "201";
+            + PREFIX_CID + "1";
 
     public static final String MESSAGE_SUCCESS = "New senior added: %1$s";
     public static final String MESSAGE_DUPLICATE_SENIOR = "Person "
