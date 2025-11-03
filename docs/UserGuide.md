@@ -196,11 +196,9 @@ Unpin a senior, a caregiver or both.
 Changes will be reflected on the display panel.
 
 Format: 
-`unpin s` or `unpin senior` - Unpins the senior
-`unpin c` or `unpin caregiver` - Unpins the caregiver
-`unpin` or `unpin a` or `unpin all` - Unpins person(s)
+`unpin [keyword]` or `unpin`
 
-* Only the letters 's', 'c', 'a', 'senior', 'caregiver', 'all' are allowed after unpin.
+* Only the keywords 's', 'c', 'a', 'senior', 'caregiver', 'all' are allowed after unpin.
 Inputs are not case-sensitive. 
 * Any other characters or strings following unpin will trigger an error. 
 * If no senior or caregiver is currently pinned, issuing any unpin command will result in an error.
