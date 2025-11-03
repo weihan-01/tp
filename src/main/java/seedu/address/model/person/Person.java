@@ -63,20 +63,11 @@ public abstract class Person {
     }
 
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons are the same object.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
-        if (otherPerson == this) {
-            return true;
-        }
-        if (otherPerson == null) {
-            return false;
-        }
-        // case-insensitive duplicate check
-        String a = this.getName().fullName.trim();
-        String b = otherPerson.getName().fullName.trim();
-        return a.equalsIgnoreCase(b);
+        return otherPerson == this;
     }
 
     /**

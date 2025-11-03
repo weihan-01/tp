@@ -123,6 +123,7 @@ Format: `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]`
 **Input constraints**
 * Do **not** include `/` inside any field value (affects `n/`, `t/`, `p/`, `a/`, `nt/`, `c/`).
 * Names must **not** contain `.` (use `Jr` instead of `Jr.`).
+* A caregiver cannot simultaneously hold a senior record; each individual must be registered in only one role.
 
 </box>
 
