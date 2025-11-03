@@ -16,12 +16,12 @@ public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
-    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person ID provided is invalid";
+    public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
-    public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior ID exists.";
-    public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver ID exists.";
+    public static final String MESSAGE_INVALID_SENIOR_INDEX = "No such senior index exists.";
+    public static final String MESSAGE_INVALID_CAREGIVER_INDEX = "No such caregiver index exists.";
     public static final String MESSAGE_NO_SENIORS_PROMPT = "No seniors in AddressBook. Use add-snr to add a senior!";
     public static final String MESSAGE_NO_CAREGIVERS_PROMPT =
             "No caregivers in AddressBook. Use add-cgr command to add a caregiver!";
