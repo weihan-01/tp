@@ -5,6 +5,7 @@ skinparam ClassGenericDisplay full
 skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
+skinparam nodesep 70
 
 Package Model as ModelPackage <<Rectangle>>{
 Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
@@ -64,7 +65,7 @@ Address -[hidden]right-> Note
 
 Senior -up-|> Person
 Senior *--> "1" RiskTag
-    Senior "n" -right-> "1" Caregiver
+    Senior "0..n" -right-> "0..1" Caregiver
 
 Caregiver -up-|> Person
 
