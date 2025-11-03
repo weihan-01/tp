@@ -96,6 +96,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         // Address
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             String address = argMultimap.getValue(PREFIX_ADDRESS).get();
+            var addr = ParserUtil.parseAddress(address);
+            if (isSenior && addr.toString().trim().isEmpty()) {
+                throw new ParseException("Address is required for seniors and cannot be blank.");
+            }
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(address));
         }
 
