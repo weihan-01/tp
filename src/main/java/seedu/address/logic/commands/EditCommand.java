@@ -1,11 +1,14 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_CAREGIVER_INDEX;
+import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_SENIOR_INDEX;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -23,7 +26,7 @@ public class EditCommand extends Command {
             + ": Edits the details of a senior or caregiver using their unique ID.\n"
             + "Specify exactly one person type (senior or caregiver).\n"
             + "Format: edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
-            + "        edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
+            + "        edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...\n"
             + "Examples:\n"
             + "  " + COMMAND_WORD + " s/1 n/John Tan p/91234567\n"
             + "  " + COMMAND_WORD + " c/2 n/Jane Lim";
@@ -66,14 +69,22 @@ public class EditCommand extends Command {
                 : "All caregiver list must not be null";
 
         if (isSenior) {
-            List<Senior> lastShownList = model.getFilteredSeniorList();
+            //List<Senior> lastShownList = model.getFilteredSeniorList();
+            List<Senior> fullSeniorList = model.getAllSeniorList();
 
-            int zeroBasedIndex = index - 1;
+            CommandUtil.validateIndex(index, MESSAGE_INVALID_SENIOR_INDEX);
+
+            // Find senior by seniorIndex
+            Senior seniorToEdit = CommandUtil.findSeniorById(
+                    fullSeniorList, index, MESSAGE_INVALID_SENIOR_INDEX);
+
+
+/*            int zeroBasedIndex = index - 1;
             if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
                 throw new CommandException(MESSAGE_INVALID_INDEX);
             }
 
-            Senior seniorToEdit = lastShownList.get(zeroBasedIndex);
+            Senior seniorToEdit = lastShownList.get(zeroBasedIndex);*/
 
             // Resolve caregiver ID to object if present
             if (editPersonDescriptor.getCaregiverId().isPresent()) {
@@ -106,16 +117,25 @@ public class EditCommand extends Command {
             model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
             return new CommandResult(
-                    String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Senior", Messages.format(editedSenior)));
+                    String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Senior", Messages.formatSenior(editedSenior)));
 
         } else {
-            List<Caregiver> lastShownList = model.getFilteredCaregiverList();
-            int zeroBasedIndex = index - 1;
+            //List<Caregiver> lastShownList = model.getFilteredCaregiverList();
+
+            List<Caregiver> fullCaregiverList = model.getAllCaregiverList();
+
+            CommandUtil.validateIndex(index, MESSAGE_INVALID_CAREGIVER_INDEX);
+
+            // Find senior by seniorIndex
+            Caregiver caregiverToEdit = CommandUtil.findCaregiverById(
+                    fullCaregiverList, index, MESSAGE_INVALID_CAREGIVER_INDEX);
+
+            /*int zeroBasedIndex = index - 1;
             if (zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size()) {
                 throw new CommandException(MESSAGE_INVALID_INDEX);
             }
 
-            Caregiver caregiverToEdit = lastShownList.get(zeroBasedIndex);
+            Caregiver caregiverToEdit = lastShownList.get(zeroBasedIndex);*/
 
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(MESSAGE_NOT_EDITED);
@@ -158,7 +178,7 @@ public class EditCommand extends Command {
             model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
             return new CommandResult(
-                    String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.format(editedCaregiver)));
+                    String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.formatCaregiver(editedCaregiver)));
         }
     }
 

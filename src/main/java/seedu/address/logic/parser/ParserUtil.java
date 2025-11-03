@@ -17,6 +17,7 @@ import seedu.address.model.person.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_EMPTY_INDEX = "Index cannot be empty.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -27,9 +28,13 @@ public class ParserUtil {
         //String trimmedIndex = stringIndex.trim();
         //return Integer.parseInt(trimmedIndex);
         if (stringIndex == null) {
-            throw new ParseException("Index is required.");
+            throw new ParseException(MESSAGE_EMPTY_INDEX);
         }
         String trimmed = stringIndex.trim();
+
+        if (trimmed.equals("")) {
+            throw new ParseException(MESSAGE_EMPTY_INDEX);
+        }
 
         // only digits allowed (no spaces, signs, or letters)
         if (!trimmed.matches("\\d+")) {

@@ -36,8 +36,8 @@ Given below is a quick overview of main components and how they interact with ea
 **Main components of the architecture**
 
 **`Main`** (consisting of classes [
-`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [
-`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in
+`Main`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/Main.java) and [
+`MainApp`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/MainApp.java)) is in
 charge of the app launch and shut down.
 
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
@@ -55,7 +55,7 @@ The bulk of the app's work is done by the following four components:
 **How the architecture components interact with each other**
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues
-the command `delete 1`.
+the command `delete s/1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -77,16 +77,16 @@ The sections below give more details of each component.
 ### UI component
 
 The **API** of this component is specified in  
-[`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+[`Ui.java`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
 The UI consists of a `MainWindow` that is made up of parts such as `CommandBox`, `ResultDisplay`, `SeniorListPanel`, `CaregiverListPanel`, `StatusBarFooter`, etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts is defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the  
-[`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java)  
+[`MainWindow`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java)  
 is specified in  
-[`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+[`MainWindow.fxml`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component:
 
@@ -99,7 +99,7 @@ The `UI` component:
 ### Logic component
 
 **API** : [
-`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+`Logic.java`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -143,7 +143,7 @@ How the parsing works:
 ### Model component
 
 **API** : [
-`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+`Model.java`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="450" />
 
@@ -170,7 +170,7 @@ The `Model` component,
 ### Storage component
 
 **API** : [
-`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+`Storage.java`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
@@ -223,7 +223,7 @@ initial address book state, and the `currentStatePointer` pointing to that singl
 
 <puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls
+Step 2. The user executes `delete s/5` command to delete the 5th index of the senior in the address book. The `delete` command calls
 `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be
 saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
 
@@ -405,7 +405,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified
+(For all use cases below, the **System** is the `Neighbourly` and the **Actor** is the `user`, unless specified
 otherwise)
 
 **Use case 1: View User Guide Easily**
@@ -423,7 +423,7 @@ otherwise)
 
 * 2a. Invalid command
 
-    * 2a1. AddressBook shows an error message. - "Command format invalid"
+    * 2a1. Neighbourly shows an error message. - "Command format invalid"
 
       Use case resumes at step 2.
 
@@ -445,50 +445,50 @@ help
 
 * 2a. Invalid risk tag
 
-    * 2a1. AddressBook shows an error message. - "Invalid risk tag. Risk tag must either be
+    * 2a1. Neighbourly shows an error message. - "Invalid risk tag. Risk tag must either be
     * `High Risk` or `HR`, `Medium Risk` or `MR`, or `Low Risk` or `LR`."
 
-      Use case resumes at step 2.
+      Use case resumes at step 1.
 
 * 2b. Invalid phone
 
-    * 2b1. AddressBook shows an error message. - “Phone number must be 8 digits.”
+    * 2b1. Neighbourly shows an error message. - “Phone number must be 8 digits.”
 
       Use case resumes at step 1.
 
 * 2c. Missing name
 
-    * 2c1. AddressBook shows an error message. - “Senior name cannot be empty.”
+    * 2c1. Neighbourly shows an error message. - “Senior name cannot be empty.”
 
       Use case resumes at step 1.
 
 * 2d. Missing risk tag
 
-    * 2d1. AddressBook shows an error message. - "Senior must be assigned a risk tag."
+    * 2d1. Neighbourly shows an error message. - "Senior must be assigned a risk tag."
 
       Use case resumes at step 1.
 
 * 2e. Missing phone number
 
-    * 2e1. AddressBook shows an error message. - "Senior phone number cannot be empty."
+    * 2e1. Neighbourly shows an error message. - "Senior phone number cannot be empty."
 
       Use case resumes at step 1.
 
-* 2e. Missing address
+* 2f. Missing address
 
-    * 2e1. AddressBook shows an error message. - "Senior address cannot be empty."
+    * 2f1. Neighbourly shows an error message. - "Senior address cannot be empty."
 
       Use case resumes at step 1.
 
 * 3a. Invalid caregiver ID
 
-    * 3a1. AddressBook shows an error message. - "No such caregiver exists."
+    * 3a1. Neighbourly shows an error message. - "No such caregiver exists."
 
       Use case resumes at step 1.
 
 * 4a. Duplicate detected
 
-    * 4a1. AddressBook shows an error message. - “Senior already exists. Please amend your entry.”
+    * 4a1. Neighbourly shows an error message. - “Senior already exists. Please amend your entry.”
 
       Use case resumes at step 1.
 
@@ -513,25 +513,25 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
 * 2a. Invalid phone
 
-    * 2a1. AddressBook shows an error message. - “Phone number must be 8 digits.”
+    * 2a1. Neighbourly shows an error message. - “Phone number must be 8 digits.”
 
       Use case resumes at step 1.
 
 * 2b. Missing name
 
-    * 2b1. AddressBook shows an error message. - “Caregiver name cannot be empty.”
+    * 2b1. Neighbourly shows an error message. - “Caregiver name cannot be empty.”
 
       Use case resumes at step 1.
 
 * 2c. Missing phone number
 
-    * 2c1. AddressBook shows an error message. - "Caregiver phone number cannot be empty."
+    * 2c1. Neighbourly shows an error message. - "Caregiver phone number cannot be empty."
 
       Use case resumes at step 1.
 
 * 4a. Duplicate detected
 
-    * 4a1. AddressBook shows an error message. - “Caregiver already exists. Please amend your entry.”
+    * 4a1. Neighbourly shows an error message. - “Caregiver already exists. Please amend your entry.”
 
       Use case resumes at step 1.
 
@@ -539,42 +539,60 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
 **MSS**
 
-1. User requests to delete a specific person in the list
-2. AddressBook deletes the person
+1. The user enters the delete command to remove a person from the system. 
+The target can be either a senior or a caregiver.
+2. The user provides the index of the person to be deleted (senior and/or caregiver)
+3. Neighbourly locates the person by index and removes them from the system.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. Invalid index
+* 2a. Senior index out of range for the current Senior list.
 
-    * 2a1. AddressBook shows an error message. - “No such index exists. Please ensure the index matches a person from
-      the database.”
+    * 2a1. Neighbourly shows an error message. - "No such senior index exists."
 
       Use case resumes at step 2.
 
-* 2b. Missing index
+* 2b. Caregiver index out of range for the current Caregiver list.
 
-    * 2a1. AddressBook shows an error message. - “Index cannot be empty.”
+    * 2b1. Neighbourly shows an error message. - "No such caregiver index exists."
+
+      Use case resumes at step 2.
+
+
+* 2c. Missing index
+
+    * 2c1. Neighbourly shows an error message. - “Index cannot be empty.”
+
+      Use case resumes at step 2.
+
+* 2d. More than one "s/" or "c/" prefix is detected
+
+    * 2d1. Neighbourly shows an error message. - “Please specify only one senior and/or one caregiver. Multiple 's/' or 'c/' prefixes detected.”
 
       Use case resumes at step 2.
 
 Command Format
 
-1. delete s/SENIOR_INDEX
-2. delete c/CAREGIVER_INDEX
+* delete s/SENIOR_INDEX 
+* delete c/CAREGIVER_INDEX 
+* delete s/SENIOR_INDEX c/CAREGIVER_INDEX 
+* delete c/CAREGIVER_INDEX s/SENIOR_INDEX
 
 Example Commands
 
-delete s/3
+* delete s/3
+* delete c/1
+* delete s/2 c/2
 
 **Use case 5: Assign a caregiver to a senior — `assign`**
 
 **MSS**
 
 1. User assigns a caregiver to a senior using `assign s/INDEX c/INDEX`.
-2. AddressBook validates the indices against the currently displayed Senior and Caregiver lists.
-3. AddressBook creates the assignment and updates the UI (caregiver chip appears on the Senior card; lists remain in their current order).
+2. Neighbourly validates the indices against the currently displayed Senior and Caregiver lists.
+3. Neighbourly creates the assignment and updates the UI (caregiver chip appears on the Senior card; lists remain in their current order).
 
    Use case ends.
 
@@ -582,25 +600,25 @@ delete s/3
 
 * 1a. Missing/invalid parameters (e.g., `assign`, `assign s/1`, `assign c/2`, `assign s/ c/2`, `non-numeric index`)
 
-    * 1a1. AddressBook shows an error message. - "Invalid command format!"
+    * 1a1. Neighbourly shows an error message. - "Invalid command format!"
 
       Use case resumes at step 1.
 
 * 1b. Senior index out of range for the current Senior list.
 
-    * 1b1. AddressBook shows an error message. - "No such senior index exists."
+    * 1b1. Neighbourly shows an error message. - "No such senior index exists."
 
       Use case resumes at step 1.
 
 * 1c. Caregiver index out of range for the current Caregiver list.
 
-    * 1b1. AddressBook shows an error message. - "No such caregiver index exists."
+    * 1c1. Neighbourly shows an error message. - "No such caregiver index exists."
 
       Use case resumes at step 1.
 
 * 1d. Caregiver already assigned to the selected senior.
 
-    * 1d1. AddressBook shows: Caregiver is already assigned to this senior.
+    * 1d1. Neighbourly shows: Caregiver is already assigned to this senior.
 
       Use case resumes at step 1.
 
@@ -618,8 +636,8 @@ Example Commands
 **MSS**
 
 1. User unassigns a caregiver from a senior using `unassign s/INDEX c/INDEX`.
-2. AddressBook validates the indices against the currently displayed Senior and Caregiver lists.
-3. AddressBook removes the assignment and updates the UI (caregiver chip disappears from the Senior card; lists remain in their current order).
+2. Neighbourly validates the indices against the currently displayed Senior and Caregiver lists.
+3. Neighbourly removes the assignment and updates the UI (caregiver chip disappears from the Senior card; lists remain in their current order).
 
    Use case ends.
 
@@ -627,25 +645,25 @@ Example Commands
 
 * 1a. Missing/invalid parameters (e.g., unassign, unassign s/1, unassign c/2, unassign s/ c/2, non-numeric index).
 
-    * 1a1. AddressBook shows an error message. - "Invalid command format!"
+    * 1a1. Neighbourly shows an error message. - "Invalid command format!"
 
       Use case resumes at step 1.
 
 * 1b. Senior index out of range for the current Senior list.
 
-    * 1b1. AddressBook shows an error message. - "No such senior index exists."
+    * 1b1. Neighbourly shows an error message. - "No such senior index exists."
 
       Use case resumes at step 1.
 
 * 1c. Caregiver index out of range for the current Caregiver list.
 
-    * 1b1. AddressBook shows an error message. - "No such caregiver index exists."
+    * 1c1. Neighbourly shows an error message. - "No such caregiver index exists."
 
       Use case resumes at step 1.
 
 * 1d. Caregiver not assigned to the selected senior
 
-    * 1d1. AddressBook shows: Caregiver not assigned to the selected senior.
+    * 1d1. Neighbourly shows an error message. - "Caregiver not assigned to the selected senior."
 
       Use case resumes at step 1.
 
@@ -663,7 +681,7 @@ Example Commands
 **MSS**
 
 1. User pins a contact by index using pin s/INDEX (for a Senior) or pin c/INDEX (for a Caregiver).
-2. AddressBook sets the selected contact as pinned and moves them to the top of their respective lists. Any previously pinned Senior (when pinning a Senior) and/or Caregiver (when pinning a Caregiver) is unpinned.
+2. Neighbourly sets the selected contact as pinned and moves them to the top of their respective lists. Any previously pinned Senior (when pinning a Senior) and/or Caregiver (when pinning a Caregiver) is unpinned.
 
    Use case ends.
 
@@ -671,25 +689,25 @@ Example Commands
 
 * 1a. Missing required prefix or non-numeric/empty ID (e.g., pin, pin s/, pin s/x)
 
-    * 1a1. AddressBook shows an error message. - "Invalid command format!"
+    * 1a1. Neighbourly shows an error message. - "Invalid command format!"
 
       Use case resumes at step 1.
 
 * 1b. Senior index out of range (e.g., pin s/999)
 
-    * 1b1. AddressBook shows an error message. - "No such senior index exists."
+    * 1b1. Neighbourly shows an error message. - "No such senior index exists."
 
       Use case resumes at step 1.
 
 * 1c. Caregiver index out of range (e.g., pin c/999)
 
-    * 1c1. AddressBook shows an error message. - "No such caregiver index exists."
+    * 1c1. Neighbourly shows an error message. - "No such caregiver index exists."
 
       Use case resumes at step 1.
 
 * 1d. Target already pinned (e.g., trying to pin the already pinned Senior or Caregiver)
 
-    * 1d1. AddressBook shows an error message. - “NAME is already pinned.”
+    * 1d1. Neighbourly shows an error message. - “NAME is already pinned.”
 
       Use case ends.
 
@@ -708,7 +726,7 @@ Example Commands
 **MSS**
 
 1. User unpins using unpin (no argument), or a scoped variant: unpin s (Senior only), unpin c (Caregiver only), or unpin all.
-2. AddressBook remove the pinned highlighted contact(s) and displays the list accordingly.
+2. Neighbourly remove the pinned highlighted contact(s) and displays the list accordingly.
 
    Use case ends.
 
@@ -718,27 +736,27 @@ Example Commands
 
     * If `unpin` with no scope and nothing is pinned:
 
-        * 1a1. AddressBook shows an error message. - "No one is pinned."
+        * 1a1. Neighbourly shows an error message. - "No one is pinned."
     
           Use case resumes at step 1.
     
     * If `unpin s` with no Senior is pinned:
 
-        * 1a1. AddressBook shows an error message. - "No pinned senior."
+        * 1a1. Neighbourly shows an error message. - "No pinned senior."
 
           Use case resumes at step 1.
 
     * If `unpin c` with no Caregiver is pinned:
 
-        * 1a1. AddressBook shows an error message. - "No pinned caregiver."
+        * 1a1. Neighbourly shows an error message. - "No pinned caregiver."
 
           Use case resumes at step 1.
 
 Command Format
 
 * unpin 
-* unpin s | senior 
-* unpin c | caregiver 
+* unpin s | senior | sen
+* unpin c | caregiver | cg
 * unpin a | all
 
 Example Commands
@@ -773,13 +791,15 @@ Example Commands
 * **Case Note**: A record of an interaction with a senior or caregiver (e.g., call, home visit, follow-up).
 * **Emergency Contact**: A designated person to notify during emergencies, stored with name, relationship, and phone
   number.
-* **Risk Tag**: A special tag indicating concerns such as `fall-risk`, `social-isolation`, or `memory-issues` to guide
-  follow-ups.
+* **Risk Tag**: A classification tag used to indicate level of concern associated with a senior,
+such as`Low Risk`, `Medium Risk`, or `High Risk`.
+These tags help to prioritize follow-up actions and inform decision-making.
 * **Senior**: An elderly resident supported or engaged through AAC outreach activities.
 * **Status**: The current state of a contact or case, such as `active`, `inactive`, `referred`, or `closed`.
 * **Tag**: A keyword label assigned to a contact (e.g., `volunteer`, `caregiver`, `zone-west`) to enable filtering and
   grouping.
-* **Volunteer**: A person assigned to support or accompany seniors for check-ins, activities, or emergencies.
+* **Volunteer**: A person assigned to support or accompany seniors for check-ins, activities, or emergencies and
+recorded as a case note.
 * **Visit**: An in-person check-in with a senior, typically conducted at the senior’s home and recorded as a case note.
 * **Human-Editable File**: The plain-text JSON file format used for storing data, viewable and editable without special
   tools.
@@ -825,12 +845,12 @@ testers are expected to do more *exploratory* testing.
 
     1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-    1. Test case: `delete 1`<br>
-       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
+    1. Test case: `delete s/1`<br>
+       Expected: Senior at index 1 is deleted from the list. Details of the deleted contact shown in the status message.
        Timestamp in the status bar is updated.
 
-    1. Test case: `delete 0`<br>
-       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `delete s/0`<br>
+       Expected: No senior is deleted. Error details shown in the status message. Status bar remains the same.
 
     1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
        Expected: Similar to previous.
