@@ -35,7 +35,7 @@ public class AddCaregiverCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New caregiver added: %1$s";
     public static final String MESSAGE_DUPLICATE_CAREGIVER =
-            "Person with the same name already exists. Please amend your entry.";
+            "This phone number is already used by another person. Please amend your entry.";
 
     private final Caregiver toAdd;
 
@@ -58,12 +58,14 @@ public class AddCaregiverCommand extends Command {
         }*/
 
         if (model.hasPhone(toAdd.getPhone())) {
-            throw new CommandException("This phone number is already used by another person.");
+            throw new CommandException(MESSAGE_DUPLICATE_CAREGIVER);
         }
 
         // Always allocate a fresh caregiver id
         final int caregiverId = model.allocateCaregiverId();
         model.addCaregiver(toAdd.withId(caregiverId));
+        model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(toAdd)));
     }

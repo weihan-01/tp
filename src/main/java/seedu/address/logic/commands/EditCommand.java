@@ -5,6 +5,7 @@ import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_CAREGIV
 import static seedu.address.logic.commands.DeleteCommand.MESSAGE_INVALID_SENIOR_INDEX;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
@@ -13,6 +14,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Caregiver;
+import seedu.address.model.person.Phone;
 import seedu.address.model.person.Senior;
 
 /**
@@ -34,8 +36,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %1$s: %2$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_INVALID_INDEX = "The person index provided is invalid.";
-    private static final String MESSAGE_DUPLICATE_PERSON = "This person "
-            + "already exists in the address book.";
+    private static final String MESSAGE_DUPLICATE_PERSON = "This phone number " +
+            "is already used by another person. Please amend your entry.";
     private static final Logger log = LogsCenter.getLogger(EditCommand.class);
 
     private final int index;
@@ -100,6 +102,13 @@ public class EditCommand extends Command {
                 throw new CommandException(MESSAGE_NOT_EDITED);
             }
 
+            Phone maybeUpdatedPhone = editPersonDescriptor.getPhone().orElse(null);
+            if (maybeUpdatedPhone != null
+                    && (isPhoneInUseByOtherSenior(model, maybeUpdatedPhone, seniorToEdit.getId())
+                    || isPhoneInUseByOtherCaregiver(model, maybeUpdatedPhone, null))) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            }
+
             Senior editedSenior = seniorToEdit.edit(editPersonDescriptor);
 
             assert editedSenior != null
@@ -109,11 +118,16 @@ public class EditCommand extends Command {
             assert editedSenior.getId().equals(seniorToEdit.getId())
                     : "Edit must not change the senior's ID";
 
+            if (!seniorToEdit.getPhone().equals(editedSenior.getPhone())
+                    && model.hasPhone(editedSenior.getPhone())) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            }
             if (!seniorToEdit.isSamePerson(editedSenior) && model.hasPerson(editedSenior)) {
                 throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
 
             model.setSenior(seniorToEdit, editedSenior);
+            model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
             model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
             return new CommandResult(
@@ -139,6 +153,13 @@ public class EditCommand extends Command {
 
             if (!editPersonDescriptor.isAnyFieldEdited()) {
                 throw new CommandException(MESSAGE_NOT_EDITED);
+            }
+
+            Phone maybeUpdatedPhone = editPersonDescriptor.getPhone().orElse(null);
+            if (maybeUpdatedPhone != null
+                    && (isPhoneInUseByOtherSenior(model, maybeUpdatedPhone, null)
+                    || isPhoneInUseByOtherCaregiver(model, maybeUpdatedPhone, caregiverToEdit.getId()))) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
             }
 
             Caregiver editedCaregiver = caregiverToEdit.edit(editPersonDescriptor);
@@ -180,6 +201,18 @@ public class EditCommand extends Command {
             return new CommandResult(
                     String.format(MESSAGE_EDIT_PERSON_SUCCESS, "Caregiver", Messages.formatCaregiver(editedCaregiver)));
         }
+    }
+
+    private static boolean isPhoneInUseByOtherSenior(Model model, Phone phone, Integer ignoreSeniorId) {
+        return model.getAllSeniorList().stream()
+                .anyMatch(senior -> !Objects.equals(senior.getId(), ignoreSeniorId)
+                        && senior.getPhone().equals(phone));
+    }
+
+    private static boolean isPhoneInUseByOtherCaregiver(Model model, Phone phone, Integer ignoreCaregiverId) {
+        return model.getAllCaregiverList().stream()
+                .anyMatch(caregiver -> !Objects.equals(caregiver.getId(), ignoreCaregiverId)
+                        && caregiver.getPhone().equals(phone));
     }
 
     @Override

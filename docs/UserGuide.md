@@ -312,7 +312,7 @@ Furthermore, certain edits can cause the Neighbourly to behave in unexpected way
 Edits information of a person.
 Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
-Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...` or
+Format: `edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]...` or
 `edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...
 `
 
