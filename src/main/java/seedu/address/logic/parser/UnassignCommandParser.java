@@ -41,6 +41,10 @@ public class UnassignCommandParser implements Parser<UnassignCommand> {
             throw new ParseException(MESSAGE_MISSING_CAREGIVER_INDEX);
         }
 
+        // Check no duplicate prefixes
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_CAREGIVER, PREFIX_SENIOR);
+
         Integer seniorIndex;
         Integer caregiverIndex;
 

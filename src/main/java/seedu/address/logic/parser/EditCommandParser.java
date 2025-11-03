@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_ADDRESS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
@@ -33,6 +34,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
+
+        // Check no duplicate prefixes
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_NOTE, PREFIX_TAG);
 
         var seniorVals = argMultimap.getAllValues(PREFIX_SENIOR);
         var caregiverVals = argMultimap.getAllValues(PREFIX_CAREGIVER);
@@ -96,6 +101,13 @@ public class EditCommandParser implements Parser<EditCommand> {
         // Address
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             String address = argMultimap.getValue(PREFIX_ADDRESS).get();
+            var addr = ParserUtil.parseAddress(address);
+
+            // Check for empty address for seniors
+            if (isSenior && addr.toString().trim().isEmpty()) {
+                throw new ParseException(MESSAGE_EMPTY_ADDRESS);
+            }
+
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(address));
         }
 

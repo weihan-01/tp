@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_EMPTY_ADDRESS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CID;
@@ -47,6 +48,12 @@ public class AddSeniorCommandParser implements Parser<AddSeniorCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+
+        // Check for empty address
+        if (address.toString().trim().isEmpty()) {
+            throw new ParseException(MESSAGE_EMPTY_ADDRESS);
+        }
+
         Note note = ParserUtil.parseNote(argMultimap.getValue(PREFIX_NOTE).orElse(""));
         // Risk tag as a single Tag (HR|MR|LR) so it passes Tag constraints
         Tag riskTag = ParserUtil.parseRiskTag(argMultimap.getValue(PREFIX_TAG).get());
