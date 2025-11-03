@@ -86,6 +86,8 @@ public class AddSeniorCommand extends Command {
             toAddFinal = toAdd.withId(seniorId).withCaregiver(caregiver);
             model.addSenior(toAddFinal);
         }
+        model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatSenior(toAddFinal)));
     }

@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -92,6 +93,9 @@ public class DeleteCommand extends Command {
                     .forEach(s -> s.setCaregiver(null));
             model.deleteCaregiver(caregiver);
         }
+
+        model.updateFilteredSeniorList(PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredCaregiverList(PREDICATE_SHOW_ALL_PERSONS);
 
         if (senior != null && caregiver == null) {
             return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.formatSenior(senior)));

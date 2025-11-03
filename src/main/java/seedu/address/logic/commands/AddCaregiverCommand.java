@@ -64,6 +64,8 @@ public class AddCaregiverCommand extends Command {
         // Always allocate a fresh caregiver id
         final int caregiverId = model.allocateCaregiverId();
         model.addCaregiver(toAdd.withId(caregiverId));
+        model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
+        model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.formatCaregiver(toAdd)));
     }
