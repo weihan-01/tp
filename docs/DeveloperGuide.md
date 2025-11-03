@@ -1072,3 +1072,10 @@ Planned fixes to known limitations. Per module guidelines, items in this section
     - **Planned change:**
       - Validate each record during load; collect errors per record instead of aborting the whole file.
       - Policy: load all valid records, skip invalid ones, and show a clear summary (e.g., “Skipped 2 invalid records: seniorId must be ≥ 1; missing name. See logs for details.”).
+
+
+4. **Ensure pin stays on top during `find`/`filter`**
+    - **Current behaviour (by design)**: When a find or filter is applied, each list view rebinds to a FilteredList of the visible results. If a pinned person doesn’t match the predicate, they disappear from the header for the view. 
+    - **Why change**: Users treat “Pin” like a favourite/shortcut. During focused searches you often still want instant access to your pinned contacts. Keeping pins visible improves recall and reduces navigation friction. 
+    - **Proposed enhancement**: Show a small, separate Pinned header that is populated from the full model (not the filtered results), so pinned items are always visible.
+    - **Benefits**: Faster access to favourites during searches.

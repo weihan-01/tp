@@ -1,5 +1,7 @@
 @startuml
 !include style.puml
+' Show generics inline in the class name (instead of the tiny corner tag)
+skinparam ClassGenericDisplay full
 skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
@@ -51,7 +53,7 @@ Person *--> "1" Address
 Person *--> "0..1" Note
 
 Person -[hidden]right--> I
-UniquePersonListSenior -[hidden]right> I
+UniquePersonListSenior -[hidden]left> I
 UniquePersonListCaregiver -[hidden]right> I
 AddressBook -[hidden]right> I
 

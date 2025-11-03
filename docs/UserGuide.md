@@ -190,7 +190,7 @@ Shows Seniors whose risk tags match any of the provided tags.
 
 Format: `filter t/TAG`
 
-* Allowed tags: `lr`, `mr`, `hr` (input is case-insensitive; stored/compared in lowercase).
+* Allowed tags: `lr`, `mr`, `hr` (input is case-insensitive; compared in lowercase).
 * Supplying an invalid tag (e.g., t/hello) results in an error.
 * If no seniors match, the list becomes empty and the status shows 0 persons listed!
 
@@ -212,6 +212,8 @@ Format: `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX`
 * Attempting to pin multiple individuals in a single command will result in an error.
 * If a senior or caregiver is already pinned, issuing a new pin command will replace the existing one. 
 The previously pinned person will be automatically unpinned.
+* **Note on search/filter**: The pinned person is shown at the top of the normal list views.
+  During find or filter, only results that match the query are shown; the pinned person appears only if they match the current query.
 
 Examples:
 * `pin s/1` — pins senior at senior index 1 
