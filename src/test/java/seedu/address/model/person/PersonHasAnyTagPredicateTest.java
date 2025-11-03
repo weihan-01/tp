@@ -1,6 +1,8 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -14,43 +16,37 @@ public class PersonHasAnyTagPredicateTest {
 
     @Test
     public void test_singleMatch_true() {
-        var p = new SeniorBuilder().withTags("lr").build();
+        var p = new SeniorBuilder().withRiskTag("lr").build();
         assertTrue(new PersonHasAnyTagPredicate(List.of("lr")).test(p));
     }
 
     @Test
-    public void test_anyOfMultiple_true() {
-        var p = new SeniorBuilder().withTags("hr", "mr").build();
-        assertTrue(new PersonHasAnyTagPredicate(List.of("lr", "mr")).test(p));
-    }
-
-    @Test
     public void test_personTagsCaseInsensitive_true() {
-        var p = new SeniorBuilder().withTags("HR").build();
+        var p = new SeniorBuilder().withRiskTag("HR").build();
         assertTrue(new PersonHasAnyTagPredicate(List.of("hr")).test(p));
     }
 
     @Test
     public void test_noMatch_false() {
-        var p = new SeniorBuilder().withTags("mr").build();
+        var p = new SeniorBuilder().withRiskTag("mr").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(p));
     }
 
     @Test
     public void test_emptyTargets_false() {
-        var p = new SeniorBuilder().withTags("mr").build();
+        var p = new SeniorBuilder().withRiskTag("mr").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of()).test(p));
     }
 
     @Test
     void test_nonSenior_returnsFalse() {
-        var caregiver = new CaregiverBuilder().withName("CG").withCaregiverId("c7").build();
+        var caregiver = new CaregiverBuilder().withName("CG").withCaregiverId(7).build();
         assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(caregiver));
     }
 
     @Test
     void emptyTargets_failClosed_false() {
-        var senior = new SeniorBuilder().withTags("mr").build();
+        var senior = new SeniorBuilder().withRiskTag("mr").build();
         assertFalse(new PersonHasAnyTagPredicate(List.of()).test(senior));
     }
 
@@ -63,7 +59,7 @@ public class PersonHasAnyTagPredicateTest {
     // (optional but good): ensure non-senior guard stays covered
     @Test
     void nonSenior_returnsFalse() {
-        var cg = new CaregiverBuilder().withCaregiverId("c5").build();
+        var cg = new CaregiverBuilder().withCaregiverId(5).build();
         assertFalse(new PersonHasAnyTagPredicate(List.of("lr")).test(cg));
     }
 
@@ -71,20 +67,20 @@ public class PersonHasAnyTagPredicateTest {
     void equals_sameContent_true() {
         var a = new PersonHasAnyTagPredicate(List.of("lr", "hr"));
         var b = new PersonHasAnyTagPredicate(List.of("lr", "hr"));
-        assertTrue(a.equals(b)); // instanceof true, Objects.equals true
+        assertEquals(a, b); // instanceof true, Objects.equals true
     }
 
     @Test
     void equals_differentContent_false() {
         var a = new PersonHasAnyTagPredicate(List.of("lr"));
         var b = new PersonHasAnyTagPredicate(List.of("mr"));
-        assertFalse(a.equals(b)); // instanceof true, Objects.equals false
+        assertNotEquals(a, b); // instanceof true, Objects.equals false
     }
 
     @Test
     void equals_nullAndDifferentType_false() {
         var a = new PersonHasAnyTagPredicate(List.of("lr"));
-        assertFalse(a.equals(null)); // null path
-        assertFalse(a.equals("notPred")); // instanceof false path
+        assertNotEquals(null, a); // null path
+        assertNotEquals("notPred", a); // instanceof false path
     }
 }

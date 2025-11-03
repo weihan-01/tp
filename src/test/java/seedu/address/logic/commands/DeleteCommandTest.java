@@ -1,25 +1,21 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.testutil.TypicalIndexes.*;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRTEEN_PERSON;
+import static seedu.address.testutil.TypicalIndexes.NEGATIVE_INDEX;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Caregiver;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.Senior;
 import seedu.address.testutil.TestUtil;
-import seedu.address.testutil.TypicalPersons;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -58,7 +54,7 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON, null);
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
-                Messages.format(seniorToDelete));
+                Messages.formatSenior(seniorToDelete));
 
         // Build expected model and message
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
@@ -86,7 +82,7 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = new DeleteCommand(null, INDEX_FIRST_PERSON);
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
-                Messages.format(caregiverToDelete));
+                Messages.formatCaregiver(caregiverToDelete));
 
         // Build expected model and message
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());

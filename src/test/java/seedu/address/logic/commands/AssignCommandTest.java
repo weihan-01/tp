@@ -77,8 +77,8 @@ public class AssignCommandTest {
         Senior senior = maybeSenior.get();
         Caregiver caregiver = maybeCaregiver.get();
 
-        Integer seniorId = senior.getSeniorId();
-        Integer caregiverId = caregiver.getCaregiverId();
+        Integer seniorId = senior.getId();
+        Integer caregiverId = caregiver.getId();
 
         AssignCommand command = new AssignCommand(seniorId, caregiverId);
 
@@ -105,8 +105,8 @@ public class AssignCommandTest {
         expectedModel.updateFilteredSeniorList(seniorOnly);
         expectedModel.updateFilteredCaregiverList(caregiverOnly);
 
-        Integer seniorId = targetSenior.getSeniorId();
-        Integer caregiverId = targetCaregiver.getCaregiverId();
+        Integer seniorId = targetSenior.getId();
+        Integer caregiverId = targetCaregiver.getId();
 
         AssignCommand command = new AssignCommand(seniorId, caregiverId);
 
@@ -128,7 +128,7 @@ public class AssignCommandTest {
         if (maybeCaregiver.isEmpty()) {
             return;
         }
-        Integer caregiverId = maybeCaregiver.get().getCaregiverId();
+        Integer caregiverId = maybeCaregiver.get().getId();
 
         AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
@@ -143,7 +143,7 @@ public class AssignCommandTest {
         if (maybeSenior.isEmpty()) {
             return;
         }
-        Integer seniorId = maybeSenior.get().getSeniorId();
+        Integer seniorId = maybeSenior.get().getId();
 
         AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
@@ -164,7 +164,7 @@ public class AssignCommandTest {
         expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
 
         Integer invalidSeniorId = 999_999; // definitely not in model
-        Integer caregiverId = onlyCaregiver.getCaregiverId();
+        Integer caregiverId = onlyCaregiver.getId();
 
         AssignCommand command = new AssignCommand(invalidSeniorId, caregiverId);
         assertCommandFailure(command, model, AssignCommand.MESSAGE_INVALID_SENIOR_INDEX);
@@ -183,7 +183,7 @@ public class AssignCommandTest {
         model.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
         expectedModel.updateFilteredCaregiverList(c -> c.equals(onlyCaregiver));
 
-        Integer seniorId = onlySenior.getSeniorId();
+        Integer seniorId = onlySenior.getId();
         Integer invalidCaregiverId = 999_999;
 
         AssignCommand command = new AssignCommand(seniorId, invalidCaregiverId);

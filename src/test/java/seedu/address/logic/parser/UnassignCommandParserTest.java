@@ -7,7 +7,6 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UnassignCommand;
 
 /**
@@ -24,7 +23,7 @@ public class UnassignCommandParserTest {
     @Test
     public void parse_validArgs_returnsUnassignCommand() {
         String userInput = " " + PREFIX_SENIOR + "1 " + PREFIX_CAREGIVER + "2";
-        UnassignCommand expectedCommand = new UnassignCommand(Index.fromOneBased(1), Index.fromOneBased(2));
+        UnassignCommand expectedCommand = new UnassignCommand(1, 2);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 

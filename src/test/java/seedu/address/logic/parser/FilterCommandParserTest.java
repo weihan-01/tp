@@ -32,7 +32,7 @@ public class FilterCommandParserTest {
     @Test
     public void parse_noTags_failure() {
         ParseException ex = assertThrows(ParseException.class, () -> parser.parse("   "));
-        assertEquals(FilterCommand.MESSAGE_NO_TAGS, ex.getMessage());
+        assertEquals(FilterCommand.MESSAGE_NO_TAG, ex.getMessage());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class FilterCommandParserTest {
     void parse_onlyBlankTagValue() {
         // Only an empty value -> loop hits `continue;`, tags list remains empty -> MESSAGE_NO_TAGS
         ParseException ex = assertThrows(ParseException.class, () -> new FilterCommandParser().parse(" t/    "));
-        assertEquals(FilterCommand.MESSAGE_NO_TAGS, ex.getMessage());
+        assertEquals(FilterCommand.MESSAGE_NO_TAG, ex.getMessage());
     }
 
     @Test
@@ -76,6 +76,6 @@ public class FilterCommandParserTest {
     @Test
     void parse_onlyBlankTagValueTreatedAsNoTags() {
         ParseException ex = assertThrows(ParseException.class, () -> new FilterCommandParser().parse(" t/    "));
-        assertEquals(FilterCommand.MESSAGE_NO_TAGS, ex.getMessage());
+        assertEquals(FilterCommand.MESSAGE_NO_TAG, ex.getMessage());
     }
 }

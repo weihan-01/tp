@@ -27,16 +27,21 @@ public class CommandTestUtil {
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
+    public static final String VALID_NAME_CHARLES = "Charles Tan";
     public static final String VALID_PHONE_AMY = "11111111";
     public static final String VALID_PHONE_BOB = "22222222";
+    public static final String VALID_PHONE_CHARLES = "98765432";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
+    public static final String VALID_ADDRESS_CHARLES = "Block 456, Charles Street 6";
     public static final String VALID_TAG_AMY = "High Risk";
     public static final String VALID_TAG_BOB = "LR";
+    public static final String VALID_TAG_CHARLES = "MR";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_NOTE_AMY = "Trained in physiotherapy";
     public static final String VALID_NOTE_BOB = "Experienced with dementia patients";
+    public static final String VALID_NOTE_CHARLES = "Has severe dementia, requires extra care";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;

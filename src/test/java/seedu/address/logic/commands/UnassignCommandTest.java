@@ -52,8 +52,8 @@ public class UnassignCommandTest {
         Senior senior = maybePair.get().first;
         Caregiver caregiver = maybePair.get().second;
 
-        Integer seniorId = senior.getSeniorId();
-        Integer caregiverId = caregiver.getCaregiverId();
+        Integer seniorId = senior.getId();
+        Integer caregiverId = caregiver.getId();
 
         UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
 
@@ -82,8 +82,8 @@ public class UnassignCommandTest {
         expectedModel.updateFilteredSeniorList(seniorOnly);
         expectedModel.updateFilteredCaregiverList(caregiverOnly);
 
-        Integer seniorId = targetSenior.getSeniorId();
-        Integer caregiverId = targetCaregiver.getCaregiverId();
+        Integer seniorId = targetSenior.getId();
+        Integer caregiverId = targetCaregiver.getId();
 
         UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
 
@@ -103,7 +103,7 @@ public class UnassignCommandTest {
         if (maybeCaregiver.isEmpty()) {
             return;
         }
-        Integer caregiverId = maybeCaregiver.get().getCaregiverId();
+        Integer caregiverId = maybeCaregiver.get().getId();
 
         UnassignCommand command = new UnassignCommand(invalidSeniorId, caregiverId);
         // Use the same constant names as AssignCommand for consistency; rename if your UnassignCommand differs
@@ -118,7 +118,7 @@ public class UnassignCommandTest {
         if (maybeSenior.isEmpty()) {
             return;
         }
-        Integer seniorId = maybeSenior.get().getSeniorId();
+        Integer seniorId = maybeSenior.get().getId();
 
         UnassignCommand command = new UnassignCommand(seniorId, invalidCaregiverId);
         assertCommandFailure(command, model, UnassignCommand.MESSAGE_INVALID_CAREGIVER_INDEX);
@@ -137,8 +137,8 @@ public class UnassignCommandTest {
         // Case A: senior without caregiver
         for (Senior s : seniors) {
             if (!s.hasCaregiver()) {
-                Integer seniorId = s.getSeniorId();
-                Integer caregiverId = caregivers.get(0).getCaregiverId();
+                Integer seniorId = s.getId();
+                Integer caregiverId = caregivers.get(0).getId();
                 UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
                 assertCommandFailure(command, model, UnassignCommand.MESSAGE_NOT_ASSIGNED);
                 return;
@@ -147,11 +147,11 @@ public class UnassignCommandTest {
 
         // Case B: all seniors have caregivers; pick a caregiver different from the senior's current one
         for (Senior s : seniors) {
-            Integer current = s.getCaregiver().getCaregiverId();
+            Integer current = s.getCaregiver().getId();
             for (Caregiver c : caregivers) {
-                if (!c.getCaregiverId().equals(current)) {
-                    Integer seniorId = s.getSeniorId();
-                    Integer caregiverId = c.getCaregiverId();
+                if (!c.getId().equals(current)) {
+                    Integer seniorId = s.getId();
+                    Integer caregiverId = c.getId();
                     UnassignCommand command = new UnassignCommand(seniorId, caregiverId);
                     assertCommandFailure(command, model, UnassignCommand.MESSAGE_NOT_ASSIGNED);
                     return;

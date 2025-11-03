@@ -61,8 +61,8 @@ public class SeniorBuilder {
         riskTag  = seniorToCopy.getRiskTag();
         note = seniorToCopy.getNote();
         caregiver  = seniorToCopy.getCaregiver();
-        seniorId = seniorToCopy.getSeniorId();
-        isPinned = seniorToCopy.isPinned();
+        seniorId = seniorToCopy.getId();
+        isPinned = seniorToCopy.getPinned();
     }
 
     /**

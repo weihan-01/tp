@@ -30,7 +30,9 @@ class JsonAdaptedSenior {
     private final Integer seniorId;
     private final Integer caregiverId;
 
-    /** Constructs from JSON. */
+    /**
+     * Constructs from JSON.
+     */
     @JsonCreator
     public JsonAdaptedSenior(@JsonProperty("name") String name,
                              @JsonProperty("phone") String phone,
@@ -50,7 +52,9 @@ class JsonAdaptedSenior {
         this.pinned = pinned;
     }
 
-    /** Constructs from model. */
+    /**
+     * Constructs from model.
+     */
     public JsonAdaptedSenior(Senior source) {
         this.name = source.getName().fullName;
         this.phone = source.getPhone().value;
@@ -62,12 +66,16 @@ class JsonAdaptedSenior {
         this.pinned = source.getPinned();
     }
 
-    /** Returns the caregiver ID provided, */
+    /**
+     * Returns the caregiver ID provided,
+     */
     public Integer getCaregiverId() {
         return caregiverId;
     }
 
-    /** Converts this JSON-friendly object back into the model's {@code Person} subtype. */
+    /**
+     * Converts this JSON-friendly object back into the model's {@code Person} subtype.
+     */
     public Senior toModelType() throws IllegalValueException {
         // Validate common fields
         if (name == null) {
@@ -94,6 +102,9 @@ class JsonAdaptedSenior {
         }
         final Address modelAddress = new Address(address);
 
+        if (riskTag == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "riskTag"));
+        }
         if (!Tag.isValidTagName(riskTag)) {
             throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
         }
@@ -101,6 +112,10 @@ class JsonAdaptedSenior {
         final Tag modelRiskTag = new Tag(riskTag);
 
         final Note modelNote = (note == null) ? new Note("") : new Note(note);
+
+        if (pinned == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "pinned"));
+        }
 
         return new Senior(modelName, modelPhone, modelAddress, modelRiskTag, modelNote, null, seniorId, pinned);
     }

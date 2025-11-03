@@ -52,7 +52,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_pinSenior_success() throws Exception {
-        Integer id = firstSenior.getSeniorId();
+        Integer id = firstSenior.getId();
         PinCommand command = new PinCommand(id, null);
 
         String expectedMessage = String.format(PinCommand.MESSAGE_SUCCESS, Messages.formatSenior(firstSenior));
@@ -62,7 +62,7 @@ public class PinCommandTest {
 
     @Test
     public void execute_pinCaregiver_success() throws Exception {
-        Integer id = firstCaregiver.getCaregiverId();
+        Integer id = firstCaregiver.getId();
         PinCommand command = new PinCommand(null, id);
 
         String expectedMessage = String.format(PinCommand.MESSAGE_SUCCESS, Messages.formatCaregiver(firstCaregiver));
@@ -74,8 +74,8 @@ public class PinCommandTest {
     @Test
     public void execute_pinAlreadyPinnedSenior_usesAlreadyPinnedMessage() throws Exception {
         // Ensure both models are in pinned state, pin the first senior
-        Integer id = firstSenior.getSeniorId();
-        if (!firstSenior.isPinned()) {
+        Integer id = firstSenior.getId();
+        if (!firstSenior.getPinned()) {
             new PinCommand(id, null).execute(model);
         }
         // Mirror on expectedModel so both are equal pre-assert
@@ -85,7 +85,7 @@ public class PinCommandTest {
         PinCommand command = new PinCommand(id, null);
         String expectedMessage = String.format(PinCommand.MESSAGE_ALREADY_PINNED,
                 model.getFilteredSeniorList().stream()
-                        .filter(s -> id.equals(s.getSeniorId()))
+                        .filter(s -> id.equals(s.getId()))
                         .findFirst().orElseThrow().getName());
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
@@ -94,8 +94,8 @@ public class PinCommandTest {
     @Test
     public void execute_pinAlreadyPinnedCaregiver_usesAlreadyPinnedMessage() throws Exception {
         // Ensure both models are in pinned state, pin the first caregiver
-        Integer id = firstCaregiver.getCaregiverId();
-        if (!firstCaregiver.isPinned()) {
+        Integer id = firstCaregiver.getId();
+        if (!firstCaregiver.getPinned()) {
             new PinCommand(null, id).execute(model);
         }
         new PinCommand(null, id).execute(expectedModel);
@@ -103,7 +103,7 @@ public class PinCommandTest {
         PinCommand command = new PinCommand(null, id);
         String expectedMessage = String.format(PinCommand.MESSAGE_ALREADY_PINNED,
                 model.getFilteredCaregiverList().stream()
-                        .filter(c -> id.equals(c.getCaregiverId()))
+                        .filter(c -> id.equals(c.getId()))
                         .findFirst().orElseThrow().getName());
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);

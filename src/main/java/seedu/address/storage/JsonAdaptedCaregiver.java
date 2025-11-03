@@ -30,8 +30,7 @@ class JsonAdaptedCaregiver {
 
     /** Constructs from JSON. */
     @JsonCreator
-    public JsonAdaptedCaregiver(@JsonProperty("role") String role,
-                                @JsonProperty("name") String name,
+    public JsonAdaptedCaregiver(@JsonProperty("name") String name,
                                 @JsonProperty("phone") String phone,
                                 @JsonProperty("address") String address,
                                 @JsonProperty("note") String note,

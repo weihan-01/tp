@@ -32,7 +32,7 @@ public class PersonTest {
 
         // same name, all other attributes different -> returns true
         Person editedAlice = new CaregiverBuilder(ALICE).withPhone(VALID_PHONE_BOB)
-                .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
+                .withAddress(VALID_ADDRESS_BOB).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
         // different name, all other attributes same -> returns false
@@ -86,8 +86,8 @@ public class PersonTest {
 
     @Test
     public void toStringMethod() {
-        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-                + ", address=" + ALICE.getAddress() + ", note=" + ALICE.getNote() + "}";
+        String expected = Caregiver.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
+                + ", address=" + ALICE.getAddress() + ", note=" + ALICE.getNote() + "}{caregiverId=" + ALICE.getId() + "}";
         assertEquals(expected, ALICE.toString());
     }
 }

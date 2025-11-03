@@ -1,8 +1,14 @@
 {
-  "persons": [ {
+  "seniors": [ {
     "name": "Person with invalid name field: Ha!ns Mu@ster",
     "phone": "9482424",
-    "email": "hans@example.com",
-    "address": "4th street"
-  } ]
+    "address": "4th street",
+    "note" : "PINNED | Has dementia",
+    "seniorId" : 1,
+    "caregiverId" : 2,
+    "pinned" : false,
+    "riskTag" : "HR"
+  } ],
+  "seniorSeq" : 1,
+  "caregiverSeq" : 0
 }

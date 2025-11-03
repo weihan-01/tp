@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +41,7 @@ public class FilterCommandTest {
         aliceLr = new SeniorBuilder().withName("Alice").withRiskTag("lr").build();
         bobMr = new SeniorBuilder().withName("Bob").withRiskTag("mr").build();
         caraHr = new SeniorBuilder().withName("Cara").withRiskTag("hr").build();
-        danFriend = new SeniorBuilder().withName("Dan").withRiskTag("friend").build(); // non-risk tag
+        danFriend = new SeniorBuilder().withName("Dan").withRiskTag("high risk").build();
 
         ab.addSenior(aliceLr);
         ab.addSenior(bobMr);
@@ -53,9 +54,9 @@ public class FilterCommandTest {
 
     @Test
     public void equals() {
-        var p1 = new PersonHasAnyTagPredicate("lr");
-        var p2 = new PersonHasAnyTagPredicate("mr");
-        var p3 = new PersonHasAnyTagPredicate("hr");
+        var p1 = new PersonHasAnyTagPredicate(List.of("lr"));
+        var p2 = new PersonHasAnyTagPredicate(List.of("mr"));
+        var p3 = new PersonHasAnyTagPredicate(List.of("hr"));
 
         FilterCommand c1 = new FilterCommand(p1);
         FilterCommand c2 = new FilterCommand(p2);
@@ -72,7 +73,7 @@ public class FilterCommandTest {
     @Test
     public void execute_zeroMatches_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        var predicate = new PersonHasAnyTagPredicate("unknown"); // tag that nobody has
+        var predicate = new PersonHasAnyTagPredicate(List.of("unknown")); // tag that nobody has
         FilterCommand command = new FilterCommand(predicate);
 
         expectedModel.updateFilteredSeniorList(predicate);
@@ -83,7 +84,7 @@ public class FilterCommandTest {
     @Test
     public void execute_singleTag_filtersOne() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        var predicate = new PersonHasAnyTagPredicate("lr");
+        var predicate = new PersonHasAnyTagPredicate(List.of("lr"));
         FilterCommand command = new FilterCommand(predicate);
 
         expectedModel.updateFilteredSeniorList(predicate);
@@ -97,8 +98,8 @@ public class FilterCommandTest {
     public void execute_multipleTags_orAcrossTags() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
         Predicate<Person> predicate =
-                new PersonHasAnyTagPredicate("lr")
-                        .or(new PersonHasAnyTagPredicate("hr"));
+                new PersonHasAnyTagPredicate(List.of("lr"))
+                        .or(new PersonHasAnyTagPredicate(List.of("hr")));
         FilterCommand command = new FilterCommand(predicate);
 
         expectedModel.updateFilteredSeniorList(predicate);
@@ -112,7 +113,7 @@ public class FilterCommandTest {
 
     @Test
     public void toStringMethod() {
-        var predicate = new PersonHasAnyTagPredicate("lr");
+        var predicate = new PersonHasAnyTagPredicate(List.of("lr"));
         var cmd = new FilterCommand(predicate);
         String expected = FilterCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, cmd.toString());

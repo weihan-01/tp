@@ -2,14 +2,18 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_CHARLES;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_CHARLES;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NOTE_CHARLES;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_CHARLES;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_CHARLES;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +40,7 @@ public class TypicalPersons {
             .withPhone("98765432")
             .withNote("Experience with dementia care")
             .withPinned(false)
+            .withCaregiverId(1)
             .build();
     public static final Caregiver CARL = new CaregiverBuilder()
             .withName("Carl Kurz")
@@ -87,7 +92,7 @@ public class TypicalPersons {
             .withAddress("Little India")
             .withRiskTag("MR")
             .withNote("Prone to falling")
-            //.withCaregiver(BENSON)
+//            .withCaregiver(BENSON)
             .withPinned(false)
             .build();
     public static final Caregiver IDA = new CaregiverBuilder()
@@ -100,34 +105,43 @@ public class TypicalPersons {
 
     // Manually added - Person's details found in {@code CommandTestUtil}
 
-    public static final Caregiver AMY = new CaregiverBuilder()
+    public static final Senior AMY = new SeniorBuilder()
             .withName(VALID_NAME_AMY)
             .withPhone(VALID_PHONE_AMY)
             .withAddress(VALID_ADDRESS_AMY)
-            //.withTags(VALID_TAG_FRIEND)
+            .withRiskTag(VALID_TAG_AMY)
             .withNote(VALID_NOTE_AMY).build();
     public static final Caregiver BOB = new CaregiverBuilder()
             .withName(VALID_NAME_BOB)
             .withPhone(VALID_PHONE_BOB)
             .withAddress(VALID_ADDRESS_BOB)
-            //.withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .withNote(VALID_NOTE_BOB)
             .build();
+    public static final Senior CHARLES = new SeniorBuilder()
+            .withName(VALID_NAME_CHARLES)
+            .withPhone(VALID_PHONE_CHARLES)
+            .withAddress(VALID_ADDRESS_CHARLES)
+            .withRiskTag(VALID_TAG_CHARLES)
+            .withNote(VALID_NOTE_CHARLES).build();
 
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
-    private TypicalPersons() {} // prevents instantiation
+    private TypicalPersons() {
+    } // prevents instantiation
 
     /**
      * Returns an {@code AddressBook} with all the typical persons.
      */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
+
         for (Senior senior : getTypicalSeniors()) {
+            System.out.println(senior);
             ab.addSenior(senior);
         }
         for (Caregiver caregiver : getTypicalCaregivers()) {
+            System.out.println(caregiver);
             ab.addCaregiver(caregiver);
         }
         return ab;

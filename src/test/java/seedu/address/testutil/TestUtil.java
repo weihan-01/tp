@@ -38,7 +38,7 @@ public class TestUtil {
     public static Senior getSenior(Model model, Integer index) {
         return model.getFilteredSeniorList().stream()
                 .filter(s -> {
-                    Integer seniorId = s.getSeniorId();
+                    Integer seniorId = s.getId();
                     return seniorId != null && (seniorId.equals(index));
                 })
                 .findFirst()
@@ -51,7 +51,7 @@ public class TestUtil {
     public static Caregiver getCaregiver(Model model, Integer index) {
         return model.getFilteredCaregiverList().stream()
              .filter(c -> {
-                 Integer caregiverId = c.getCaregiverId();
+                 Integer caregiverId = c.getId();
                  return caregiverId != null && (caregiverId.equals(index));
              })
              .findFirst()
