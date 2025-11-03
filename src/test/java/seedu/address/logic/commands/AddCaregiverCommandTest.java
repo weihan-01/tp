@@ -42,7 +42,9 @@ public class AddCaregiverCommandTest {
 
         AddCaregiverCommand command = new AddCaregiverCommand(newCaregiver);
 
-        String expectedMessage = String.format(AddCaregiverCommand.MESSAGE_SUCCESS, Messages.formatCaregiver(newCaregiver));
+        String expectedMessage = String.format(
+                AddCaregiverCommand.MESSAGE_SUCCESS,
+                Messages.formatCaregiver(newCaregiver));
 
         Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
         expectedModel.addCaregiver(newCaregiver.withId(1));

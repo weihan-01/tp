@@ -107,7 +107,9 @@ public class AddSeniorCommandTest {
         Senior senior = new SeniorBuilder().withName(VALID_NAME_CHARLES).withPhone(VALID_PHONE_CHARLES)
                 .withAddress(VALID_ADDRESS_CHARLES).withRiskTag(VALID_TAG_CHARLES).build();
         AddSeniorCommand command = new AddSeniorCommand(senior, ID_THIRTEEN_PERSON);
-        assertCommandFailure(command, model, String.format(AddSeniorCommand.MESSAGE_NO_SUCH_CAREGIVER, ID_THIRTEEN_PERSON));
+        assertCommandFailure(command, model, String.format(
+                AddSeniorCommand.MESSAGE_NO_SUCH_CAREGIVER,
+                ID_THIRTEEN_PERSON));
     }
 
     @Test
