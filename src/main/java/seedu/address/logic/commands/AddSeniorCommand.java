@@ -63,8 +63,12 @@ public class AddSeniorCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
+        /*if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_SENIOR);
+        }*/
+
+        if (model.hasPhone(toAdd.getPhone())) {
+            throw new CommandException("This phone number is already used by another person.");
         }
 
         final Senior toAddFinal;

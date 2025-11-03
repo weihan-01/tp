@@ -53,8 +53,12 @@ public class AddCaregiverCommand extends Command {
 
         // Duplicate rule: same name + same phone
         // Person cannot be a senior and caregiver simultaneously
-        if (model.hasPerson(toAdd)) {
+        /*if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_CAREGIVER);
+        }*/
+
+        if (model.hasPhone(toAdd.getPhone())) {
+            throw new CommandException("This phone number is already used by another person.");
         }
 
         // Always allocate a fresh caregiver id
