@@ -31,9 +31,9 @@ Neighbourly is a **desktop app for managing senior and caregiver contacts, optim
 
    * `list` : Lists all contacts.
 
-   * `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/1` : Adds a senior contact named `Lim Ah Kow` to the address book.
+   * `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 nt/Has dementia c/1` : Adds a senior contact named `Lim Ah Kow` to the address book.
 
-   * `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 n/Has experience with dementia caregiving` : Adds a caregiver contact named `Mei Hui` to the address book.
+   * `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving` : Adds a caregiver contact named `Mei Hui` to the address book.
 
    * `delete s/1` : Deletes the senior at index 1.
 
@@ -169,7 +169,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
+* `find siew john` returns `Ong Siew Ling`, `John Tan`<br>
 
   ![result for 'find command'](images/find-command.png)
 
@@ -209,7 +209,7 @@ Examples:
 
   ![result for 'pin s/1'](images/pin-senior-1.png)
 
-### Unpin a person(s) by their index: `unpin`
+### Unpin a person(s): `unpin`
 
 Unpin a senior, a caregiver or both.
 Changes will be reflected on the display panel.

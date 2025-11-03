@@ -23,10 +23,10 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of a senior or caregiver using their unique ID.\n"
+            + ": Edits the details of a senior or caregiver using their unique index.\n"
             + "Specify exactly one person type (senior or caregiver).\n"
-            + "Format: edit s/<SENIOR_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]...\n"
-            + "        edit c/<CAREGIVER_ID> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...\n"
+            + "Format: edit s/<SENIOR_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]...\n"
+            + "        edit c/<CAREGIVER_INDEX> [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]...\n"
             + "Examples:\n"
             + "  " + COMMAND_WORD + " s/1 n/John Tan p/91234567\n"
             + "  " + COMMAND_WORD + " c/2 n/Jane Lim";

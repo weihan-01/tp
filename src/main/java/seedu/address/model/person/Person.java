@@ -70,9 +70,13 @@ public abstract class Person {
         if (otherPerson == this) {
             return true;
         }
-
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        if (otherPerson == null) {
+            return false;
+        }
+        // case-insensitive duplicate check
+        String a = this.getName().fullName.trim();
+        String b = otherPerson.getName().fullName.trim();
+        return a.equalsIgnoreCase(b);
     }
 
     /**
