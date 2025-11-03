@@ -10,7 +10,6 @@ import seedu.address.logic.commands.EditPersonDescriptor;
 /**
  * Represents an abstract Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
- *
  */
 public abstract class Person {
 
@@ -27,10 +26,10 @@ public abstract class Person {
      * Initializes Person fields with all required person attributes.
      * Fields must be present and not null.
      *
-     * @param name Name of the person
-     * @param phone Phone number of the person
-     * @param address Address of the person's home
-     * @param note Additional notes for the person
+     * @param name     Name of the person
+     * @param phone    Phone number of the person
+     * @param address  Address of the person's home
+     * @param note     Additional notes for the person
      * @param isPinned Whether the person is pinned
      */
     public Person(Name name, Phone phone, Address address, Note note, boolean isPinned) {
@@ -67,7 +66,11 @@ public abstract class Person {
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
-        return otherPerson == this;
+        if (otherPerson == null) {
+            return false;
+        }
+        return this.name.equals(otherPerson.name)
+                && this.phone.equals(otherPerson.phone);
     }
 
     /**

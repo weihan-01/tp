@@ -54,8 +54,8 @@ public class CaregiverCard extends UiPart<Region> {
     /**
      * Creates a {@code CaregiverCard} with the given {@code Caregiver} and backing {@code Logic}.
      *
-     * @param caregiver      the caregiver whose data is displayed by this card (non-null)
-     * @param logic          logic facade for querying assignment names; may be null in tests
+     * @param caregiver the caregiver whose data is displayed by this card (non-null)
+     * @param logic     logic facade for querying assignment names; may be null in tests
      */
     public CaregiverCard(Caregiver caregiver, Logic logic) {
         super(FXML);
@@ -179,9 +179,11 @@ public class CaregiverCard extends UiPart<Region> {
                 return;
             }
 
-            for (Senior s: assigned) {
+            for (Senior s : assigned) {
                 String n = s.getName().toString();
-                if (n.length() > 15) n = n.substring(0, 15) + "...";
+                if (n.length() > 15) {
+                    n = n.substring(0, 15) + "...";
+                }
                 int idx = s.getId();
                 String label;
 

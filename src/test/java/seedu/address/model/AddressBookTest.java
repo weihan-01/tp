@@ -75,8 +75,10 @@ public class AddressBookTest {
     @Test
     public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
         addressBook.addCaregiver(ALICE);
-        Caregiver editedAlice = new CaregiverBuilder(ALICE).withAddress(VALID_ADDRESS_BOB)
+        Caregiver editedAlice = new CaregiverBuilder(ALICE)
+                .withAddress(VALID_ADDRESS_BOB)
                 .build();
+
         assertTrue(addressBook.hasPerson(editedAlice));
     }
 
