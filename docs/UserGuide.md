@@ -247,15 +247,17 @@ Deletes the specified senior/caregiver from the address book.
 
 [Warning] Deleting a person will permanently remove their contact from the system. 
 
-Format: `delete c/CAREGIVER_INDEX or s/SENIOR_INDEX`
+Format: `delete c/CAREGIVER_INDEX or delete s/SENIOR_INDEX or delete s/SENIOR_INDEX c/CAREGIVER_INDEX`
 
 * Deletes the senior/caregiver with the specified `CAREGIVER_INDEX` or `SENIOR_INDEX`.
-* The `CAREGIVER_INDEX` or `SENIOR_INDEX` refers to the index number shown in the displayed senior/caregiver list.
-* The `CAREGIVER_INDEX` or `SENIOR_INDEX` **must be a positive integer** 1, 2, 3, …
+* The `CAREGIVER_INDEX` or `SENIOR_INDEX` refers to the index number shown in the displayed senior/caregiver list (i.e. the C000001 that appears below the name).
+* The `CAREGIVER_INDEX` or `SENIOR_INDEX` **must be a positive integer** 1, 2, 3, … (without the letter C or S or the leading 0s).
+* At most 1 caregiver and 1 senior can be deleted at the same time, i.e. deleting 1 senior and 1 caregiver at the same time is possible.
 
 Examples:
 * `delete c/2` deletes the caregiver with caregiver index 2.
 * `delete s/2` deletes the senior with senior index 2.
+* `delete c/2 s/2` deletes the senior with senior index 2 and also the caregiver with caregiver index 2.
 
 ### Clearing all entries : `clear`
 
@@ -363,6 +365,6 @@ Examples:
 | **Unpin**              | `unpin s`, `unpin c`, or `unpin a` <br> e.g., `unpin s` (unpins senior), `unpin c` (unpins caregiver), `unpin` or `unpin a` (unpins all)                                                   |
 | **List**               | `list`                                                                                                                                                                                     |
 | **Find**               | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                                                 |
-| **Delete**             | `delete s/SENIOR_INDEX` or `delete c/CAREGIVER_INDEX` <br> e.g., `delete s/3`                                                                                                              |
+| **Delete**             | `delete s/SENIOR_INDEX` or `delete c/CAREGIVER_INDEX` or `delete s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `delete s/3` or `delete c/3` `delete s/3 c/3`                                |
 | **Clear**              | `clear`                                                                                                                                                                                    |
 | **Help**               | `help`                                                                                                                                                                                     |
