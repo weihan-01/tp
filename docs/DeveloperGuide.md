@@ -145,8 +145,9 @@ How the parsing works:
 **API** : [
 `Model.java`](https://github.com/AY2526S1-CS2103-F13-4/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="800" />
-
+[//]: # (<puml src="diagrams/ModelClassDiagram.puml" width="800" />)
+[//]: # (Due to the issue of the puml file not showing the Generics "Senior" and "Caregiver")
+![model_diagram.png](images/model_diagram.png)
 
 The `Model` component,
 
@@ -160,12 +161,6 @@ The `Model` component,
   should make sense on their own without depending on other components)
 
 <box type="info" seamless>
-
-**Note:** An alternative (arguably, a more OOP) model is given below. 
-
-<puml src="diagrams/BetterModelClassDiagram.puml" width="800" />
-
-</box>
 
 ### Storage component
 
