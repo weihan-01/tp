@@ -5,8 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_ZER0;
+import static seedu.address.testutil.TypicalIndexes.ID_ONE_PERSON;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +38,8 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " s/" + INDEX_FIRST_PERSON);
-        assertEquals(new DeleteCommand(INDEX_FIRST_PERSON, null), command);
+                DeleteCommand.COMMAND_WORD + " s/" + ID_ONE_PERSON);
+        assertEquals(new DeleteCommand(ID_ONE_PERSON, null), command);
     }
 
 //    @Test
@@ -48,8 +47,8 @@ public class AddressBookParserTest {
 //        Person person = new SeniorBuilder().build();
 //        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
 //        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-//                + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
-//        assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+//                + ID_ONE_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+//        assertEquals(new EditCommand(ID_ONE_PERSON, descriptor), command);
 //    }
 
     @Test
@@ -81,7 +80,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+                -> parser.parseCommand(""));
     }
 
     @Test

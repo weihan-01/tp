@@ -23,8 +23,8 @@
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 //import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 //import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-//import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-//import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+//import static seedu.address.testutil.TypicalIndexes.ID_ONE_PERSON;
+//import static seedu.address.testutil.TypicalIndexes.ID_THREE_PERSON;
 //
 //import org.junit.jupiter.api.Test;
 //
@@ -93,7 +93,7 @@
 //
 //    @Test
 //    public void parse_allFieldsSpecified_success() {
-//        String userInput = INDEX_FIRST_PERSON + PHONE_DESC_BOB + TAG_DESC_HUSBAND
+//        String userInput = ID_ONE_PERSON + PHONE_DESC_BOB + TAG_DESC_HUSBAND
 //                + ADDRESS_DESC_AMY + NAME_DESC_AMY + TAG_DESC_FRIEND;
 //
 //        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
@@ -106,7 +106,7 @@
 //
 //    @Test
 //    public void parse_someFieldsSpecified_success() {
-//        String userInput = INDEX_FIRST_PERSON + PHONE_DESC_BOB;
+//        String userInput = ID_ONE_PERSON + PHONE_DESC_BOB;
 //
 //        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).build();
 //        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
@@ -119,7 +119,7 @@
 //        // name
 //        String userInput = targetIndex.getOneBased() + NAME_DESC_AMY;
 //        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY).build();
-//        EditCommand expectedCommand = new EditCommand(INDEX_THIRD_PERSON, descriptor);
+//        EditCommand expectedCommand = new EditCommand(ID_THREE_PERSON, descriptor);
 //        assertParseSuccess(parser, userInput, expectedCommand);
 //
 //        // phone
@@ -147,7 +147,7 @@
 //        // AddCommandParserTest#parse_repeatedNonTagValue_failure()
 //
 //        // valid followed by invalid
-//        Index targetIndex = INDEX_FIRST_PERSON;
+//        Index targetIndex = ID_ONE_PERSON;
 //        String userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + PHONE_DESC_BOB;
 //
 //        assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
@@ -175,7 +175,7 @@
 //
 //    @Test
 //    public void parse_resetTags_success() {
-//        Index targetIndex = INDEX_THIRD_PERSON;
+//        Index targetIndex = ID_THREE_PERSON;
 //        String userInput = targetIndex.getOneBased() + TAG_EMPTY;
 //
 //        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();

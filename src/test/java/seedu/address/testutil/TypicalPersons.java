@@ -137,11 +137,9 @@ public class TypicalPersons {
         AddressBook ab = new AddressBook();
 
         for (Senior senior : getTypicalSeniors()) {
-            System.out.println(senior);
             ab.addSenior(senior);
         }
         for (Caregiver caregiver : getTypicalCaregivers()) {
-            System.out.println(caregiver);
             ab.addCaregiver(caregiver);
         }
         return ab;
