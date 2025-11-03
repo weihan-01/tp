@@ -114,6 +114,7 @@ public class EditCommand extends Command {
             }
 
             model.setSenior(seniorToEdit, editedSenior);
+            model.updateFilteredCaregiverList(Model.PREDICATE_SHOW_ALL_PERSONS);
             model.updateFilteredSeniorList(Model.PREDICATE_SHOW_ALL_PERSONS);
 
             return new CommandResult(
