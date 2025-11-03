@@ -184,8 +184,8 @@ The `Storage` component,
   that belong to the `Model`)
 
 Additionally, `JsonSerializableAddressBook` now serializes two separate collections:
-* `List<JsonAdaptedSenior`
-* `List<JsonAdaptedCaregiver`
+* `List<JsonAdaptedSenior>`
+* `List<JsonAdaptedCaregiver>`
 
 Each JSON adapter is responsible for validating fields and converting between the JSON representation
 and the model types (`Senior` / `Caregiver`). Only seniors maintain a risk tag, stored as a single-element 
@@ -423,7 +423,7 @@ otherwise)
 
 * 2a. Invalid command
 
-    * 2a1. Neighbourly shows an error message. - "Command format invalid"
+    * 2a1. Neighbourly shows an error message indicating invalid command format
 
       Use case resumes at step 2.
 
@@ -452,43 +452,43 @@ help
 
 * 2b. Invalid phone
 
-    * 2b1. Neighbourly shows an error message. - “Phone number must be 8 digits.”
+    * 2b1. Neighbourly shows an error message indicating phone number must be between 3-15 digits.
 
       Use case resumes at step 1.
 
 * 2c. Missing name
 
-    * 2c1. Neighbourly shows an error message. - “Senior name cannot be empty.”
+    * 2c1. Neighbourly shows an error message indicating Senior name cannot be empty.
 
       Use case resumes at step 1.
 
 * 2d. Missing risk tag
 
-    * 2d1. Neighbourly shows an error message. - "Senior must be assigned a risk tag."
+    * 2d1. Neighbourly shows an error message indicating Senior must be assigned a risk tag.
 
       Use case resumes at step 1.
 
 * 2e. Missing phone number
 
-    * 2e1. Neighbourly shows an error message. - "Senior phone number cannot be empty."
+    * 2e1. Neighbourly shows an error message indicating Senior phone number cannot be empty.
 
       Use case resumes at step 1.
 
 * 2f. Missing address
 
-    * 2f1. Neighbourly shows an error message. - "Senior address cannot be empty."
+    * 2f1. Neighbourly shows an error message indicating Senior address cannot be empty.
 
       Use case resumes at step 1.
 
 * 3a. Invalid caregiver ID
 
-    * 3a1. Neighbourly shows an error message. - "No such caregiver exists."
+    * 3a1. Neighbourly shows an error message indicatin no such caregiver exists.
 
       Use case resumes at step 1.
 
 * 4a. Duplicate detected
 
-    * 4a1. Neighbourly shows an error message. - “Senior already exists. Please amend your entry.”
+    * 4a1. Neighbourly shows an error message indicating Senior already exists.
 
       Use case resumes at step 1.
 
@@ -498,7 +498,7 @@ add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [n/NOTES] [c/CAREGIVER_INDEX]
 
 Example Commands
 
-add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201
+add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/1
 
 **Use case 3: Add caregiver contact: add-cgr**
 
@@ -515,25 +515,25 @@ add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Ha
 
 * 2a. Invalid phone
 
-    * 2a1. Neighbourly shows an error message. - “Phone number must be 8 digits.”
+    * 2a1. Neighbourly shows an error message indicating phone number must be between 3-15 digits.
 
       Use case resumes at step 1.
 
 * 2b. Missing name
 
-    * 2b1. Neighbourly shows an error message. - “Caregiver name cannot be empty.”
+    * 2b1. Neighbourly shows an error message indicating Caregiver name cannot be empty.
 
       Use case resumes at step 1.
 
 * 2c. Missing phone number
 
-    * 2c1. Neighbourly shows an error message. - "Caregiver phone number cannot be empty."
+    * 2c1. Neighbourly shows an error message indicating Caregiver phone number cannot be empty.
 
       Use case resumes at step 1.
 
 * 4a. Duplicate detected
 
-    * 4a1. Neighbourly shows an error message. - “Caregiver already exists. Please amend your entry.”
+    * 4a1. Neighbourly shows an error message indicating Caregiver already exists.
 
       Use case resumes at step 1.
 
@@ -552,26 +552,26 @@ The target can be either a senior or a caregiver.
 
 * 2a. Senior index out of range for the current Senior list.
 
-    * 2a1. Neighbourly shows an error message. - "No such senior index exists."
+    * 2a1. Neighbourly shows an error message indicating no such senior index exists.
 
       Use case resumes at step 2.
 
 * 2b. Caregiver index out of range for the current Caregiver list.
 
-    * 2b1. Neighbourly shows an error message. - "No such caregiver index exists."
+    * 2b1. Neighbourly shows an error message indicating no such caregiver index exists.
 
       Use case resumes at step 2.
 
 
 * 2c. Missing index
 
-    * 2c1. Neighbourly shows an error message. - “Index cannot be empty.”
+    * 2c1. Neighbourly shows an error message indicating index cannot be empty.
 
       Use case resumes at step 2.
 
 * 2d. More than one "s/" or "c/" prefix is detected
 
-    * 2d1. Neighbourly shows an error message. - “Please specify only one senior and/or one caregiver. Multiple 's/' or 'c/' prefixes detected.”
+    * 2d1. Neighbourly shows an error message indicating multiple 's/' or 'c/' prefixes detected.
 
       Use case resumes at step 2.
 
