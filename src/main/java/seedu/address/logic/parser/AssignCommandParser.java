@@ -1,7 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.*;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CAREGIVER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SENIOR;
 
 import java.util.stream.Stream;
 
@@ -13,12 +14,15 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class AssignCommandParser implements Parser<AssignCommand> {
 
-    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index must be single-value, numeric and must not be empty.";
-    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index must be single-value, numeric and must not be empty.";
+    public static final String MESSAGE_MISSING_SENIOR_INDEX = "Senior index must be single-value, "
+            + "numeric and must not be empty.";
+    public static final String MESSAGE_MISSING_CAREGIVER_INDEX = "Caregiver index must be single-value, "
+            + "numeric and must not be empty.";
 
     /**
      * Parses the given {@code String} of arguments in the context of the AssignCommand
      * and returns an AssignCommand object for execution.
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public AssignCommand parse(String args) throws ParseException {

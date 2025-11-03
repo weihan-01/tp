@@ -206,7 +206,9 @@ public class SeniorCard extends UiPart<Region> {
         if (found != null) {
             Integer idx = found.getId();
             String n = found.getName().toString();
-            if (n.length() > 15) n = n.substring(0, 15) + "...";
+            if (n.length() > 15) {
+                n = n.substring(0, 15) + "...";
+            }
             String label;
             if (idx >= 0) {
                 label = "C" + idx + " " + n;
@@ -285,6 +287,7 @@ public class SeniorCard extends UiPart<Region> {
         l.getStyleClass().add("tags-chip");
         return l;
     }
+
     /**
      * Returns the display label for a risk code.
      *
