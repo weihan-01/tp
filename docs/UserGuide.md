@@ -150,20 +150,22 @@ Examples:
 Assign a caregiver to a senior from the system.
 Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
-Format: `assign s/SENIOR_INDEX c/CAREGIVER_INDEX`
+Format: `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` OR `assign c/CAREGIVER_INDEX s/SENIOR_INDEX`
 
 Examples:
 * `assign s/3 c/1`
+* `assign c/3 s/1`
 
 ### Unassigning a caregiver: `unassign`
 
 Unassign a caregiver from a senior in the system.
 Upon successful execution of the command, the system will refresh and display the full, unfiltered list.
 
-Format: `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX`
+Format: `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` oR `unassign c/CAREGIVER_INDEX s/SENIOR_INDEX`
 
 Examples:
 * `unassign s/3 c/1`
+* `unassign c/3 s/1`
 
 <box type="info" seamless>
 
@@ -354,8 +356,8 @@ Examples:
 |------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Add Senior**         | `add-snr n/NAME t/RISK_TAG p/PHONE a/ADDRESS [nt/NOTES] [c/CAREGIVER_INDEX]` <br> e.g., `add-snr n/Lim Ah Kow t/High Risk p/91234567 a/Blk 123 Bedok North Rd #02-45 n/Has dementia c/201` |
 | **Add Caregiver**      | `add-cgr n/NAME p/PHONE [a/ADDRESS] [nt/NOTES]` <br> e.g., `add-cgr n/Mei Hui p/98765432 a/Blk 620 Punggol Field Walk #08-23 nt/Has experience with dementia caregiving`                   |
-| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `assign s/3 c/1`                                                                                                                      |
-| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` <br> e.g., `unassign s/3 c/1`                                                                                                                  |
+| **Assign Caregiver**   | `assign s/SENIOR_INDEX c/CAREGIVER_INDEX` or `assign c/CAREGIVER_INDEX s/SENIOR_INDEX` <br> e.g., `assign s/3 c/1`                                                                         |
+| **Unassign Caregiver** | `unassign s/SENIOR_INDEX c/CAREGIVER_INDEX` or `unassign c/CAREGIVER_INDEX s/SENIOR_INDEX` <br> e.g., `unassign s/3 c/1`                                                                   |
 | **Edit**               | `edit s/SENIOR_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG] [nt/NOTE]` or `edit c/CAREGIVER_INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [nt/NOTE]`<br> e.g., `edit c/2 n/Jane Lim`                |
 | **Filter**             | `filter t/TAG` <br> e.g., `filter t/hr` (shows all Seniors tagged `hr`; allowed tags: `lr`, `mr`, `hr`)                                                                                    |
 | **Pin**                | `pin s/SENIOR_INDEX` or `pin c/CAREGIVER_INDEX` <br> e.g., `pin s/1` or `pin c/1` (pins one senior or caregiver at the top of their list)                                                  |
