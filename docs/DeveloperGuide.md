@@ -628,12 +628,14 @@ Example Commands
 
 Command Format
 
-assign s/SENIOR_INDEX c/CAREGIVER_INDEX
+- assign s/SENIOR_INDEX c/CAREGIVER_INDEX
+- assign c/CAREGIVER_INDEX s/SENIOR_INDEX
 
 Example Commands
 
 - assign s/1 c/2
 - assign s/3 c/1
+- assign c/1 s/1
 
 #### **Use case 6: Unassign a caregiver from a senior — `unassign`**
 
@@ -674,12 +676,14 @@ Example Commands
 
 Command Format
 
-unassign s/SENIOR_INDEX c/CAREGIVER_INDEX
+- unassign s/SENIOR_INDEX c/CAREGIVER_INDEX
+- assign c/CAREGIVER_INDEX s/SENIOR_INDEX
 
 Example Commands
 
 - unassign s/1 c/2
 - unassign s/3 c/1
+- unassign c/1 s/1
 
 #### **Use case 7: Pin a contact (Caregiver or Senior): pin**
 
